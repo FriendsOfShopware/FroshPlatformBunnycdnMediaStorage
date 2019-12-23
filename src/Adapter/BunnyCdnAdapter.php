@@ -9,8 +9,14 @@ use League\Flysystem\Util;
 
 class BunnyCdnAdapter implements AdapterInterface
 {
+    /**
+     * @var string
+     */
     private $apiKey;
 
+    /**
+     * @var string
+     */
     private $apiUrl;
 
     /** @var FilesystemCache */
@@ -61,7 +67,8 @@ class BunnyCdnAdapter implements AdapterInterface
     {
         $filesize = (int)fstat($resource)['size'];
         $curl = curl_init();
-        curl_setopt_array($curl,
+        curl_setopt_array(
+            $curl,
             [
                 CURLOPT_CUSTOMREQUEST => 'PUT',
                 CURLOPT_URL => $this->apiUrl . $this->urlencodePath($path),
@@ -76,11 +83,12 @@ class BunnyCdnAdapter implements AdapterInterface
                 CURLOPT_HTTPHEADER => [
                     'AccessKey: ' . $this->apiKey,
                 ],
-            ]);
+            ]
+        );
 
         // Send the request
         $currentTime = time();
-        $response = curl_exec($curl);
+        curl_exec($curl);
         $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
         fclose($resource);
@@ -142,45 +150,47 @@ class BunnyCdnAdapter implements AdapterInterface
      * Rename a file.
      *
      * @param string $path
-     * @param string $newpath
-     *
-     * @return bool
+     * @param string $newPath
      */
-    public function rename($path, $newpath)
+    public function rename($path, $newPath): bool
     {
-        $this->write($newpath, $this->read($path), new Config()); //TODO: check config
-        $this->delete($path);
+        if ($content = $this->read($path)) {
+            $this->write($newPath, $content['contents'], new Config()); //TODO: check config
+            $this->delete($path);
 
-        return true;
+            return true;
+        }
+
+        return false;
     }
 
     /**
      * Copy a file.
      *
      * @param string $path
-     * @param string $newpath
-     *
-     * @return bool
+     * @param string $newPath
      */
-    public function copy($path, $newpath)
+    public function copy($path, $newPath): bool
     {
-        $this->write($newpath, $this->read($path), new Config()); //TODO: check config
+        if ($content = $this->read($path)) {
+            $this->write($newPath, $content['contents'], new Config()); //TODO: check config
+            return true;
+        }
 
-        return true;
+        return false;
     }
 
     /**
      * Delete a file.
      *
      * @param string $path
-     *
-     * @return bool
      */
-    public function delete($path)
+    public function delete($path): bool
     {
         $curl = curl_init();
 
-        curl_setopt_array($curl,
+        curl_setopt_array(
+            $curl,
             [
                 CURLOPT_CUSTOMREQUEST => 'DELETE',
                 CURLOPT_URL => $this->apiUrl . $path,
@@ -191,7 +201,8 @@ class BunnyCdnAdapter implements AdapterInterface
                     'Content-Type:application/json',
                     'AccessKey:' . $this->apiKey,
                 ],
-            ]);
+            ]
+        );
 
         $result = curl_exec($curl);
         $http_code = (int)curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -210,10 +221,8 @@ class BunnyCdnAdapter implements AdapterInterface
      * Delete a directory.
      *
      * @param string $dirname
-     *
-     * @return bool
      */
-    public function deleteDir($dirname)
+    public function deleteDir($dirname): bool
     {
         return $this->delete($dirname);
     }
@@ -247,10 +256,8 @@ class BunnyCdnAdapter implements AdapterInterface
      * Check whether a file exists.
      *
      * @param string $path
-     *
-     * @return bool
      */
-    public function has($path)
+    public function has($path): bool
     {
         /*
          * If path contains '?', it's variable thumbnail. So always correct.
@@ -265,7 +272,11 @@ class BunnyCdnAdapter implements AdapterInterface
             $this->cache->save($this->getCacheKey($path), $result);
         }
 
-        return $result[$path];
+        if (isset($result[$path])) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -308,10 +319,8 @@ class BunnyCdnAdapter implements AdapterInterface
      *
      * @param string $directory
      * @param bool $recursive
-     *
-     * @return array
      */
-    public function listContents($directory = '', $recursive = false)
+    public function listContents($directory = '', $recursive = false): array
     {
         return $this->getDirContent($directory, $recursive);
     }
@@ -391,7 +400,7 @@ class BunnyCdnAdapter implements AdapterInterface
         ];
     }
 
-    private function urlencodePath($path)
+    private function urlencodePath($path): string
     {
         $parts = explode('/', $path);
         foreach ($parts as &$value) {
@@ -412,12 +421,12 @@ class BunnyCdnAdapter implements AdapterInterface
         }
     }
 
-    private function getCacheKey($path)
+    private function getCacheKey($path): string
     {
         return md5($path)[0];
     }
 
-    private function getCached($path)
+    private function getCached($path): array
     {
         $cacheId = $this->getCacheKey($path);
 
@@ -433,13 +442,12 @@ class BunnyCdnAdapter implements AdapterInterface
     /**
      * @param string $directory
      * @param bool $recursive
-     *
-     * @return array
      */
-    private function getDirContent($directory, $recursive)
+    private function getDirContent($directory, $recursive): array
     {
         $curl = curl_init();
-        curl_setopt_array($curl,
+        curl_setopt_array(
+            $curl,
             [
                 CURLOPT_CUSTOMREQUEST => 'GET',
                 CURLOPT_URL => $this->apiUrl . $directory . '/',
@@ -452,9 +460,10 @@ class BunnyCdnAdapter implements AdapterInterface
                 CURLOPT_HTTPHEADER => [
                     'AccessKey: ' . $this->apiKey,
                 ],
-            ]);
+            ]
+        );
         // Send the request
-        $response = curl_exec($curl);
+        $response = (string)curl_exec($curl);
         curl_close($curl);
         $result = [];
 

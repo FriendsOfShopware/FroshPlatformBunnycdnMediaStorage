@@ -14,7 +14,6 @@
             <argument type="service" id="Frosh\BunnycdnMediaStorage\Adapter\Cache"/>
         </service>
 
-
         <service id="Frosh\BunnycdnMediaStorage\Adapter\Cache" class="Doctrine\Common\Cache\FilesystemCache">
             <argument type="string">%frosh_bunnycdn_media_storage.cache_dir%</argument>
         </service>
