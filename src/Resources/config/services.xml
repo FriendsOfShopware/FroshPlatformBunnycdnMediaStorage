@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="frosh_bunnycdn_media_storage.cache_dir">%kernel.root_dir%/var/cache/bunnycdn_storage</parameter>
+    </parameters>
+    <services>
+        <service class="Frosh\BunnycdnMediaStorage\Adapter\BunnyCdnFactory"
+                 id="Shopware\Core\Framework\Adapter\Filesystem\FilesystemFactory.bunnycdn">
+            <tag name="shopware.filesystem.factory"/>
+            <argument type="service" id="Frosh\BunnycdnMediaStorage\Adapter\Cache"/>
+        </service>
+
+
+        <service id="Frosh\BunnycdnMediaStorage\Adapter\Cache" class="Doctrine\Common\Cache\FilesystemCache">
+            <argument type="string">%frosh_bunnycdn_media_storage.cache_dir%</argument>
+        </service>
+
+    </services>
+</container>

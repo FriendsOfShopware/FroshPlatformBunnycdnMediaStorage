@@ -1,0 +1,40 @@
+{
+    "name": "frosh/platform-bunnycdn-media-storage",
+    "keywords": [
+        "shopware",
+        "backend",
+        "media",
+        "media manager",
+        "bunnyCDN",
+        "storage"
+    ],
+    "description": "This plugins allows you to use BunnyCdn as adapter for media",
+    "version": "v1.0.0",
+    "type": "shopware-platform-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "FriendsOfShopware",
+            "homepage": "https://friendsofshopware.de"
+        }
+    ],
+    "require": {
+        "shopware/core": "*"
+    },
+    "extra": {
+        "shopware-plugin-class": "Frosh\\BunnycdnMediaStorage\\FroshPlatformBunnycdnMediaStorage",
+        "label": {
+            "de-DE": "BunnyCdn Media Storage Plugin",
+            "en-GB": "BunnyCdn Media Storage Plugin"
+        },
+        "description": {
+            "de-DE": "Deutsche Beschreibung des Plugins",
+            "en-GB": "English description of the plugin"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Frosh\\BunnycdnMediaStorage\\": "src/"
+        }
+    }
+}
