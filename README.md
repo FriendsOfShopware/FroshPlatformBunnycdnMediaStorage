@@ -24,8 +24,7 @@ Download the plugin from the release page and enable it in shopware.
         cdn:
             url: "https://example.b-cdn.net"
     ```
-
-## Migration
+After adding new thumbnail-sizes you would have to run `bin/console media:generate-thumbnails` to get them registered in database.
 
 ## License
 
