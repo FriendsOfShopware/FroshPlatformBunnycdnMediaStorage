@@ -12,6 +12,7 @@
                  id="Shopware\Core\Framework\Adapter\Filesystem\FilesystemFactory.bunnycdn">
             <tag name="shopware.filesystem.factory"/>
             <argument type="service" id="Frosh\BunnycdnMediaStorage\Adapter\Cache"/>
+            <argument type="string">%kernel.shopware_version%</argument>
         </service>
 
         <service id="Frosh\BunnycdnMediaStorage\Adapter\Cache" class="Doctrine\Common\Cache\FilesystemCache">

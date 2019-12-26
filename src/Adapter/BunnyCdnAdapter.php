@@ -22,11 +22,17 @@ class BunnyCdnAdapter implements AdapterInterface
     /** @var FilesystemCache */
     private $cache;
 
-    public function __construct($config, FilesystemCache $cache)
+    /**
+     * @var string
+     */
+    private $userAgent;
+
+    public function __construct($config, FilesystemCache $cache, string $version)
     {
         $this->apiUrl = $config['apiUrl'];
         $this->apiKey = $config['apiKey'];
         $this->cache = $cache;
+        $this->userAgent = 'Shopware ' . $version;
     }
 
     /**
@@ -70,6 +76,7 @@ class BunnyCdnAdapter implements AdapterInterface
         curl_setopt_array(
             $curl,
             [
+                CURLOPT_USERAGENT => $this->userAgent,
                 CURLOPT_CUSTOMREQUEST => 'PUT',
                 CURLOPT_URL => $this->apiUrl . $this->urlencodePath($path),
                 CURLOPT_RETURNTRANSFER => 1,
@@ -192,6 +199,7 @@ class BunnyCdnAdapter implements AdapterInterface
         curl_setopt_array(
             $curl,
             [
+                CURLOPT_USERAGENT => $this->userAgent,
                 CURLOPT_CUSTOMREQUEST => 'DELETE',
                 CURLOPT_URL => $this->apiUrl . $path,
                 CURLOPT_RETURNTRANSFER => 1,
@@ -449,6 +457,7 @@ class BunnyCdnAdapter implements AdapterInterface
         curl_setopt_array(
             $curl,
             [
+                CURLOPT_USERAGENT => $this->userAgent,
                 CURLOPT_CUSTOMREQUEST => 'GET',
                 CURLOPT_URL => $this->apiUrl . $directory . '/',
                 CURLOPT_RETURNTRANSFER => 1,

@@ -13,14 +13,20 @@ class BunnyCdnFactory implements AdapterFactoryInterface
      */
     private $cache;
 
-    public function __construct(FilesystemCache $cache)
+    /**
+     * @var string
+     */
+    private $version;
+
+    public function __construct(FilesystemCache $cache, string $version)
     {
         $this->cache = $cache;
+        $this->version = $version;
     }
 
     public function create(array $config): AdapterInterface
     {
-        return new BunnyCdnAdapter($config, $this->cache);
+        return new BunnyCdnAdapter($config, $this->cache, $this->version);
     }
 
     public function getType(): string
