@@ -98,7 +98,6 @@ class BunnyCdnAdapter implements AdapterInterface
         curl_exec($curl);
         $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
-        fclose($resource);
 
         if ((int)$http_code !== 201) {
             return false;
