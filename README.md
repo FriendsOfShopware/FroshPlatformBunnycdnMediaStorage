@@ -24,7 +24,36 @@ Download the plugin from the release page and enable it in shopware.
         cdn:
             url: "https://example.b-cdn.net"
     ```
-After adding new thumbnail-sizes you would have to run `bin/console media:generate-thumbnails` to get them registered in database.
+  followed by (on SW6.2):
+  ```
+  parameters:
+      filesystem_local_public:
+          type: 'local'
+          config:
+              root: '%kernel.project_dir%/public'
+  
+  services:
+      filesystem.local.public:
+          class: 'League\Flysystem\FilesystemInterface'
+          factory: ['@Shopware\Core\Framework\Adapter\Filesystem\FilesystemFactory', 'factory']
+          arguments:
+              - '%filesystem_local_public%'
+      Shopware\Storefront\Theme\ThemeCompiler:
+          arguments:
+              - '@filesystem.local.public'
+              - '@shopware.filesystem.temp'
+              - '@Shopware\Storefront\Theme\ThemeFileResolver'
+              - '%kernel.cache_dir%'
+              - '%kernel.debug%'
+              - '@Symfony\Component\EventDispatcher\EventDispatcherInterface'
+              - '@Shopware\Storefront\Theme\ThemeFileImporter'
+      Shopware\Core\Framework\Plugin\Util\AssetService:
+          arguments:
+              - '@filesystem.local.public'
+              - '@kernel'
+              - '@Shopware\Core\Framework\Plugin\KernelPluginCollection'
+
+  ```
 
 ## License
 
