@@ -10,7 +10,7 @@ The BunnyCDN adapter allows you to manage your media files in shopware on a bunn
 Download the plugin from the release page and enable it in shopware.
 
 ## Usage
-- Upload your media-folder using ftp to [BunnyCDN](https://support.bunnycdn.com/hc/en-us/articles/115003780169-How-to-upload-and-access-files-from-your-Storage-Zone).
+- Upload your existing media-folder using ftp to [BunnyCDN](https://support.bunnycdn.com/hc/en-us/articles/115003780169-How-to-upload-and-access-files-from-your-Storage-Zone).
 - Update your `config/packages/shopware.yml` and fill in your own values
     
     ```
