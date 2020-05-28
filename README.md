@@ -57,7 +57,7 @@ Download the plugin from the release page and enable it in shopware.
 
 ## Suggestions
 
-- [FroshPlatformThumbnailProcessor](https://github.com/FriendsOfShopware/FroshPlatformThumbnailProcessorImgProxy)
+- [FroshPlatformThumbnailProcessor](https://github.com/FriendsOfShopware/FroshPlatformThumbnailProcessor)
 
 ## License
 
