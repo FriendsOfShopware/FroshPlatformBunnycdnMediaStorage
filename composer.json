@@ -9,7 +9,7 @@
         "storage"
     ],
     "description": "This plugins allows you to use BunnyCdn as adapter for media",
-    "version": "v1.0.0",
+    "version": "v1.0.1",
     "type": "shopware-platform-plugin",
     "license": "MIT",
     "authors": [
