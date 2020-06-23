@@ -20,7 +20,7 @@ Download the plugin from the release page and enable it in shopware.
                 type: "bunnycdn"
                 config:
                     apiUrl: "https://storage.bunnycdn.com/example/"
-                    apiKey: "secret-api-key"
+                    apiKey: "secret-ftp-password"
         cdn:
             url: "https://example.b-cdn.net"
     ```
