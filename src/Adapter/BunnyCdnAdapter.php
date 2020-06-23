@@ -411,7 +411,7 @@ class BunnyCdnAdapter implements AdapterInterface
     {
         $parts = explode('/', $path);
         foreach ($parts as &$value) {
-            $value = urlencode($value);
+            $value = rawurlencode($value);
         }
         unset($value);
 
