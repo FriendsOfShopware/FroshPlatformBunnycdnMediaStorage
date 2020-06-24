@@ -40,7 +40,7 @@ class BunnyCdnAdapter implements AdapterInterface
      *
      * @param string $path
      * @param string $contents
-     * @param Config $config Config object
+     * @param Config $config   Config object
      *
      * @return array|false false on failure file meta data on success
      */
@@ -63,15 +63,15 @@ class BunnyCdnAdapter implements AdapterInterface
     /**
      * Write a new file using a stream.
      *
-     * @param string $path
+     * @param string   $path
      * @param resource $resource
-     * @param Config $config Config object
+     * @param Config   $config   Config object
      *
      * @return array|false false on failure file meta data on success
      */
     public function writeStream($path, $resource, Config $config)
     {
-        $filesize = (int)fstat($resource)['size'];
+        $filesize = (int) fstat($resource)['size'];
         $curl = curl_init();
         curl_setopt_array(
             $curl,
@@ -99,7 +99,7 @@ class BunnyCdnAdapter implements AdapterInterface
         $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
 
-        if ((int)$http_code !== 201) {
+        if ((int) $http_code !== 201) {
             return false;
         }
 
@@ -125,7 +125,7 @@ class BunnyCdnAdapter implements AdapterInterface
      *
      * @param string $path
      * @param string $contents
-     * @param Config $config Config object
+     * @param Config $config   Config object
      *
      * @return array|false false on failure file meta data on success
      */
@@ -139,9 +139,9 @@ class BunnyCdnAdapter implements AdapterInterface
     /**
      * Update a file using a stream.
      *
-     * @param string $path
+     * @param string   $path
      * @param resource $resource
-     * @param Config $config Config object
+     * @param Config   $config   Config object
      *
      * @return array|false false on failure file meta data on success
      */
@@ -212,7 +212,7 @@ class BunnyCdnAdapter implements AdapterInterface
         );
 
         $result = curl_exec($curl);
-        $http_code = (int)curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $http_code = (int) curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
 
         if ($result === false || $http_code !== 200) {
@@ -275,11 +275,13 @@ class BunnyCdnAdapter implements AdapterInterface
 
         $result = $this->getCached($path);
 
-        if (!isset($result[$path]) && $result[$path] = (bool)$this->getSize($path)) {
-            $this->cache->save($this->getCacheKey($path), $result);
+        if (isset($result[$path]) && $result[$path]) {
+            return true;
         }
 
-        if (isset($result[$path])) {
+        if ($result[$path] = (bool) $this->getSize($path)) {
+            $this->cache->save($this->getCacheKey($path), $result);
+
             return true;
         }
 
@@ -325,7 +327,7 @@ class BunnyCdnAdapter implements AdapterInterface
      * List contents of a directory.
      *
      * @param string $directory
-     * @param bool $recursive
+     * @param bool   $recursive
      */
     public function listContents($directory = '', $recursive = false): array
     {
@@ -349,8 +351,8 @@ class BunnyCdnAdapter implements AdapterInterface
         return [
             'type' => 'file',
             'path' => $path,
-            'timestamp' => (int)strtotime($headers['Last-Modified']),
-            'size' => (int)$headers['Content-Length'],
+            'timestamp' => (int) strtotime($headers['Last-Modified']),
+            'size' => (int) $headers['Content-Length'],
             'visibility' => AdapterInterface::VISIBILITY_PUBLIC,
             'mimetype' => $headers['Content-Type'],
         ];
@@ -448,7 +450,7 @@ class BunnyCdnAdapter implements AdapterInterface
 
     /**
      * @param string $directory
-     * @param bool $recursive
+     * @param bool   $recursive
      */
     private function getDirContent($directory, $recursive): array
     {
@@ -471,7 +473,7 @@ class BunnyCdnAdapter implements AdapterInterface
             ]
         );
         // Send the request
-        $response = (string)curl_exec($curl);
+        $response = (string) curl_exec($curl);
         curl_close($curl);
         $result = [];
 
