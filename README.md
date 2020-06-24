@@ -24,7 +24,7 @@ Download the plugin from the release page and enable it in shopware.
         cdn:
             url: "https://example.b-cdn.net"
     ```
-  followed by (on SW6.2):
+  Due to performance problems and missing implementation in core, you shouldn't transfer the theme to bunnycdn. To achive this on SW6.2, you have to add this, to the `shopware.yml`-file:
   ```
   parameters:
       filesystem_local_public:
