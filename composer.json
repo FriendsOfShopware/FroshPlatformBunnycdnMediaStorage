@@ -19,7 +19,7 @@
         }
     ],
     "require": {
-        "shopware/core": "*"
+        "shopware/core": "~6.2"
     },
     "extra": {
         "shopware-plugin-class": "Frosh\\BunnycdnMediaStorage\\FroshPlatformBunnycdnMediaStorage",
@@ -28,8 +28,8 @@
             "en-GB": "BunnyCdn Media Storage Plugin"
         },
         "description": {
-            "de-DE": "Deutsche Beschreibung des Plugins",
-            "en-GB": "English description of the plugin"
+            "de-DE": "Transferiere Deine Dateien nach BunnyCDN. Beschleunige dadurch die Auslieferung der Bilder! Mach Speicherplatz frei! Profitiere von kleineren Backups!",
+            "en-GB": "Transfer all your files to BunnyCDN. This will speed up the delivery of the pictures including thumbnails! Free up space! Benefit from smaller backups!"
         }
     },
     "autoload": {
