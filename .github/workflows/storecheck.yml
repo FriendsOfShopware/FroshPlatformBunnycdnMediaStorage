@@ -1,0 +1,77 @@
+name: StoreCheck
+on: [push]
+
+env:
+    PLUGIN_NAME: FroshPlatformBunnycdnMediaStorage
+    PLUGIN_ID: ${{ secrets.PLUGIN_ID }}
+    ACCOUNT_USER: ${{ secrets.ACCOUNT_USER }}
+    ACCOUNT_PASSWORD: ${{ secrets.ACCOUNT_PASSWORD }}
+
+jobs:
+    validatePlugin:
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v2.3.1
+                with:
+                    path: ${{ env.PLUGIN_NAME }}
+
+            #            - name: Install dependencies
+            #              run: composer install --prefer-dist --no-progress --no-suggest
+
+            -   name: BuildZip
+                run: |
+                    ls
+                    rm -rf ${PLUGIN_NAME}*.zip
+                    ( find . -path *Resources/store && find . -type d -name ".git" && find . -type d -name ".github" && find . -name "build.sh"  && find . -name ".gitignore" && find . -name ".gitmodules" ) | xargs rm -r
+                    zip -r ${PLUGIN_NAME}-${GITHUB_SHA}.zip ${PLUGIN_NAME}
+
+            -   name: getPluginUploader
+                run: wget 'https://github.com/FriendsOfShopware/FroshPluginUploader/releases/download/0.2.2/frosh-plugin-upload.phar' -O frosh-plugin-upload.phar
+
+            -   name: StoreCheck
+                run: php frosh-plugin-upload.phar plugin:validate ${GITHUB_WORKSPACE}/${PLUGIN_NAME}-${GITHUB_SHA}.zip
+
+    StoreUpdate:
+        needs: validatePlugin
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v2.3.1
+                with:
+                    path: ${{ env.PLUGIN_NAME }}
+
+            #            - name: Install dependencies
+            #              run: composer install --prefer-dist --no-progress --no-suggest
+
+            -   name: getPluginUploader
+                run: wget 'https://github.com/FriendsOfShopware/FroshPluginUploader/releases/download/0.2.2/frosh-plugin-upload.phar' -O frosh-plugin-upload.phar
+
+            -   name: StoreUpdate
+                run: php frosh-plugin-upload.phar plugin:update ${GITHUB_WORKSPACE}/${{ env.PLUGIN_NAME }}/
+
+    StoreRelease:
+        needs: StoreUpdate
+        if: startsWith(github.ref, 'refs/tags/')
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v2.3.1
+                with:
+                    path: ${{ env.PLUGIN_NAME }}
+
+            #            - name: Install dependencies
+            #              run: composer install --prefer-dist --no-progress --no-suggest
+
+            -   name: BuildZip
+                run: |
+                    ls
+                    rm -rf ${PLUGIN_NAME}*.zip
+                    ( find . -path *Resources/store && find . -type d -name ".git" && find . -type d -name ".github" && find . -name "build.sh"  && find . -name ".gitignore" && find . -name ".gitmodules" ) | xargs rm -r
+                    zip -r ${PLUGIN_NAME}-${GITHUB_SHA}.zip ${PLUGIN_NAME}
+
+            -   name: getPluginUploader
+                run: wget 'https://github.com/FriendsOfShopware/FroshPluginUploader/releases/download/0.2.2/frosh-plugin-upload.phar' -O frosh-plugin-upload.phar
+
+            -   name: StoreUpdate
+                run: php frosh-plugin-upload.phar plugin:upload ${GITHUB_WORKSPACE}/${PLUGIN_NAME}*.zip
