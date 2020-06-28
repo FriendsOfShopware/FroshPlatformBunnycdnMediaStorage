@@ -13,7 +13,7 @@ Download the plugin from the release page and enable it in shopware.
 - Upload your existing media-folder using ftp to [BunnyCDN](https://support.bunnycdn.com/hc/en-us/articles/115003780169-How-to-upload-and-access-files-from-your-Storage-Zone).
 - Update your `config/packages/shopware.yml` and fill in your own values
     
-    ```
+    ```yaml
     shopware:
         filesystem:
             public:
@@ -25,7 +25,8 @@ Download the plugin from the release page and enable it in shopware.
             url: "https://example.b-cdn.net"
     ```
   Due to performance problems and missing implementation in core, you shouldn't transfer the theme to bunnycdn. To achive this on SW6.2, you have to add this, to the `shopware.yml`-file:
-  ```
+  
+  ```yaml
   parameters:
       filesystem_local_public:
           type: 'local'
