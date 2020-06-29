@@ -3,8 +3,8 @@ on:
     push:
         branches:
             - master
-    release:
-        types: [created]
+        tags:
+            - '*'
 
 env:
     PLUGIN_NAME: FroshPlatformBunnycdnMediaStorage
