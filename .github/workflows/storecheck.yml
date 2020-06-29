@@ -1,5 +1,8 @@
 name: StoreCheck
-on: [push]
+on:
+    push:
+        branches:
+            - master
 
 env:
     PLUGIN_NAME: FroshPlatformBunnycdnMediaStorage
