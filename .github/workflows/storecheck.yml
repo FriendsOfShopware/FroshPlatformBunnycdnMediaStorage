@@ -23,7 +23,7 @@ jobs:
                 run: |
                     ls
                     rm -rf ${PLUGIN_NAME}*.zip
-                    ( find . -path *Resources/store && find . -type d -name ".git" && find . -type d -name ".github" && find . -name "build.sh"  && find . -name ".gitignore" && find . -name ".gitmodules" ) | xargs rm -r
+                    ( find . -path *Resources/store && find . -type d -name "bin" && find . -type d -name ".git" && find . -type d -name ".github" && find . -name "build.sh"  && find . -name ".gitignore" && find . -name ".gitmodules" ) | xargs rm -r
                     zip -r ${PLUGIN_NAME}-${GITHUB_SHA}.zip ${PLUGIN_NAME}
 
             -   name: getPluginUploader
@@ -67,7 +67,7 @@ jobs:
                 run: |
                     ls
                     rm -rf ${PLUGIN_NAME}*.zip
-                    ( find . -path *Resources/store && find . -type d -name ".git" && find . -type d -name ".github" && find . -name "build.sh"  && find . -name ".gitignore" && find . -name ".gitmodules" ) | xargs rm -r
+                    ( find . -path *Resources/store && find . -type d -name "bin" && find . -type d -name ".git" && find . -type d -name ".github" && find . -name "build.sh"  && find . -name ".gitignore" && find . -name ".gitmodules" ) | xargs rm -r
                     zip -r ${PLUGIN_NAME}-${GITHUB_SHA}.zip ${PLUGIN_NAME}
 
             -   name: getPluginUploader
