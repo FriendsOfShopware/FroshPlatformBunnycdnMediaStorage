@@ -482,6 +482,7 @@ class BunnyCdnAdapter implements AdapterInterface
                 'basename' => $content->ObjectName,
                 'path' => $directory . '/' . $content->ObjectName,
                 'type' => ($content->IsDirectory ? 'dir' : 'file'),
+                'timestamp' => (new \DateTime($content->LastChanged))->getTimestamp()
             ];
 
             if ($recursive && $content->IsDirectory) {
