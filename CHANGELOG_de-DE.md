@@ -1,3 +1,7 @@
+# 1.0.7
+
+* Behebe falsche Sitemap-Url
+
 # 1.0.6
 
 * Behebe Problem im SitemapLister
