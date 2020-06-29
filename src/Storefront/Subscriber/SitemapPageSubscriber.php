@@ -7,7 +7,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class SitemapPageSubscriber implements EventSubscriberInterface
 {
-
     /**
      * @var string
      */
@@ -21,7 +20,7 @@ class SitemapPageSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            SitemapPageLoadedEvent::class => 'changeSitemapPageData'
+            SitemapPageLoadedEvent::class => 'changeSitemapPageData',
         ];
     }
 
