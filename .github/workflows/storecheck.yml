@@ -25,18 +25,14 @@ jobs:
             #            - name: Install dependencies
             #              run: composer install --prefer-dist --no-progress --no-suggest
 
-            -   name: BuildZip
-                run: |
-                    ls
-                    rm -rf ${PLUGIN_NAME}*.zip
-                    ( find . -path *Resources/store && find . -type d -name "bin" && find . -type d -name ".git" && find . -type d -name ".github" && find . -name "build.sh"  && find . -name ".gitignore" && find . -name ".gitmodules" ) | xargs rm -r
-                    zip -r ${PLUGIN_NAME}-${GITHUB_SHA}.zip ${PLUGIN_NAME}
-
             -   name: getPluginUploader
                 run: wget 'https://github.com/FriendsOfShopware/FroshPluginUploader/releases/download/0.2.2/frosh-plugin-upload.phar' -O frosh-plugin-upload.phar
 
-            -   name: StoreCheck
-                run: php frosh-plugin-upload.phar plugin:validate ${GITHUB_WORKSPACE}/${PLUGIN_NAME}-${GITHUB_SHA}.zip
+            -   name: BuildZip
+                run: php frosh-plugin-upload.phar plugin:zip:dir https://github.com/FriendsOfShopware/${PLUGIN_NAME}.git
+
+            -   name: Validating
+                run: php frosh-plugin-upload.phar plugin:validate ${GITHUB_WORKSPACE}/${PLUGIN_NAME}*.zip
 
     StoreUpdate:
         needs: validatePlugin
@@ -74,17 +70,13 @@ jobs:
             #              run: composer install --prefer-dist --no-progress --no-suggest
 
             -   name: BuildZip
-                run: |
-                    ls
-                    rm -rf ${PLUGIN_NAME}*.zip
-                    ( find . -path *Resources/store && find . -type d -name "bin" && find . -type d -name ".git" && find . -type d -name ".github" && find . -name "build.sh"  && find . -name ".gitignore" && find . -name ".gitmodules" ) | xargs rm -r
-                    zip -r ${PLUGIN_NAME}-${GITHUB_SHA}.zip ${PLUGIN_NAME}
+                run: php frosh-plugin-upload.phar plugin:zip:dir https://github.com/FriendsOfShopware/${PLUGIN_NAME}.git
 
             -   name: getPluginUploader
                 run: wget 'https://github.com/FriendsOfShopware/FroshPluginUploader/releases/download/0.2.2/frosh-plugin-upload.phar' -O frosh-plugin-upload.phar
 
-            -   name: StoreUpdate
-                run: php frosh-plugin-upload.phar plugin:upload ${GITHUB_WORKSPACE}/${PLUGIN_NAME}-${GITHUB_SHA}.zip
+            -   name: StoreUploadZip
+                run: php frosh-plugin-upload.phar plugin:upload ${GITHUB_WORKSPACE}/${PLUGIN_NAME}*.zip
 
             -   name: Create Release
                 id: create_release
