@@ -24,7 +24,41 @@ Download the plugin from the release page and enable it in shopware.
         cdn:
             url: "https://example.b-cdn.net"
     ```
-  Due to performance problems and missing implementation in core, you shouldn't transfer the theme to bunnycdn. To achive this on SW6.2, you have to add this, to the `shopware.yml`-file:
+  ### Due to performance problems and missing implementation in core, you shouldn't transfer the theme to bunnycdn. To achive this, you have to add this, to the `shopware.yml`-file:
+  
+ #### SW6.2 - 6.2.2
+ 
+  ```yaml
+  parameters:
+      filesystem_local_public:
+          type: 'local'
+          config:
+              root: '%kernel.project_dir%/public'
+  
+  services:
+      filesystem.local.public:
+          class: 'League\Flysystem\FilesystemInterface'
+          factory: ['@Shopware\Core\Framework\Adapter\Filesystem\FilesystemFactory', 'factory']
+          arguments:
+              - '%filesystem_local_public%'
+      Shopware\Storefront\Theme\ThemeCompiler:
+          arguments:
+              - '@filesystem.local.public'
+              - '@shopware.filesystem.temp'
+              - '@Shopware\Storefront\Theme\ThemeFileResolver'
+              - '%kernel.cache_dir%'
+              - '%kernel.debug%'
+              - '@Symfony\Component\EventDispatcher\EventDispatcherInterface'
+              - '@Shopware\Storefront\Theme\ThemeFileImporter'
+      Shopware\Core\Framework\Plugin\Util\AssetService:
+          arguments:
+              - '@filesystem.local.public'
+              - '@kernel'
+              - '@Shopware\Core\Framework\Plugin\KernelPluginCollection'
+
+  ```
+  
+  #### SW6.2.3 - *
   
   ```yaml
   parameters:
@@ -48,6 +82,7 @@ Download the plugin from the release page and enable it in shopware.
               - '%kernel.debug%'
               - '@Symfony\Component\EventDispatcher\EventDispatcherInterface'
               - '@Shopware\Storefront\Theme\ThemeFileImporter'
+              - '@media.repository'
       Shopware\Core\Framework\Plugin\Util\AssetService:
           arguments:
               - '@filesystem.local.public'
