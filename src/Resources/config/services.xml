@@ -19,5 +19,10 @@
             <argument type="string">%frosh_bunnycdn_media_storage.cache_dir%</argument>
         </service>
 
+        <service id="Frosh\BunnycdnMediaStorage\Storefront\Subscriber\SitemapPageSubscriber">
+            <argument type="string">%shopware.cdn.url%</argument>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
     </services>
 </container>
