@@ -29,10 +29,10 @@ jobs:
                 run: wget 'https://github.com/FriendsOfShopware/FroshPluginUploader/releases/download/0.2.2/frosh-plugin-upload.phar' -O frosh-plugin-upload.phar
 
             -   name: BuildZip
-                run: php frosh-plugin-upload.phar plugin:zip:dir https://github.com/FriendsOfShopware/${PLUGIN_NAME}.git
+                run: php frosh-plugin-upload.phar plugin:zip:dir ${GITHUB_WORKSPACE}/${PLUGIN_NAME}/
 
             -   name: Validating
-                run: php frosh-plugin-upload.phar plugin:validate ${GITHUB_WORKSPACE}/${PLUGIN_NAME}*.zip
+                run: php frosh-plugin-upload.phar plugin:validate ${GITHUB_WORKSPACE}/${PLUGIN_NAME}/
 
     StoreUpdate:
         needs: validatePlugin
@@ -51,7 +51,7 @@ jobs:
                 run: wget 'https://github.com/FriendsOfShopware/FroshPluginUploader/releases/download/0.2.2/frosh-plugin-upload.phar' -O frosh-plugin-upload.phar
 
             -   name: StoreUpdate
-                run: php frosh-plugin-upload.phar plugin:update ${GITHUB_WORKSPACE}/${{ env.PLUGIN_NAME }}/
+                run: php frosh-plugin-upload.phar plugin:update ${GITHUB_WORKSPACE}/${PLUGIN_NAME}/
 
     StoreRelease:
         if: startsWith(github.ref, 'refs/tags/')
@@ -70,7 +70,7 @@ jobs:
             #              run: composer install --prefer-dist --no-progress --no-suggest
 
             -   name: BuildZip
-                run: php frosh-plugin-upload.phar plugin:zip:dir https://github.com/FriendsOfShopware/${PLUGIN_NAME}.git
+                run: php frosh-plugin-upload.phar plugin:zip:dir ${GITHUB_WORKSPACE}/${PLUGIN_NAME}/
 
             -   name: getPluginUploader
                 run: wget 'https://github.com/FriendsOfShopware/FroshPluginUploader/releases/download/0.2.2/frosh-plugin-upload.phar' -O frosh-plugin-upload.phar
