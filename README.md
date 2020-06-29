@@ -57,7 +57,7 @@ Download the plugin from the release page and enable it in shopware.
 
   ```
   
-  **SW6.2.3 - ***
+  **SW6.2.3 - x**
   
   ```yaml
   parameters:
