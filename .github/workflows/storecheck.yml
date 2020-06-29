@@ -1,5 +1,10 @@
 name: StoreCheck
-on: [push]
+on:
+    push:
+        branches:
+            - master
+    release:
+        types: [created]
 
 env:
     PLUGIN_NAME: FroshPlatformBunnycdnMediaStorage
@@ -53,7 +58,6 @@ jobs:
                 run: php frosh-plugin-upload.phar plugin:update ${GITHUB_WORKSPACE}/${{ env.PLUGIN_NAME }}/
 
     StoreRelease:
-        needs: StoreUpdate
         if: startsWith(github.ref, 'refs/tags/')
         runs-on: ubuntu-latest
         steps:
