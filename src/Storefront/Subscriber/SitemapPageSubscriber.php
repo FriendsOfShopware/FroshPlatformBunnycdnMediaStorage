@@ -8,11 +8,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class SitemapPageSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var string
+     * @var string|null
      */
     private $cdnUrl;
 
-    public function __construct(string $cdnUrl)
+    public function __construct(?string $cdnUrl)
     {
         $this->cdnUrl = $cdnUrl;
     }
@@ -26,6 +26,10 @@ class SitemapPageSubscriber implements EventSubscriberInterface
 
     public function changeSitemapPageData(SitemapPageLoadedEvent $event): void
     {
+        if (!$this->cdnUrl) {
+            return;
+        }
+
         foreach ($event->getPage()->getSitemaps() as $sitemap) {
             $sitemap->setFileName($this->cdnUrl . '/' . $sitemap->getFileName());
         }
