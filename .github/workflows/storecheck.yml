@@ -8,7 +8,6 @@ on:
 
 env:
     PLUGIN_NAME: FroshPlatformBunnycdnMediaStorage
-    PLUGIN_ID: ${{ secrets.PLUGIN_ID }}
     ACCOUNT_USER: ${{ secrets.ACCOUNT_USER }}
     ACCOUNT_PASSWORD: ${{ secrets.ACCOUNT_PASSWORD }}
 
@@ -22,21 +21,17 @@ jobs:
                 with:
                     path: ${{ env.PLUGIN_NAME }}
 
-            #            - name: Install dependencies
-            #              run: composer install --prefer-dist --no-progress --no-suggest
-
-            -   name: BuildZip
-                run: |
-                    ls
-                    rm -rf ${PLUGIN_NAME}*.zip
-                    ( find . -path *Resources/store && find . -type d -name "bin" && find . -type d -name ".git" && find . -type d -name ".github" && find . -name "build.sh"  && find . -name ".gitignore" && find . -name ".gitmodules" ) | xargs rm -r
-                    zip -r ${PLUGIN_NAME}-${GITHUB_SHA}.zip ${PLUGIN_NAME}
-
             -   name: getPluginUploader
-                run: wget 'https://github.com/FriendsOfShopware/FroshPluginUploader/releases/download/0.2.2/frosh-plugin-upload.phar' -O frosh-plugin-upload.phar
+                run: wget 'https://github.com/FriendsOfShopware/FroshPluginUploader/releases/download/0.3.0/frosh-plugin-upload.phar' -O frosh-plugin-upload.phar
+
+            -   name: Build Zip
+                run: php frosh-plugin-upload.phar ext:zip ${PLUGIN_NAME}
+
+            -   name: Validate Zip
+                run: php frosh-plugin-upload.phar ext:validate $(pwd)/${PLUGIN_NAME}*.zip
 
             -   name: StoreCheck
-                run: php frosh-plugin-upload.phar plugin:validate ${GITHUB_WORKSPACE}/${PLUGIN_NAME}*.zip
+                run: php frosh-plugin-upload.phar ext:validate $(pwd)/${PLUGIN_NAME}*.zip
 
     StoreUpdate:
         needs: validatePlugin
@@ -48,14 +43,11 @@ jobs:
                 with:
                     path: ${{ env.PLUGIN_NAME }}
 
-            #            - name: Install dependencies
-            #              run: composer install --prefer-dist --no-progress --no-suggest
-
             -   name: getPluginUploader
-                run: wget 'https://github.com/FriendsOfShopware/FroshPluginUploader/releases/download/0.2.2/frosh-plugin-upload.phar' -O frosh-plugin-upload.phar
+                run: wget 'https://github.com/FriendsOfShopware/FroshPluginUploader/releases/download/0.3.0/frosh-plugin-upload.phar' -O frosh-plugin-upload.phar
 
             -   name: StoreUpdate
-                run: php frosh-plugin-upload.phar plugin:update ${GITHUB_WORKSPACE}/${{ env.PLUGIN_NAME }}/
+                run: php frosh-plugin-upload.phar ext:update $(pwd)/${{ env.PLUGIN_NAME }}/
 
     StoreRelease:
         if: startsWith(github.ref, 'refs/tags/')
@@ -73,18 +65,14 @@ jobs:
             #            - name: Install dependencies
             #              run: composer install --prefer-dist --no-progress --no-suggest
 
-            -   name: BuildZip
-                run: |
-                    ls
-                    rm -rf ${PLUGIN_NAME}*.zip
-                    ( find . -path *Resources/store && find . -type d -name "bin" && find . -type d -name ".git" && find . -type d -name ".github" && find . -name "build.sh"  && find . -name ".gitignore" && find . -name ".gitmodules" ) | xargs rm -r
-                    zip -r ${PLUGIN_NAME}-${GITHUB_SHA}.zip ${PLUGIN_NAME}
-
             -   name: getPluginUploader
-                run: wget 'https://github.com/FriendsOfShopware/FroshPluginUploader/releases/download/0.2.2/frosh-plugin-upload.phar' -O frosh-plugin-upload.phar
+                run: wget 'https://github.com/FriendsOfShopware/FroshPluginUploader/releases/download/0.3.0/frosh-plugin-upload.phar' -O frosh-plugin-upload.phar
 
-            -   name: StoreUpdate
-                run: php frosh-plugin-upload.phar plugin:upload ${GITHUB_WORKSPACE}/${PLUGIN_NAME}-${GITHUB_SHA}.zip
+            -   name: Build Zip
+                run: php frosh-plugin-upload.phar ext:zip ${PLUGIN_NAME}
+
+            -   name: StoreUpload
+                run: php frosh-plugin-upload.phar ext:upload $(pwd)/${PLUGIN_NAME}*.zip
 
             -   name: Create Release
                 id: create_release
@@ -104,6 +92,6 @@ jobs:
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                 with:
                     upload_url: ${{ steps.create_release.outputs.upload_url }}
-                    asset_path: ${{ github.workspace }}/${{ env.PLUGIN_NAME }}-${{ github.sha }}.zip
+                    asset_path: ${{ github.workspace }}/${{ env.PLUGIN_NAME }}-${{ steps.get_version.outputs.VERSION }}.zip
                     asset_name: ${{ env.PLUGIN_NAME }}.zip
                     asset_content_type: application/zip
