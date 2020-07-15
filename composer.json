@@ -30,6 +30,14 @@
         "description": {
             "de-DE": "Transferiere Deine Dateien nach BunnyCDN. Beschleunige dadurch die Auslieferung der Bilder! Mach Speicherplatz frei! Profitiere von kleineren Backups!",
             "en-GB": "Transfer all your files to BunnyCDN. This will speed up the delivery of the pictures including thumbnails! Free up space! Benefit from smaller backups!"
+        },
+        "manufacturerLink": {
+            "de-DE": "https://github.com/FriendsOfShopware/FroshPlatformBunnycdnMediaStorage",
+            "en-GB": "https://github.com/FriendsOfShopware/FroshPlatformBunnycdnMediaStorage"
+        },
+        "supportLink": {
+            "de-DE": "https://github.com/FriendsOfShopware/FroshPlatformBunnycdnMediaStorage/issues",
+            "en-GB": "https://github.com/FriendsOfShopware/FroshPlatformBunnycdnMediaStorage/issues"
         }
     },
     "autoload": {
