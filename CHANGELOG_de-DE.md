@@ -1,3 +1,7 @@
+# 1.0.8
+
+* Workaround um klein geschriebene Header von BunnyCDN zu respektieren
+
 # 1.0.7
 
 * Behebe falsche Sitemap-Url
