@@ -348,13 +348,19 @@ class BunnyCdnAdapter implements AdapterInterface
             return false;
         }
 
+        $size = (int) $this->getBunnyCdnHeader($headers, 'Content-Length');
+
+        if (!$size) {
+            return false;
+        }
+
         return [
             'type' => 'file',
             'path' => $path,
-            'timestamp' => (int) strtotime($headers['Last-Modified']),
-            'size' => (int) $headers['Content-Length'],
+            'timestamp' => (int) strtotime($this->getBunnyCdnHeader($headers, 'Last-Modified')),
+            'size' => $size,
             'visibility' => AdapterInterface::VISIBILITY_PUBLIC,
-            'mimetype' => $headers['Content-Type'],
+            'mimetype' => $this->getBunnyCdnHeader($headers, 'Content-Type'),
         ];
     }
 
@@ -494,5 +500,18 @@ class BunnyCdnAdapter implements AdapterInterface
         }
 
         return $result;
+    }
+
+    private function getBunnyCdnHeader(array $headers, string $header)
+    {
+        if (isset($headers[$header])) {
+            return $headers[$header];
+        }
+
+        if (isset($headers[mb_strtolower($header)])) {
+            return $headers[mb_strtolower($header)];
+        }
+
+        return null;
     }
 }
