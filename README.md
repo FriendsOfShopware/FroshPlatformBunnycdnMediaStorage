@@ -13,16 +13,31 @@ Download the plugin from the release page and enable it in shopware.
 - Upload your existing media-folder using ftp to [BunnyCDN](https://support.bunnycdn.com/hc/en-us/articles/115003780169-How-to-upload-and-access-files-from-your-Storage-Zone).
 - Update your `config/packages/shopware.yml` and fill in your own values
     ### Shopware 6.3
+    
+    SW6.3 inherits config of all new filesystems from public. So we have to set every filesystem on its own.  
+    Here is a example to use Storage for media and sitemap. Due to performance-Issues, we don't recommend using CDN-Storage for theme or asset.
 
     ```yaml
     shopware:
-        filesystem:
-            public:
-                type: "bunnycdn"
-                url: "https://example.b-cdn.net"
-                config:
-                    apiUrl: "https://storage.bunnycdn.com/example/"
-                    apiKey: "secret-ftp-password"
+      filesystem:
+        public: &bunnycdn
+          type: "bunnycdn"
+          url: "https://example.b-cdn.net"
+          config:
+            apiUrl: "https://storage.bunnycdn.com/example/"
+            apiKey: "secret-ftp-password"
+        sitemap:
+          <<: *bunnycdn
+        theme:
+          type: "local"
+          url: "https://yourshopdomain.de"
+          config:
+            root: "%kernel.project_dir%/public"
+        asset:
+          type: "local"
+          url: "https://yourshopdomain.de"
+          config:
+            root: "%kernel.project_dir%/public"
     ```
     
     ### Shopware 6.2.x
