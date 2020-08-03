@@ -12,7 +12,21 @@ Download the plugin from the release page and enable it in shopware.
 ## Usage
 - Upload your existing media-folder using ftp to [BunnyCDN](https://support.bunnycdn.com/hc/en-us/articles/115003780169-How-to-upload-and-access-files-from-your-Storage-Zone).
 - Update your `config/packages/shopware.yml` and fill in your own values
+    ### Shopware 6.3
+
+    ```yaml
+    shopware:
+        filesystem:
+            public:
+                type: "bunnycdn"
+                url: "https://example.b-cdn.net"
+                config:
+                    apiUrl: "https://storage.bunnycdn.com/example/"
+                    apiKey: "secret-ftp-password"
+    ```
     
+    ### Shopware 6.2.x
+
     ```yaml
     shopware:
         filesystem:
@@ -24,17 +38,18 @@ Download the plugin from the release page and enable it in shopware.
         cdn:
             url: "https://example.b-cdn.net"
     ```
-  Due to performance problems and missing implementation in core, you shouldn't transfer the theme to bunnycdn. To achive this, you have to add this, to the `shopware.yml`-file:
-  
-  **SW6.2 - 6.2.2**
-  ```yaml
-  parameters:
+    Due to performance problems and missing implementation in core, you shouldn't transfer the theme to bunnycdn. To achive this, you have to add this, to the `shopware.yml`-file:
+
+    #### Shopware 6.2 - 6.2.3
+    
+    ```yaml
+    parameters:
       filesystem_local_public:
           type: 'local'
           config:
               root: '%kernel.project_dir%/public'
-  
-  services:
+    
+    services:
       filesystem.local.public:
           class: 'League\Flysystem\FilesystemInterface'
           factory: ['@Shopware\Core\Framework\Adapter\Filesystem\FilesystemFactory', 'factory']
@@ -54,19 +69,19 @@ Download the plugin from the release page and enable it in shopware.
               - '@filesystem.local.public'
               - '@kernel'
               - '@Shopware\Core\Framework\Plugin\KernelPluginCollection'
+    
+    ```
 
-  ```
-  
-  **SW6.2.3 - x**
-  
-  ```yaml
-  parameters:
+    #### Shopware 6.2.3
+    
+    ```yaml
+    parameters:
       filesystem_local_public:
           type: 'local'
           config:
               root: '%kernel.project_dir%/public'
-  
-  services:
+    
+    services:
       filesystem.local.public:
           class: 'League\Flysystem\FilesystemInterface'
           factory: ['@Shopware\Core\Framework\Adapter\Filesystem\FilesystemFactory', 'factory']
@@ -87,8 +102,8 @@ Download the plugin from the release page and enable it in shopware.
               - '@filesystem.local.public'
               - '@kernel'
               - '@Shopware\Core\Framework\Plugin\KernelPluginCollection'
-
-  ```
+    
+    ```
 
 ## Suggestions
 

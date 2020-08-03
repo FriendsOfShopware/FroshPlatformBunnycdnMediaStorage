@@ -1,3 +1,7 @@
+# 1.0.9
+
+* Compatiblity to 6.3.0.0
+
 # 1.0.8
 
 * add workaround to respect lowercase headers of BunnyCDN

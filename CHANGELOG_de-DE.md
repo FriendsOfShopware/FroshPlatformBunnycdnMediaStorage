@@ -1,3 +1,7 @@
+# 1.0.9
+
+* Kompatibilität zu 6.3.0.0
+
 # 1.0.8
 
 * Workaround um klein geschriebene Header von BunnyCDN zu respektieren
