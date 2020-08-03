@@ -1,6 +1,6 @@
 # 1.0.9
 
-* Kompatibilität zu 6.3.0.0
+* Kompatibilität zu 6.3.0.0. Bitte prüfen Sie die Installationsanleitung für notwendige Änderungen an der shopware.yml.
 
 # 1.0.8
 
