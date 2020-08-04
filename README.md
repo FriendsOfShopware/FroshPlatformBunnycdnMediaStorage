@@ -30,12 +30,12 @@ Download the plugin from the release page and enable it in shopware.
           <<: *bunnycdn
         theme:
           type: "local"
-          url: "https://yourshopdomain.de"
+          url: ""
           config:
             root: "%kernel.project_dir%/public"
         asset:
           type: "local"
-          url: "https://yourshopdomain.de"
+          url: ""
           config:
             root: "%kernel.project_dir%/public"
     ```
