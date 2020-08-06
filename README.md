@@ -19,6 +19,8 @@ Download the plugin from the release page and enable it in shopware.
 
     ```yaml
     shopware:
+      cdn:
+          url: "https://example.b-cdn.net"
       filesystem:
         public: &bunnycdn
           type: "bunnycdn"
