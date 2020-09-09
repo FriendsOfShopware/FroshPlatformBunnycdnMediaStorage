@@ -35,7 +35,7 @@ class SitemapPageSubscriber implements EventSubscriberInterface
                 continue;
             }
 
-            $sitemap->setFileName($sitemap->getFileName());
+            $sitemap->setFileName($this->cdnUrl . '/' . $sitemap->getFileName());
         }
     }
 }
