@@ -31,7 +31,11 @@ class SitemapPageSubscriber implements EventSubscriberInterface
         }
 
         foreach ($event->getPage()->getSitemaps() as $sitemap) {
-            $sitemap->setFileName($this->cdnUrl . '/' . $sitemap->getFileName());
+            if (strpos($sitemap->getFileName(), $this->cdnUrl) !== false) {
+                continue;
+            }
+
+            $sitemap->setFileName($sitemap->getFileName());
         }
     }
 }

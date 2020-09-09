@@ -1,3 +1,7 @@
+# 1.0.10
+
+* fix wrong sitemap-url
+
 # 1.0.9
 
 * Compatiblity to 6.3.0.0. Please check the installation manual for changes in your shopware.yml.
