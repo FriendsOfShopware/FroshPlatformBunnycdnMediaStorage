@@ -319,7 +319,7 @@ class BunnyCdnAdapter implements AdapterInterface
         return [
             'type' => 'file',
             'path' => $path,
-            'stream' => fopen($this->apiUrl . $path . '?AccessKey=' . $this->apiKey, 'rb'),
+            'stream' => fopen($this->apiUrl . $this->urlencodePath($path) . '?AccessKey=' . $this->apiKey, 'rb'),
         ];
     }
 
