@@ -1,3 +1,7 @@
+# 1.0.11
+
+* Behebe Fehler beim Lesen von Dateien mit speziellen Zeichen im Namen
+
 # 1.0.10
 
 * Behebe falsche Sitemap-Url

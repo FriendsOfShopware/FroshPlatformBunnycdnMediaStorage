@@ -1,3 +1,7 @@
+# 1.0.11
+
+* Fix error while reading files named with foreign characters
+
 # 1.0.10
 
 * fix wrong sitemap-url
