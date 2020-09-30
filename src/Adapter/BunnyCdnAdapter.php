@@ -297,7 +297,7 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     public function read($path)
     {
-        if (!$object = $this->readStream($path)) {
+        if (!$object = $this->readStream($this->urlencodePath($path))) {
             return false;
         }
         $object['contents'] = stream_get_contents($object['stream']);
