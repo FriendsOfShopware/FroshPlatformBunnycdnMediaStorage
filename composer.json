@@ -19,7 +19,7 @@
         }
     ],
     "require": {
-        "shopware/core": "~6.2|~6.3"
+        "shopware/core": "~6.3"
     },
     "extra": {
         "shopware-plugin-class": "Frosh\\BunnycdnMediaStorage\\FroshPlatformBunnycdnMediaStorage",
