@@ -19,7 +19,7 @@
         <input-field type="url">
             <name>ApiUrl</name>
             <label>ApiUrl</label>
-            <placeholder>https://storage.bunnycdn.com/mystorage/</placeholder>
+            <defaultValue>https://storage.bunnycdn.com/mystorage/</defaultValue>
         </input-field>
 
         <input-field type="bool">
