@@ -4,22 +4,16 @@ namespace Frosh\BunnycdnMediaStorage\Subscriber;
 
 use Frosh\BunnycdnMediaStorage\Service\ConfigUpdater;
 use Shopware\Core\Framework\DataAbstractionLayer\Event\EntityWrittenEvent;
-use Shopware\Core\System\SystemConfig\SystemConfigService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ConfigSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var SystemConfigService
-     */
-    private $systemConfigService;
-    /**
      * @var ConfigUpdater
      */
     private $configUpdater;
 
-    public function __construct(SystemConfigService $systemConfigService, ConfigUpdater $configUpdater) {
-        $this->systemConfigService = $systemConfigService;
+    public function __construct(ConfigUpdater $configUpdater) {
         $this->configUpdater = $configUpdater;
     }
 
@@ -32,17 +26,11 @@ class ConfigSubscriber implements EventSubscriberInterface
 
     public function onSaveConfig(EntityWrittenEvent $event): void
     {
-        $updateConfig = false;
         foreach($event->getPayloads() as $payload) {
             if (strpos($payload['configurationKey'], 'FroshPlatformBunnycdnMediaStorage.config') === 0) {
-                $updateConfig = true;
+                $this->configUpdater->update();
                 break;
             }
         }
-
-        if ($updateConfig) {
-            $this->configUpdater->update();
-        }
-
     }
 }
