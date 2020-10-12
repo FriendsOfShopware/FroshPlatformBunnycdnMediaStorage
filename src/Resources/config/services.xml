@@ -6,6 +6,7 @@
 
     <parameters>
         <parameter key="frosh_bunnycdn_media_storage.cache_dir">%kernel.project_dir%/var/cache/bunnycdn_storage</parameter>
+        <parameter key="frosh_bunnycdn_media_storage.config_path">var/bunnycdn_config.yml</parameter>
     </parameters>
 
     <services>
@@ -24,6 +25,17 @@
         <service id="Frosh\BunnycdnMediaStorage\Storefront\Subscriber\SitemapPageSubscriber">
             <argument type="string">%shopware.cdn.url%</argument>
             <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="Frosh\BunnycdnMediaStorage\Subscriber\ConfigSubscriber">
+            <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
+            <argument type="service" id="Frosh\BunnycdnMediaStorage\Service\ConfigUpdater"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="Frosh\BunnycdnMediaStorage\Service\ConfigUpdater">
+            <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
+            <argument type="string">%kernel.project_dir%/%frosh_bunnycdn_media_storage.config_path%</argument>
         </service>
 
     </services>

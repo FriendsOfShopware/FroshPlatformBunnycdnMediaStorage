@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/shopware/platform/master/src/Core/System/SystemConfig/Schema/config.xsd">
+    <card>
+        <title>Configuration!</title>
+
+        <input-field type="url">
+            <name>CdnUrl</name>
+            <label>CdnUrl</label>
+            <placeholder>https://cdn.url.com</placeholder>
+        </input-field>
+
+        <input-field type="text">
+            <name>ApiKey</name>
+            <label>ApiKey</label>
+            <helpText>is equal to FTP password</helpText>
+        </input-field>
+
+        <input-field type="url">
+            <name>ApiUrl</name>
+            <label>ApiUrl</label>
+            <placeholder>https://storage.bunnycdn.com/mystorage/</placeholder>
+        </input-field>
+
+        <input-field type="bool">
+            <name>FilesystemPublic</name>
+            <label>FilesystemPublic into CDN</label>
+            <defaultValue>true</defaultValue>
+        </input-field>
+
+        <input-field type="bool">
+            <name>FilesystemSitemap</name>
+            <label>FilesystemSitemap into CDN</label>
+            <defaultValue>true</defaultValue>
+        </input-field>
+
+        <input-field type="bool">
+            <name>FilesystemTheme</name>
+            <label>FilesystemTheme into CDN</label>
+            <defaultValue>false</defaultValue>
+            <helpText>Activating will reduce speed of theme compiling</helpText>
+        </input-field>
+
+        <input-field type="bool">
+            <name>FilesystemAssets</name>
+            <label>FilesystemAssets into CDN</label>
+            <defaultValue>false</defaultValue>
+            <helpText>Activating will reduce speed of theme compiling</helpText>
+        </input-field>
+    </card>
+</config>
