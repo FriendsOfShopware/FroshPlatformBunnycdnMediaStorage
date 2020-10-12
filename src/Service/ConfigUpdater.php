@@ -36,7 +36,7 @@ class ConfigUpdater
             return;
         }
 
-        $defaultUrl = null;
+        $defaultUrl = getenv('APP_URL');
 
         $filesystemBunnyCdnConfig = [
             'type' => 'bunnycdn',
