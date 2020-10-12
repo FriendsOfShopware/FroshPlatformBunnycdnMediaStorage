@@ -41,7 +41,7 @@ class ApiTestController
             'apiKey' => $dataBag->get('FroshPlatformBunnycdnMediaStorage.config.ApiKey', ''),
         ];
 
-        $filename = Random::getString(20) . '.jpg';
+        $filename = Random::getAlphanumericString(20) . '.jpg';
         try {
             $adapter = new BunnyCdnAdapter($config, $this->cache, 'test api');
             if ($adapter->write($filename, $filename, new Config())) {
