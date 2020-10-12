@@ -22,9 +22,10 @@ class ConfigUpdater
         $this->configPath = $configPath;
     }
 
-    public function update(): void
+    public function update(array $config): void
     {
         $pluginConfig = $this->systemConfigService->get('FroshPlatformBunnycdnMediaStorage.config');
+        $pluginConfig = array_merge($pluginConfig, $config);
 
         if (empty($pluginConfig['FilesystemPublic']) &&
             empty($pluginConfig['FilesystemSitemap']) &&
@@ -51,7 +52,7 @@ class ConfigUpdater
             'type' => 'bunnycdn',
             'url' => $pluginConfig['CdnUrl'],
             'config' => [
-                'apiUrl' => rtrim($pluginConfig['CdnHostname'], '/') . '/' . $pluginConfig['StorageName'] . '/'. $pluginConfig['CdnSubFolder'],
+                'apiUrl' => rtrim($pluginConfig['CdnHostname'], '/') . '/' . $pluginConfig['StorageName'] . '/' . $pluginConfig['CdnSubFolder'],
                 'apiKey' => $pluginConfig['ApiKey'],
             ],
         ];

@@ -26,11 +26,18 @@ class ConfigSubscriber implements EventSubscriberInterface
 
     public function onSaveConfig(EntityWrittenEvent $event): void
     {
+        $froshConfigKey = 'FroshPlatformBunnycdnMediaStorage.config.';
+
+        $newConfig = [];
+
         foreach($event->getPayloads() as $payload) {
-            if (strpos($payload['configurationKey'], 'FroshPlatformBunnycdnMediaStorage.config') === 0) {
-                $this->configUpdater->update();
-                break;
+            if (strpos($payload['configurationKey'], $froshConfigKey) === 0) {
+                $newConfig[str_replace($froshConfigKey, '', $payload['configurationKey'])] = $payload['configurationValue'];
             }
+        }
+
+        if (!empty($newConfig)) {
+            $this->configUpdater->update($newConfig);
         }
     }
 }
