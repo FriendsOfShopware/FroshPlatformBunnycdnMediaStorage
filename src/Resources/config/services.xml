@@ -35,5 +35,9 @@
             <argument type="string">%frosh_bunnycdn_media_storage.config_path%</argument>
         </service>
 
+        <service id="Frosh\BunnycdnMediaStorage\Controller\Api\ApiTestController" public="true">
+            <argument type="service" id="Frosh\BunnycdnMediaStorage\Adapter\Cache"/>
+        </service>
+
     </services>
 </container>

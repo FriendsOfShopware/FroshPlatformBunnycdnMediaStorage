@@ -60,5 +60,10 @@
             <defaultValue>false</defaultValue>
             <helpText>Activating will reduce speed of theme compiling</helpText>
         </input-field>
+
+        <component name="bunnycdn-api-test-button">
+            <name>apiTest</name>
+            <label>Test API</label>
+        </component>
     </card>
 </config>
