@@ -14,7 +14,7 @@ Download the plugin from the release page and enable it in shopware.
 - Remove any existing configuration for previous versions in `config/packages/shopware.yml`
 - Set up plugin config
 
-## Usage for older plugins
+## Usage for older plugin version
 [see old Readme](README.1.0.11.md)
 
 ## Suggestions
