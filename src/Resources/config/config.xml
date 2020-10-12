@@ -55,10 +55,34 @@
         </input-field>
 
         <input-field type="bool">
-            <name>FilesystemAssets</name>
-            <label>FilesystemAssets into CDN</label>
+            <name>FilesystemAsset</name>
+            <label>FilesystemAsset into CDN</label>
             <defaultValue>false</defaultValue>
             <helpText>Activating will reduce speed of theme compiling</helpText>
+        </input-field>
+
+        <input-field type="url">
+            <name>FilesystemPublicUrl</name>
+            <label>Optional different Url for filesystem public</label>
+            <defaultValue>true</defaultValue>
+        </input-field>
+
+        <input-field type="url">
+            <name>FilesystemSitemapUrl</name>
+            <label>Optional different Url for filesystem sitemap</label>
+            <defaultValue>true</defaultValue>
+        </input-field>
+
+        <input-field type="url">
+            <name>FilesystemThemeUrl</name>
+            <label>Optional different Url for filesystem theme</label>
+            <defaultValue>true</defaultValue>
+        </input-field>
+
+        <input-field type="url">
+            <name>FilesystemAssetUrl</name>
+            <label>Optional different Url for filesystem asset</label>
+            <defaultValue>true</defaultValue>
         </input-field>
 
         <component name="bunnycdn-api-test-button">

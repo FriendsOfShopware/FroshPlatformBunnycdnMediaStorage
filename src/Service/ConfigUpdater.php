@@ -65,14 +65,29 @@ class ConfigUpdater
             ],
         ];
 
+        $filesystemData = [
+            'public' => $filesystemDefaultConfig,
+            'sitemap' => $filesystemDefaultConfig,
+            'theme' => $filesystemDefaultConfig,
+            'asset' => $filesystemDefaultConfig
+        ];
+
+        foreach ($filesystemData as $type => &$filesystem) {
+            $filesystem = $filesystemDefaultConfig;
+
+            if (!empty($pluginConfig['Filesystem' . ucfirst($type)])) {
+                $filesystem = $filesystemBunnyCdnConfig;
+            }
+
+            if (!empty($pluginConfig['Filesystem' . ucfirst($type) . 'Url'])) {
+                $filesystem['url'] = $pluginConfig['Filesystem' . ucfirst($type) . 'Url'];
+            }
+        }
+        unset($filesystem);
+
         $data['shopware'] = [
             'cdn' => ['url' => $this->systemConfigService->get('FroshPlatformBunnycdnMediaStorage.config.CdnUrl')],
-            'filesystem' => [
-                'public' => !empty($pluginConfig['FilesystemPublic']) ? $filesystemBunnyCdnConfig : $filesystemDefaultConfig,
-                'sitemap' => !empty($pluginConfig['FilesystemSitemap']) ? $filesystemBunnyCdnConfig : $filesystemDefaultConfig,
-                'theme' => !empty($pluginConfig['FilesystemTheme']) ? $filesystemBunnyCdnConfig : $filesystemDefaultConfig,
-                'asset' => !empty($pluginConfig['FilesystemAsset']) ? $filesystemBunnyCdnConfig : $filesystemDefaultConfig,
-            ]
+            'filesystem' => $filesystemData
         ];
 
         file_put_contents($this->configPath, Yaml::dump($data));
@@ -81,7 +96,8 @@ class ConfigUpdater
     private function endsWith(
         $haystack,
         $needle
-    ): bool {
+    ): bool
+    {
         return substr_compare($haystack, $needle, -strlen($needle)) === 0;
     }
 
