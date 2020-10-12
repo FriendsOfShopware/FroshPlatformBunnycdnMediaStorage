@@ -11,15 +11,28 @@
         </input-field>
 
         <input-field type="text">
+            <name>StorageName</name>
+            <label>StorageName</label>
+            <defaultValue>mycdnstorage</defaultValue>
+        </input-field>
+
+        <input-field type="url">
+            <name>CdnHostname</name>
+            <label>CdnHostname</label>
+            <defaultValue>https://storage.bunnycdn.com</defaultValue>
+        </input-field>
+
+        <input-field type="text">
             <name>ApiKey</name>
             <label>ApiKey</label>
             <helpText>is equal to FTP password</helpText>
         </input-field>
 
-        <input-field type="url">
-            <name>ApiUrl</name>
-            <label>ApiUrl</label>
-            <defaultValue>https://storage.bunnycdn.com/mystorage/</defaultValue>
+        <input-field type="text">
+            <name>CdnSubFolder</name>
+            <label>SubFolder in CDN</label>
+            <defaultValue>/</defaultValue>
+            <helpText>Optional specify a subfolder on your bunnycdn storage</helpText>
         </input-field>
 
         <input-field type="bool">

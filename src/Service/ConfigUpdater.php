@@ -36,17 +36,26 @@ class ConfigUpdater
             return;
         }
 
+        if (!isset($pluginConfig['CdnHostname'], $pluginConfig['StorageName'])) {
+            if (file_exists($this->configPath)) {
+                unlink($this->configPath);
+            }
+            return;
+        }
+
         $defaultUrl = getenv('APP_URL');
+
+        $pluginConfig = $this->convertCdnSubFolder($pluginConfig);
 
         $filesystemBunnyCdnConfig = [
             'type' => 'bunnycdn',
             'url' => $pluginConfig['CdnUrl'],
             'config' => [
-                'apiUrl' => $pluginConfig['ApiUrl'],
+                'apiUrl' => rtrim($pluginConfig['CdnHostname'], '/') . '/' . $pluginConfig['StorageName'] . '/'. $pluginConfig['CdnSubFolder'],
                 'apiKey' => $pluginConfig['ApiKey'],
             ],
-
         ];
+
         $filesystemDefaultConfig = [
             'type' => 'local',
             'url' => $defaultUrl,
@@ -66,6 +75,25 @@ class ConfigUpdater
         ];
 
         file_put_contents($this->configPath, Yaml::dump($data));
+    }
+
+    private function endsWith(
+        $haystack,
+        $needle
+    ): bool {
+        return substr_compare($haystack, $needle, -strlen($needle)) === 0;
+    }
+
+    private function convertCdnSubFolder(array $pluginConfig): array
+    {
+        if (!isset($pluginConfig['CdnSubFolder'])) {
+            $pluginConfig['CdnSubFolder'] = '';
+        } elseif (rtrim($pluginConfig['CdnSubFolder'], '/') === '') {
+            $pluginConfig['CdnSubFolder'] = '';
+        } elseif (!$this->endsWith($pluginConfig['CdnSubFolder'], '/')) {
+            $pluginConfig['CdnSubFolder'] .= '/';
+        }
+        return $pluginConfig;
     }
 
 }
