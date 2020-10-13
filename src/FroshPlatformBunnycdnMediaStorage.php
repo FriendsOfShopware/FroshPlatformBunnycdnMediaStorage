@@ -13,14 +13,8 @@ class FroshPlatformBunnycdnMediaStorage extends Plugin
 {
     public function build(ContainerBuilder $container): void
     {
-        $configPath = $container->getParameter('kernel.project_dir') . '/var/bunnycdn_config.yml';
+        $configPath = $this->getPath(). '/Resources/config/services.yml';
         $container->setParameter('frosh_bunnycdn_media_storage.config_path', $configPath);
-
-        if (file_exists($configPath)) {
-            $pathInfo = pathinfo($configPath);
-            $loader = new YamlFileLoader($container, new FileLocator($pathInfo['dirname']));
-            $loader->load($pathInfo['basename']);
-        }
 
         parent::build($container);
     }
