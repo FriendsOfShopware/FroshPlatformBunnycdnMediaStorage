@@ -1,3 +1,2 @@
 vendor
 phpstan.neon
-src/Resources/config/services.yml
