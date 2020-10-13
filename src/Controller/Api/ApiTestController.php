@@ -41,6 +41,7 @@ class ApiTestController
         ];
 
         $filename = Random::getAlphanumericString(20) . '.jpg';
+
         try {
             $adapter = new BunnyCdnAdapter($config, $this->cache, 'test api');
             if ($adapter->write($filename, $filename, new Config())) {
