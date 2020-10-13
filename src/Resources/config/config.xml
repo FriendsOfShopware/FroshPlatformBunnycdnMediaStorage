@@ -25,7 +25,7 @@
             <required>true</required>
         </input-field>
 
-        <input-field type="text">
+        <input-field type="password">
             <name>ApiKey</name>
             <label>ApiKey</label>
             <helpText>is equal to FTP password</helpText>
@@ -34,9 +34,9 @@
 
         <input-field type="text">
             <name>CdnSubFolder</name>
-            <label>SubFolder in CDN</label>
+            <label>Optional subfolder in CDN</label>
             <defaultValue>/</defaultValue>
-            <helpText>Optional specify a subfolder on your bunnycdn storage</helpText>
+            <helpText>Specify a subfolder path on your bunnycdn storage</helpText>
         </input-field>
 
         <input-field type="bool">
