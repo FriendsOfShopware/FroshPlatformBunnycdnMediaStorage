@@ -1,3 +1,8 @@
+# 2.0.0
+
+* Erstelle Filesystem-Konfiguration automatisch anhand Plugin-Konfiguration.
+* ACHTUNG: Es müssen bestehende Konfigurationen für vorige Versionen dieses Plugins in der Datei `config/packages/shopware.yml` entfernt und die Plugin-Konfiguratoion gefüllt werden.
+
 # 1.0.11
 
 * Behebe Fehler beim Lesen von Dateien mit speziellen Zeichen im Namen

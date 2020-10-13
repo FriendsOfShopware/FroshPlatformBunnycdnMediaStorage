@@ -1,3 +1,8 @@
+# 2.0.0
+
+* Create filesystem configuration automatically based on plugin configuration.
+* ATTENTION: Existing configurations for previous versions of this plugin in the file `config/packages/shopware.yml` must be removed and the plugin configuration filled.
+
 # 1.0.11
 
 * Fix error while reading files named with foreign characters
