@@ -50,7 +50,7 @@ class ConfigUpdater
 
         $filesystemBunnyCdnConfig = [
             'type' => 'bunnycdn',
-            'url' => $pluginConfig['CdnUrl'],
+            'url' => rtrim($pluginConfig['CdnUrl'], '/') . '/' . $pluginConfig['CdnSubFolder'],
             'config' => [
                 'apiUrl' => rtrim($pluginConfig['CdnHostname'], '/') . '/' . $pluginConfig['StorageName'] . '/' . $pluginConfig['CdnSubFolder'],
                 'apiKey' => $pluginConfig['ApiKey'],

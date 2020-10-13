@@ -8,24 +8,28 @@
             <name>CdnUrl</name>
             <label>CdnUrl</label>
             <placeholder>https://cdn.url.com</placeholder>
+            <required>true</required>
         </input-field>
 
         <input-field type="text">
             <name>StorageName</name>
             <label>StorageName</label>
             <defaultValue>mycdnstorage</defaultValue>
+            <required>true</required>
         </input-field>
 
         <input-field type="url">
             <name>CdnHostname</name>
             <label>CdnHostname</label>
             <defaultValue>https://storage.bunnycdn.com</defaultValue>
+            <required>true</required>
         </input-field>
 
         <input-field type="text">
             <name>ApiKey</name>
             <label>ApiKey</label>
             <helpText>is equal to FTP password</helpText>
+            <required>true</required>
         </input-field>
 
         <input-field type="text">
@@ -63,22 +67,22 @@
 
         <input-field type="url">
             <name>FilesystemPublicUrl</name>
-            <label>Optional different Url for filesystem public</label>
+            <label>Alternative CdnUrl for filesystem public.</label>
         </input-field>
 
         <input-field type="url">
             <name>FilesystemSitemapUrl</name>
-            <label>Optional different Url for filesystem sitemap</label>
+            <label>Alternative CdnUrl for filesystem sitemap</label>
         </input-field>
 
         <input-field type="url">
             <name>FilesystemThemeUrl</name>
-            <label>Optional different Url for filesystem theme</label>
+            <label>Alternative CdnUrl for filesystem theme</label>
         </input-field>
 
         <input-field type="url">
             <name>FilesystemAssetUrl</name>
-            <label>Optional different Url for filesystem asset</label>
+            <label>Alternative CdnUrl for filesystem asset</label>
         </input-field>
 
         <component name="bunnycdn-api-test-button">
