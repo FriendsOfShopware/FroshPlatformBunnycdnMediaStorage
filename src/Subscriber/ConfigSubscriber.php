@@ -13,14 +13,15 @@ class ConfigSubscriber implements EventSubscriberInterface
      */
     private $configUpdater;
 
-    public function __construct(ConfigUpdater $configUpdater) {
+    public function __construct(ConfigUpdater $configUpdater)
+    {
         $this->configUpdater = $configUpdater;
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
-            'system_config.written' => 'onSaveConfig'
+            'system_config.written' => 'onSaveConfig',
         ];
     }
 
@@ -30,8 +31,8 @@ class ConfigSubscriber implements EventSubscriberInterface
 
         $newConfig = [];
 
-        foreach($event->getPayloads() as $payload) {
-            if (strpos($payload['configurationKey'], $froshConfigKey) === 0) {
+        foreach ($event->getPayloads() as $payload) {
+            if (mb_strpos($payload['configurationKey'], $froshConfigKey) === 0) {
                 $newConfig[str_replace($froshConfigKey, '', $payload['configurationKey'])] = $payload['configurationValue'];
             }
         }

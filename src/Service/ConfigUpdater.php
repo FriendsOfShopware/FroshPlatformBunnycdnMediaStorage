@@ -11,6 +11,7 @@ class ConfigUpdater
      * @var SystemConfigService
      */
     private $systemConfigService;
+
     /**
      * @var string
      */
@@ -27,13 +28,14 @@ class ConfigUpdater
         $pluginConfig = $this->systemConfigService->get('FroshPlatformBunnycdnMediaStorage.config');
         $pluginConfig = array_merge($pluginConfig, $config);
 
-        if (empty($pluginConfig['FilesystemPublic']) &&
-            empty($pluginConfig['FilesystemSitemap']) &&
-            empty($pluginConfig['FilesystemTheme']) &&
-            empty($pluginConfig['FilesystemAsset'])) {
+        if (empty($pluginConfig['FilesystemPublic'])
+            && empty($pluginConfig['FilesystemSitemap'])
+            && empty($pluginConfig['FilesystemTheme'])
+            && empty($pluginConfig['FilesystemAsset'])) {
             if (file_exists($this->configPath)) {
                 unlink($this->configPath);
             }
+
             return;
         }
 
@@ -41,6 +43,7 @@ class ConfigUpdater
             if (file_exists($this->configPath)) {
                 unlink($this->configPath);
             }
+
             return;
         }
 
@@ -61,7 +64,7 @@ class ConfigUpdater
             'type' => 'local',
             'url' => $defaultUrl,
             'config' => [
-                'root' => "%kernel.project_dir%/public",
+                'root' => '%kernel.project_dir%/public',
             ],
         ];
 
@@ -69,7 +72,7 @@ class ConfigUpdater
             'public' => $filesystemDefaultConfig,
             'sitemap' => $filesystemDefaultConfig,
             'theme' => $filesystemDefaultConfig,
-            'asset' => $filesystemDefaultConfig
+            'asset' => $filesystemDefaultConfig,
         ];
 
         foreach ($filesystemData as $type => &$filesystem) {
@@ -87,7 +90,7 @@ class ConfigUpdater
 
         $data['shopware'] = [
             'cdn' => ['url' => $this->systemConfigService->get('FroshPlatformBunnycdnMediaStorage.config.CdnUrl')],
-            'filesystem' => $filesystemData
+            'filesystem' => $filesystemData,
         ];
 
         file_put_contents($this->configPath, Yaml::dump($data));
@@ -96,9 +99,8 @@ class ConfigUpdater
     private function endsWith(
         $haystack,
         $needle
-    ): bool
-    {
-        return substr_compare($haystack, $needle, -strlen($needle)) === 0;
+    ): bool {
+        return substr_compare($haystack, $needle, -mb_strlen($needle)) === 0;
     }
 
     private function convertCdnSubFolder(array $pluginConfig): array
@@ -110,7 +112,7 @@ class ConfigUpdater
         } elseif (!$this->endsWith($pluginConfig['CdnSubFolder'], '/')) {
             $pluginConfig['CdnSubFolder'] .= '/';
         }
+
         return $pluginConfig;
     }
-
 }

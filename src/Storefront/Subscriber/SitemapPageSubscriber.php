@@ -31,7 +31,7 @@ class SitemapPageSubscriber implements EventSubscriberInterface
         }
 
         foreach ($event->getPage()->getSitemaps() as $sitemap) {
-            if (strpos($sitemap->getFileName(), $this->cdnUrl) !== false) {
+            if (mb_strpos($sitemap->getFileName(), $this->cdnUrl) !== false) {
                 continue;
             }
 

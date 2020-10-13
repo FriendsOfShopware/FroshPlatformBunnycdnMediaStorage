@@ -6,10 +6,10 @@ use Doctrine\Common\Cache\FilesystemCache;
 use Frosh\BunnycdnMediaStorage\Adapter\BunnyCdnAdapter;
 use League\Flysystem\Config;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
+use Shopware\Core\Framework\Util\Random;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Shopware\Core\Framework\Util\Random;
 
 /**
  * @RouteScope(scopes={"administration"})
@@ -34,10 +34,9 @@ class ApiTestController
         $success = false;
 
         $config = [
-            'apiUrl' =>
-                rtrim($dataBag->get('FroshPlatformBunnycdnMediaStorage.config.CdnHostname', ''), '/')
-                . '/' .
-                $dataBag->get('FroshPlatformBunnycdnMediaStorage.config.StorageName', '') . '/',
+            'apiUrl' => rtrim($dataBag->get('FroshPlatformBunnycdnMediaStorage.config.CdnHostname', ''), '/')
+                . '/'
+                . $dataBag->get('FroshPlatformBunnycdnMediaStorage.config.StorageName', '') . '/',
             'apiKey' => $dataBag->get('FroshPlatformBunnycdnMediaStorage.config.ApiKey', ''),
         ];
 
