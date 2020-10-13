@@ -2,7 +2,7 @@
 
 namespace Frosh\BunnycdnMediaStorage\Adapter;
 
-use Doctrine\Common\Cache\FilesystemCache;
+use Doctrine\Common\Cache\Cache;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Config;
 use League\Flysystem\Util;
@@ -19,7 +19,7 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     private $apiUrl;
 
-    /** @var FilesystemCache */
+    /** @var Cache */
     private $cache;
 
     /**
@@ -27,7 +27,7 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     private $userAgent;
 
-    public function __construct($config, FilesystemCache $cache, string $version)
+    public function __construct($config, Cache $cache, string $version)
     {
         $this->apiUrl = $config['apiUrl'];
         $this->apiKey = $config['apiKey'];

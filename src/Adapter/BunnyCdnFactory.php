@@ -2,14 +2,14 @@
 
 namespace Frosh\BunnycdnMediaStorage\Adapter;
 
-use Doctrine\Common\Cache\FilesystemCache;
+use Doctrine\Common\Cache\Cache;
 use League\Flysystem\AdapterInterface;
 use Shopware\Core\Framework\Adapter\Filesystem\Adapter\AdapterFactoryInterface;
 
 class BunnyCdnFactory implements AdapterFactoryInterface
 {
     /**
-     * @var FilesystemCache
+     * @var Cache
      */
     private $cache;
 
@@ -18,7 +18,7 @@ class BunnyCdnFactory implements AdapterFactoryInterface
      */
     private $version;
 
-    public function __construct(FilesystemCache $cache, string $version)
+    public function __construct(Cache $cache, string $version)
     {
         $this->cache = $cache;
         $this->version = $version;

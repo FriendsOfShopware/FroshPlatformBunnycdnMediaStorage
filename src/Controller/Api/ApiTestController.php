@@ -2,7 +2,7 @@
 
 namespace Frosh\BunnycdnMediaStorage\Controller\Api;
 
-use Doctrine\Common\Cache\FilesystemCache;
+use Doctrine\Common\Cache\Cache;
 use Frosh\BunnycdnMediaStorage\Adapter\BunnyCdnAdapter;
 use League\Flysystem\Config;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
@@ -17,11 +17,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class ApiTestController
 {
     /**
-     * @var FilesystemCache
+     * @var Cache
      */
     private $cache;
 
-    public function __construct(FilesystemCache $cache)
+    public function __construct(Cache $cache)
     {
         $this->cache = $cache;
     }
