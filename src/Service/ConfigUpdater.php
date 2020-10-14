@@ -17,27 +17,10 @@ class ConfigUpdater
      */
     private $configPath;
 
-    /**
-     * @var array
-     */
-    private $filesystemCurrentConfig;
-
-    public function __construct(
-        SystemConfigService $systemConfigService,
-        string $configPath,
-        array $filesystemPublic,
-        array $filesystemSitemap,
-        array $filesystemTheme,
-        array $filesystemAsset
-    ) {
+    public function __construct(SystemConfigService $systemConfigService, string $configPath)
+    {
         $this->systemConfigService = $systemConfigService;
         $this->configPath = $configPath;
-        $this->filesystemCurrentConfig = [
-            'public' => $filesystemPublic,
-            'sitemap' => $filesystemSitemap,
-            'theme' => $filesystemTheme,
-            'asset' => $filesystemAsset,
-        ];
     }
 
     public function update(array $config): void
@@ -85,28 +68,29 @@ class ConfigUpdater
             ],
         ];
 
-        foreach ($this->filesystemCurrentConfig as $type => &$filesystem) {
+        $filesystemData = [
+            'public' => $filesystemDefaultConfig,
+            'sitemap' => $filesystemDefaultConfig,
+            'theme' => $filesystemDefaultConfig,
+            'asset' => $filesystemDefaultConfig,
+        ];
+
+        foreach ($filesystemData as $type => &$filesystem) {
+            $filesystem = $filesystemDefaultConfig;
+
             if (!empty($pluginConfig['Filesystem' . ucfirst($type)])) {
                 $filesystem = $filesystemBunnyCdnConfig;
-            } elseif ($filesystem['type'] === $filesystemBunnyCdnConfig['type']) {
-                //we reset to default if it was type bunnycdn
-                $filesystem = $filesystemDefaultConfig;
             }
 
             if (!empty($pluginConfig['Filesystem' . ucfirst($type) . 'Url'])) {
                 $filesystem['url'] = $pluginConfig['Filesystem' . ucfirst($type) . 'Url'];
-            }
-
-            //url is mandatory
-            if (empty($filesystem['url'])) {
-                $filesystem['url'] = $defaultUrl;
             }
         }
         unset($filesystem);
 
         $data['shopware'] = [
             'cdn' => ['url' => $this->systemConfigService->get('FroshPlatformBunnycdnMediaStorage.config.CdnUrl')],
-            'filesystem' => $this->filesystemCurrentConfig,
+            'filesystem' => $filesystemData,
         ];
 
         file_put_contents($this->configPath, Yaml::dump($data));

@@ -33,10 +33,6 @@
         <service id="Frosh\BunnycdnMediaStorage\Service\ConfigUpdater">
             <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
             <argument type="string">%frosh_bunnycdn_media_storage.config_path%</argument>
-            <argument type="string">%shopware.filesystem.public%</argument>
-            <argument type="string">%shopware.filesystem.sitemap%</argument>
-            <argument type="string">%shopware.filesystem.theme%</argument>
-            <argument type="string">%shopware.filesystem.asset%</argument>
         </service>
 
         <service id="Frosh\BunnycdnMediaStorage\Controller\Api\ApiTestController" public="true">
