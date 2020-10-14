@@ -3,7 +3,7 @@
 namespace Frosh\BunnycdnMediaStorage;
 
 use Shopware\Core\Framework\Plugin;
-use Shopware\Core\Framework\Plugin\Context\DeactivateContext;
+use Shopware\Core\Framework\Plugin\Context\UninstallContext;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -24,12 +24,18 @@ class FroshPlatformBunnycdnMediaStorage extends Plugin
         parent::build($container);
     }
 
-    public function deactivate(DeactivateContext $deactivateContext): void
+    public function uninstall(UninstallContext $uninstallContext): void
     {
+        if ($uninstallContext->keepUserData()) {
+            parent::uninstall($uninstallContext);
+
+            return;
+        }
+
         $configPath = $this->container->getParameter('frosh_bunnycdn_media_storage.config_path');
         if (file_exists($configPath)) {
             unlink($configPath);
         }
-        parent::deactivate($deactivateContext);
+        parent::uninstall($uninstallContext);
     }
 }
