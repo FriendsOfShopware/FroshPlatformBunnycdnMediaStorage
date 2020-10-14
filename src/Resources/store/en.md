@@ -1,10 +1,5 @@
 With this plugin you have a direct connection to your storage on BunnyCDN.  
-Transfer your files from the media manager to BunnyCDN Storage and
-benefit from the following bonuses for your shop:
-
-- No utilization of your server due to access to the media.
-- Lower load times for visitors worldwide
-- Your backups are considerably smaller and faster because the media is not in the shop directory
+Transfer your files from the media manager to BunnyCDN Storage.
 
 Please note that you need an account at [BunnyCDN](https://bunnycdn.com/solutions/cdn-cloud-storage).
 
