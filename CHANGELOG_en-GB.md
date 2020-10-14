@@ -1,7 +1,7 @@
 # 2.0.0
 
 * Create filesystem configuration automatically based on plugin configuration.
-* ATTENTION: Existing configurations for previous versions of this plugin in the file `config/packages/shopware.yml` must be removed and the plugin configuration filled.
+* ATTENTION: You have to remove any existing configuration for previous versions of this plugin in the file `config/packages/shopware.yml` and the plugin configuration has to be filled.
 
 # 1.0.11
 
