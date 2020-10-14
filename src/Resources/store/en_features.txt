@@ -1,3 +1,3 @@
-Keine Auslastung Ihres Servers durch Zugriffe auf die Medien
-Geringere Ladezeiten für Besucher weltweit
-Ihre Backups sind erheblich kleiner und schneller, da die Medien nicht im Shop-Verzeichnis liegen
+No utilization of your server due to access to the media.
+Lower load times for visitors worldwide
+Your backups are considerably smaller and faster because the media is not in the shop directory
