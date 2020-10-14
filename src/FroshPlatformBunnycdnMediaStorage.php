@@ -12,7 +12,7 @@ class FroshPlatformBunnycdnMediaStorage extends Plugin
 {
     public function build(ContainerBuilder $container): void
     {
-        $configPath = $container->getParameter('kernel.project_dir') . '/var/bunnycdn_config.yml';
+        $configPath = $this->getConfigPath($container);
         $container->setParameter('frosh_bunnycdn_media_storage.config_path', $configPath);
 
         if (file_exists($configPath)) {
@@ -32,10 +32,19 @@ class FroshPlatformBunnycdnMediaStorage extends Plugin
             return;
         }
 
-        $configPath = $this->container->getParameter('frosh_bunnycdn_media_storage.config_path');
+        $configPath = $this->getConfigPath();
         if (file_exists($configPath)) {
             unlink($configPath);
         }
         parent::uninstall($uninstallContext);
+    }
+
+    private function getConfigPath($container = null): string
+    {
+        if (!$container && $this->container) {
+            $container = $this->container;
+        }
+
+        return $container->getParameter('kernel.project_dir') . '/var/bunnycdn_config.yml';
     }
 }
