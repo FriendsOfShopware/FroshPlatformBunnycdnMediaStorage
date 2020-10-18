@@ -243,7 +243,7 @@ class BunnyCdnAdapter implements AdapterInterface
 
         $this->removeFromCache($path);
 
-        if ($this->replication) {
+        if ($this->replication && $this->replication->has($path)) {
             $this->replication->delete($path);
         }
 
