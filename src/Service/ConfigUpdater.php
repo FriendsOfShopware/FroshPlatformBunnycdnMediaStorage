@@ -103,8 +103,8 @@ class ConfigUpdater
     }
 
     private function endsWith(
-        $haystack,
-        $needle
+        string $haystack,
+        string $needle
     ): bool {
         return substr_compare($haystack, $needle, -mb_strlen($needle)) === 0;
     }

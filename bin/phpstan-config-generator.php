@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-use Frosh\ThumbnailProcessor\FroshPlatformThumbnailProcessor;
+use Frosh\BunnycdnMediaStorage\FroshPlatformBunnycdnMediaStorage;
 use PackageVersions\Versions;
 use Shopware\Core\Framework\Plugin\KernelPluginLoader\StaticKernelPluginLoader;
 use Shopware\Development\Kernel;
@@ -10,15 +10,15 @@ $classLoader = require __DIR__ . '/../../../../vendor/autoload.php';
 (new Dotenv(true))->load(__DIR__ . '/../../../../.env');
 $shopwareVersion = Versions::getVersion('shopware/platform');
 $pluginRootPath = dirname(__DIR__);
-$composerJson = json_decode((string)file_get_contents($pluginRootPath . '/composer.json'), true);
-$froshPlatformThumbnailProcessor = [
+$composerJson = json_decode((string) file_get_contents($pluginRootPath . '/composer.json'), true);
+$FroshPlatformBunnycdnMediaStorage = [
     'autoload' => $composerJson['autoload'],
-    'baseClass' => FroshPlatformThumbnailProcessor::class,
+    'baseClass' => FroshPlatformBunnycdnMediaStorage::class,
     'managedByComposer' => false,
     'active' => true,
     'path' => $pluginRootPath,
 ];
-$pluginLoader = new StaticKernelPluginLoader($classLoader, null, [$froshPlatformThumbnailProcessor]);
+$pluginLoader = new StaticKernelPluginLoader($classLoader, null, [$FroshPlatformBunnycdnMediaStorage]);
 $kernel = new Kernel('dev', true, $pluginLoader, $shopwareVersion);
 $kernel->boot();
 $projectDir = $kernel->getProjectDir();

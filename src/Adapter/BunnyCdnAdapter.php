@@ -28,10 +28,10 @@ class BunnyCdnAdapter implements AdapterInterface
     /** @var bool */
     private $neverDelete;
 
-    /** @var AdapterInterface */
+    /** @var AdapterInterface|null */
     private $replication;
 
-    public function __construct($config, Cache $cache, string $version)
+    public function __construct(array $config, Cache $cache, string $version)
     {
         $this->apiUrl = $config['apiUrl'];
         $this->apiKey = $config['apiKey'];
@@ -441,7 +441,7 @@ class BunnyCdnAdapter implements AdapterInterface
         ];
     }
 
-    private function urlencodePath($path): string
+    private function urlencodePath(string $path): string
     {
         $parts = explode('/', $path);
         foreach ($parts as &$value) {
@@ -452,7 +452,7 @@ class BunnyCdnAdapter implements AdapterInterface
         return implode('/', $parts);
     }
 
-    private function removeFromCache($path): void
+    private function removeFromCache(string $path): void
     {
         $result = $this->getCached($path);
 
@@ -462,12 +462,12 @@ class BunnyCdnAdapter implements AdapterInterface
         }
     }
 
-    private function getCacheKey($path): string
+    private function getCacheKey(string $path): string
     {
         return md5($path)[0];
     }
 
-    private function getCached($path): array
+    private function getCached(string $path): array
     {
         $cacheId = $this->getCacheKey($path);
 
@@ -480,11 +480,7 @@ class BunnyCdnAdapter implements AdapterInterface
         return [];
     }
 
-    /**
-     * @param string $directory
-     * @param bool   $recursive
-     */
-    private function getDirContent($directory, $recursive): array
+    private function getDirContent(string $directory, bool $recursive): array
     {
         $curl = curl_init();
         curl_setopt_array(
@@ -528,7 +524,7 @@ class BunnyCdnAdapter implements AdapterInterface
         return $result;
     }
 
-    private function getBunnyCdnHeader(array $headers, string $header)
+    private function getBunnyCdnHeader(array $headers, string $header): ?array
     {
         if (isset($headers[$header])) {
             return $headers[$header];
@@ -541,21 +537,19 @@ class BunnyCdnAdapter implements AdapterInterface
         return null;
     }
 
-    private function garbage($path): bool
+    private function garbage(string $path): void
     {
         if (!$this->useGarbage || !$this->has($path)) {
-            return false;
+            return;
         }
 
         $garbagePath = 'garbage/' . date('Ymd') . '/' . $path;
 
         /* There could be a file on this day */
         if ($this->has($garbagePath)) {
-            $garbagePath .= str_replace('.', '', microtime(true));
+            $garbagePath .= str_replace('.', '', (string) microtime(true));
         }
 
         $this->copy($path, $garbagePath);
-
-        return true;
     }
 }
