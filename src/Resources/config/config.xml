@@ -113,10 +113,19 @@
         <input-field type="bool">
             <name>neverDelete</name>
             <label>Never delete any file on bunnyCDN-Storage</label>
-            <label>Lösche niemals Dateien auf dem bunnyCDN-Storage</label>
+            <label lang="de-DE">Lösche niemals Dateien auf dem bunnyCDN-Storage</label>
             <defaultValue>false</defaultValue>
             <helpText>When active, deleting files will not use garbage option, too. Attention: This will result in more storage usage and orphaned files in storage.</helpText>
-            <helpText>Wenn aktiv, wird auch die Garbage-Option nicht verwendet. Achtung: Dies führt zu einer höheren Speichernutzung und verwaisten Dateien in bunnyCDN.</helpText>
+            <helpText lang="de-DE">Wenn aktiv, wird auch die Garbage-Option nicht verwendet. Achtung: Dies führt zu einer höheren Speichernutzung und verwaisten Dateien in bunnyCDN.</helpText>
+        </input-field>
+
+        <input-field type="bool">
+            <name>replicateLocal</name>
+            <label>Replicate bunnyCDN operations local</label>
+            <label lang="de-DE">Repliziere bunnyCDN-Operationen lokal</label>
+            <defaultValue>false</defaultValue>
+            <helpText>Activating will write files also into known local folders. This negates the advantage of saving locally storage.</helpText>
+            <helpText lang="de-DE">Wenn aktiv, werden Dateien auch in bekannte lokale Ordner geschrieben. Dies macht den Vorteil des Sparens von lokalem Speicher zunichte.</helpText>
         </input-field>
 
         <component name="bunnycdn-api-test-button">

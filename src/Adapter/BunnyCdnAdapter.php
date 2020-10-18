@@ -3,6 +3,7 @@
 namespace Frosh\BunnycdnMediaStorage\Adapter;
 
 use Doctrine\Common\Cache\Cache;
+use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Config;
 use League\Flysystem\Util;
@@ -27,6 +28,9 @@ class BunnyCdnAdapter implements AdapterInterface
     /** @var bool */
     private $neverDelete;
 
+    /** @var AdapterInterface */
+    private $replication;
+
     public function __construct($config, Cache $cache, string $version)
     {
         $this->apiUrl = $config['apiUrl'];
@@ -35,6 +39,10 @@ class BunnyCdnAdapter implements AdapterInterface
         $this->userAgent = 'Shopware ' . $version;
         $this->useGarbage = !empty($config['useGarbage']);
         $this->neverDelete = !empty($config['neverDelete']);
+
+        if (!empty($config['replicationRoot'])) {
+            $this->replication = new Local($config['replicationRoot']);
+        }
     }
 
     /**
@@ -112,6 +120,10 @@ class BunnyCdnAdapter implements AdapterInterface
         if (!isset($result[$path])) {
             $result[$path] = true;
             $this->cache->save($this->getCacheKey($path), $result);
+        }
+
+        if ($this->replication) {
+            $this->replication->writeStream($path, $resource, $config);
         }
 
         return [
@@ -230,6 +242,10 @@ class BunnyCdnAdapter implements AdapterInterface
         }
 
         $this->removeFromCache($path);
+
+        if ($this->replication) {
+            $this->replication->delete($path);
+        }
 
         return true;
     }

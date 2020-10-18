@@ -3,6 +3,7 @@
 * Erstelle Filesystem-Konfiguration automatisch anhand Plugin-Konfiguration.
 * Option zur Nutzung eines Papierkorbs in bunnyCDN hinzugefügt
 * Option hinzugefügt, die das Löschen von Dateien unterbindet
+* Option hinzugefügt, die es ermöglicht, die Dateien auch lokal zu schreiben
 * ACHTUNG: Es müssen bestehende Konfigurationen für vorige Versionen dieses Plugins in der Datei `config/packages/shopware.yml` entfernt und die Plugin-Konfiguratoion gefüllt werden.
 
 # 1.0.11

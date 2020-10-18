@@ -58,8 +58,13 @@ class ConfigUpdater
                 'apiUrl' => rtrim($pluginConfig['CdnHostname'], '/') . '/' . $pluginConfig['StorageName'] . '/' . $pluginConfig['CdnSubFolder'],
                 'apiKey' => $pluginConfig['ApiKey'],
                 'useGarbage' => $pluginConfig['useGarbage'],
+                'neverDelete' => $pluginConfig['neverDelete'],
             ],
         ];
+
+        if (!empty($pluginConfig['replicateLocal'])) {
+            $filesystemBunnyCdnConfig['config']['replicationRoot'] = '%kernel.project_dir%/public';
+        }
 
         $filesystemDefaultConfig = [
             'type' => 'local',
