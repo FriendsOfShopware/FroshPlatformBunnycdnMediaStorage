@@ -2,7 +2,8 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/shopware/platform/master/src/Core/System/SystemConfig/Schema/config.xsd">
     <card>
-        <title>Configuration!</title>
+        <title>Configuration</title>
+        <title lang="de-DE">Konfiguration</title>
 
         <input-field type="url">
             <name>CdnUrl</name>
@@ -29,75 +30,93 @@
             <name>ApiKey</name>
             <label>ApiKey</label>
             <helpText>is equal to FTP password</helpText>
+            <helpText lang="de-DE">entspricht dem FTP-Passwort</helpText>
             <required>true</required>
         </input-field>
 
         <input-field type="text">
             <name>CdnSubFolder</name>
             <label>Optional subfolder in CDN</label>
+            <label lang="de-DE">Optionaler Unterordner im CDN</label>
             <defaultValue>/</defaultValue>
-            <helpText>Specify a subfolder path on your bunnycdn storage</helpText>
+            <helpText>Specify a subfolder path to be used on your bunnycdn storage</helpText>
+            <helpText lang="de-DE">Geben Sie einen Unterordnerpfad an, der in Ihrem bunnycdn-Speicher verwendet werden soll</helpText>
         </input-field>
 
         <input-field type="bool">
             <name>FilesystemPublic</name>
-            <label>FilesystemPublic into CDN</label>
+            <label>Transfer Public filesystem into CDN</label>
+            <label lang="de-DE">Transferiere das Public-Filesystem ins CDN</label>
             <defaultValue>true</defaultValue>
         </input-field>
 
         <input-field type="bool">
             <name>FilesystemSitemap</name>
-            <label>FilesystemSitemap into CDN</label>
+            <label>Transfer Sitemap filesystem into CDN</label>
+            <label lang="de-DE">Transferiere das Sitemap-Filesystem ins CDN</label>
             <defaultValue>true</defaultValue>
         </input-field>
 
         <input-field type="bool">
             <name>FilesystemTheme</name>
-            <label>FilesystemTheme into CDN</label>
+            <label>Transfer Theme filesystem into CDN</label>
+            <label lang="de-DE">Transferiere das Theme-Filesystem ins CDN</label>
             <defaultValue>false</defaultValue>
             <helpText>Activating will reduce speed of theme compiling</helpText>
+            <helpText lang="de-DE">Durch Aktivieren wird die Geschwindigkeit der Themenerstellung verringert</helpText>
         </input-field>
 
         <input-field type="bool">
             <name>FilesystemAsset</name>
-            <label>FilesystemAsset into CDN</label>
+            <label>Transfer Asset filesystem into CDN</label>
+            <label>Transferiere das Asset-Filesystem ins CDN</label>
             <defaultValue>false</defaultValue>
             <helpText>Activating will reduce speed of theme compiling</helpText>
+            <helpText lang="de-DE">Durch Aktivieren wird die Geschwindigkeit der Themenerstellung verringert</helpText>
         </input-field>
 
         <input-field type="url">
             <name>FilesystemPublicUrl</name>
-            <label>Alternative CdnUrl for filesystem public.</label>
+            <label>Alternative CdnUrl for filesystem public</label>
+            <label lang="de-DE">Alternative CdnUrl für das Public-Filesystem</label>
         </input-field>
 
         <input-field type="url">
             <name>FilesystemSitemapUrl</name>
             <label>Alternative CdnUrl for filesystem sitemap</label>
+            <label lang="de-DE">Alternative CdnUrl für das Sitemap-Filesystem</label>
         </input-field>
 
         <input-field type="url">
             <name>FilesystemThemeUrl</name>
             <label>Alternative CdnUrl for filesystem theme</label>
+            <label lang="de-DE">Alternative CdnUrl für das Theme-Filesystem</label>
         </input-field>
 
         <input-field type="url">
             <name>FilesystemAssetUrl</name>
             <label>Alternative CdnUrl for filesystem asset</label>
+            <label lang="de-DE">Alternative CdnUrl für das Asset-Filesystem</label>
         </input-field>
 
         <input-field type="bool">
             <name>useGarbage</name>
             <label>Backup files into folder garbage on specific operations onto bunnyCDN filesystem</label>
+            <label lang="de-DE">Sichere Dateien bei bestimmten Vorgängen im Order "garbage" auf BunnyCDN</label>
             <defaultValue>false</defaultValue>
             <helpText>When deleting, renaming, overwriting files, they will be backuped into folder named "garbage/currentDate/".
-            This applies just on filesystems using bunnycdn</helpText>
+                This applies just on filesystems using bunnycdn</helpText>
+            <helpText lang="de-DE">Beim Löschen, Umbenennen und Überschreiben von Dateien werden diese in einem Ordner mit dem Namen "garbage/aktuellesDatum/" gesichert.
+                Dies gilt nur für Filesysteme, die bunnycdn verwenden</helpText>
         </input-field>
 
         <input-field type="bool">
             <name>neverDelete</name>
             <label>Never delete any file on bunnyCDN-Storage</label>
+            <label>Lösche niemals Dateien auf dem bunnyCDN-Storage</label>
             <defaultValue>false</defaultValue>
-            <helpText>When active, deleting files will not use garbage option, too. Attention: This will result in more storage usage.</helpText>
+            <helpText>When active, deleting files will not use garbage option, too. Attention: This will result in more storage usage and orphaned files in storage.</helpText>
+            <helpText>Wenn aktiv, wird auch die Garbage-Option nicht verwendet. Achtung: Dies führt zu einer höheren Speichernutzung und verwaisten Dateien in bunnyCDN.</helpText>
         </input-field>
 
         <component name="bunnycdn-api-test-button">
