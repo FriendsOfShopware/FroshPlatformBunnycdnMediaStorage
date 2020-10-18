@@ -110,6 +110,16 @@
                 Dies gilt nur für Filesysteme, die bunnycdn verwenden</helpText>
         </input-field>
 
+        <component name="bunnycdn-api-test-button">
+            <name>apiTest</name>
+            <label>Test API</label>
+        </component>
+    </card>
+
+    <card>
+        <title>Particular</title>
+        <title lang="de-DE">Besonderes</title>
+
         <input-field type="bool">
             <name>neverDelete</name>
             <label>Never delete any file on bunnyCDN-Storage</label>
@@ -127,10 +137,5 @@
             <helpText>Activating will write files also into known local folders. This negates the advantage of saving locally storage.</helpText>
             <helpText lang="de-DE">Wenn aktiv, werden Dateien auch in bekannte lokale Ordner geschrieben. Dies macht den Vorteil des Sparens von lokalem Speicher zunichte.</helpText>
         </input-field>
-
-        <component name="bunnycdn-api-test-button">
-            <name>apiTest</name>
-            <label>Test API</label>
-        </component>
     </card>
 </config>
