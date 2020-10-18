@@ -533,7 +533,7 @@ class BunnyCdnAdapter implements AdapterInterface
             return false;
         }
 
-        $garbagePath = 'garbage/' . date('Ymd') . $path;
+        $garbagePath = 'garbage/' . date('Ymd') . '/' . $path;
 
         /* There could be a file on this day */
         if ($this->has($garbagePath)) {
