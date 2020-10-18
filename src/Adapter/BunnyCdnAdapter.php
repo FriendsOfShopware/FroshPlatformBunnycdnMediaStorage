@@ -9,28 +9,23 @@ use League\Flysystem\Util;
 
 class BunnyCdnAdapter implements AdapterInterface
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $apiKey;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $apiUrl;
 
     /** @var Cache */
     private $cache;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $userAgent;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     private $useGarbage;
+
+    /** @var bool */
+    private $neverDelete;
 
     public function __construct($config, Cache $cache, string $version)
     {
@@ -38,7 +33,8 @@ class BunnyCdnAdapter implements AdapterInterface
         $this->apiKey = $config['apiKey'];
         $this->cache = $cache;
         $this->userAgent = 'Shopware ' . $version;
-        $this->useGarbage = (bool) $config['useGarbage'];
+        $this->useGarbage = !empty($config['useGarbage']);
+        $this->neverDelete = !empty($config['neverDelete']);
     }
 
     /**
@@ -201,6 +197,10 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     public function delete($path): bool
     {
+        if ($this->neverDelete) {
+            return true;
+        }
+
         $this->garbage($path);
 
         $curl = curl_init();

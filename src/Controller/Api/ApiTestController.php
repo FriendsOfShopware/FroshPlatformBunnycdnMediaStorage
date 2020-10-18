@@ -39,6 +39,7 @@ class ApiTestController
                 . $dataBag->get('FroshPlatformBunnycdnMediaStorage.config.StorageName', '') . '/',
             'apiKey' => $dataBag->get('FroshPlatformBunnycdnMediaStorage.config.ApiKey', ''),
             'useGarbage' => false,
+            'neverDelete' => false,
         ];
 
         $filename = Random::getAlphanumericString(20) . '.jpg';

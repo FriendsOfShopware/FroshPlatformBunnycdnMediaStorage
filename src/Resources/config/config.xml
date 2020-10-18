@@ -88,8 +88,16 @@
         <input-field type="bool">
             <name>useGarbage</name>
             <label>Backup files into folder garbage on specific operations onto bunnyCDN filesystem</label>
+            <defaultValue>false</defaultValue>
             <helpText>When deleting, renaming, overwriting files, they will be backuped into folder named "garbage/currentDate/".
             This applies just on filesystems using bunnycdn</helpText>
+        </input-field>
+
+        <input-field type="bool">
+            <name>neverDelete</name>
+            <label>Never delete any file on bunnyCDN-Storage</label>
+            <defaultValue>false</defaultValue>
+            <helpText>When active, deleting files will not use garbage option, too. Attention: This will result in more storage usage.</helpText>
         </input-field>
 
         <component name="bunnycdn-api-test-button">
