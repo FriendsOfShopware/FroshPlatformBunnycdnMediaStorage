@@ -27,12 +27,18 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     private $userAgent;
 
+    /**
+     * @var bool
+     */
+    private $useGarbage;
+
     public function __construct($config, Cache $cache, string $version)
     {
         $this->apiUrl = $config['apiUrl'];
         $this->apiKey = $config['apiKey'];
         $this->cache = $cache;
         $this->userAgent = 'Shopware ' . $version;
+        $this->useGarbage = (bool) $config['useGarbage'];
     }
 
     /**
@@ -71,6 +77,8 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     public function writeStream($path, $resource, Config $config)
     {
+        $this->garbage($path);
+
         $filesize = (int) fstat($resource)['size'];
         $curl = curl_init();
         curl_setopt_array(
@@ -161,6 +169,8 @@ class BunnyCdnAdapter implements AdapterInterface
     public function rename($path, $newPath): bool
     {
         if ($content = $this->read($path)) {
+            $this->garbage($path);
+
             $this->write($newPath, $content['contents'], new Config()); //TODO: check config
             $this->delete($path);
 
@@ -193,6 +203,8 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     public function delete($path): bool
     {
+        $this->garbage($path);
+
         $curl = curl_init();
 
         curl_setopt_array(
@@ -513,5 +525,23 @@ class BunnyCdnAdapter implements AdapterInterface
         }
 
         return null;
+    }
+
+    private function garbage($path): bool
+    {
+        if (!$this->useGarbage || !$this->has($path)) {
+            return false;
+        }
+
+        $garbagePath = 'garbage/' . date('Ymd') . $path;
+
+        /* There could be a file on this day */
+        if ($this->has($garbagePath)) {
+            $garbagePath .= str_replace('.', '', microtime(true));
+        }
+
+        $this->copy($path, $garbagePath);
+
+        return true;
     }
 }

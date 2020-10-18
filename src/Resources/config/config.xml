@@ -85,6 +85,11 @@
             <label>Alternative CdnUrl for filesystem asset</label>
         </input-field>
 
+        <input-field type="bool">
+            <name>useGarbage</name>
+            <label>Backup files into folder garbage on specific operations</label>
+        </input-field>
+
         <component name="bunnycdn-api-test-button">
             <name>apiTest</name>
             <label>Test API</label>
