@@ -169,8 +169,6 @@ class BunnyCdnAdapter implements AdapterInterface
     public function rename($path, $newPath): bool
     {
         if ($content = $this->read($path)) {
-            $this->garbage($path);
-
             $this->write($newPath, $content['contents'], new Config()); //TODO: check config
             $this->delete($path);
 

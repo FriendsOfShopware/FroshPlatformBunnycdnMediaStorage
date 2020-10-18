@@ -87,7 +87,9 @@
 
         <input-field type="bool">
             <name>useGarbage</name>
-            <label>Backup files into folder garbage on specific operations</label>
+            <label>Backup files into folder garbage on specific operations onto bunnyCDN filesystem</label>
+            <helpText>When deleting, renaming, overwriting files, they will be backuped into folder named "garbage/currentDate/".
+            This applies just on filesystems using bunnycdn</helpText>
         </input-field>
 
         <component name="bunnycdn-api-test-button">

@@ -57,6 +57,7 @@ class ConfigUpdater
             'config' => [
                 'apiUrl' => rtrim($pluginConfig['CdnHostname'], '/') . '/' . $pluginConfig['StorageName'] . '/' . $pluginConfig['CdnSubFolder'],
                 'apiKey' => $pluginConfig['ApiKey'],
+                'useGarbage' => $pluginConfig['useGarbage'],
             ],
         ];
 
