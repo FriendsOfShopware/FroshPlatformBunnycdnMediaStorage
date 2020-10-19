@@ -69,7 +69,7 @@
         <input-field type="bool">
             <name>FilesystemAsset</name>
             <label>Transfer Asset filesystem into CDN</label>
-            <label>Transferiere das Asset-Filesystem ins CDN</label>
+            <label lang="de-DE">Transferiere das Asset-Filesystem ins CDN</label>
             <defaultValue>false</defaultValue>
             <helpText>Activating will reduce speed of theme compiling</helpText>
             <helpText lang="de-DE">Durch Aktivieren wird die Geschwindigkeit der Themenerstellung verringert</helpText>
