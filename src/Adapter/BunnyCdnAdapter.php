@@ -2,37 +2,47 @@
 
 namespace Frosh\BunnycdnMediaStorage\Adapter;
 
-use Doctrine\Common\Cache\FilesystemCache;
+use Doctrine\Common\Cache\Cache;
+use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Config;
 use League\Flysystem\Util;
 
 class BunnyCdnAdapter implements AdapterInterface
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $apiKey;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $apiUrl;
 
-    /** @var FilesystemCache */
+    /** @var Cache */
     private $cache;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $userAgent;
 
-    public function __construct($config, FilesystemCache $cache, string $version)
+    /** @var bool */
+    private $useGarbage;
+
+    /** @var bool */
+    private $neverDelete;
+
+    /** @var AdapterInterface|null */
+    private $replication;
+
+    public function __construct(array $config, Cache $cache, string $version)
     {
         $this->apiUrl = $config['apiUrl'];
         $this->apiKey = $config['apiKey'];
         $this->cache = $cache;
         $this->userAgent = 'Shopware ' . $version;
+        $this->useGarbage = !empty($config['useGarbage']);
+        $this->neverDelete = !empty($config['neverDelete']);
+
+        if (!empty($config['replicationRoot'])) {
+            $this->replication = new Local($config['replicationRoot']);
+        }
     }
 
     /**
@@ -71,6 +81,8 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     public function writeStream($path, $resource, Config $config)
     {
+        $this->garbage($path);
+
         $filesize = (int) fstat($resource)['size'];
         $curl = curl_init();
         curl_setopt_array(
@@ -108,6 +120,10 @@ class BunnyCdnAdapter implements AdapterInterface
         if (!isset($result[$path])) {
             $result[$path] = true;
             $this->cache->save($this->getCacheKey($path), $result);
+        }
+
+        if ($this->replication) {
+            $this->replication->writeStream($path, $resource, $config);
         }
 
         return [
@@ -193,6 +209,12 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     public function delete($path): bool
     {
+        if ($this->neverDelete) {
+            return true;
+        }
+
+        $this->garbage($path);
+
         $curl = curl_init();
 
         curl_setopt_array(
@@ -220,6 +242,10 @@ class BunnyCdnAdapter implements AdapterInterface
         }
 
         $this->removeFromCache($path);
+
+        if ($this->replication && $this->replication->has($path)) {
+            $this->replication->delete($path);
+        }
 
         return true;
     }
@@ -415,7 +441,7 @@ class BunnyCdnAdapter implements AdapterInterface
         ];
     }
 
-    private function urlencodePath($path): string
+    private function urlencodePath(string $path): string
     {
         $parts = explode('/', $path);
         foreach ($parts as &$value) {
@@ -426,7 +452,7 @@ class BunnyCdnAdapter implements AdapterInterface
         return implode('/', $parts);
     }
 
-    private function removeFromCache($path): void
+    private function removeFromCache(string $path): void
     {
         $result = $this->getCached($path);
 
@@ -436,12 +462,12 @@ class BunnyCdnAdapter implements AdapterInterface
         }
     }
 
-    private function getCacheKey($path): string
+    private function getCacheKey(string $path): string
     {
         return md5($path)[0];
     }
 
-    private function getCached($path): array
+    private function getCached(string $path): array
     {
         $cacheId = $this->getCacheKey($path);
 
@@ -454,11 +480,7 @@ class BunnyCdnAdapter implements AdapterInterface
         return [];
     }
 
-    /**
-     * @param string $directory
-     * @param bool   $recursive
-     */
-    private function getDirContent($directory, $recursive): array
+    private function getDirContent(string $directory, bool $recursive): array
     {
         $curl = curl_init();
         curl_setopt_array(
@@ -502,7 +524,7 @@ class BunnyCdnAdapter implements AdapterInterface
         return $result;
     }
 
-    private function getBunnyCdnHeader(array $headers, string $header)
+    private function getBunnyCdnHeader(array $headers, string $header): ?array
     {
         if (isset($headers[$header])) {
             return $headers[$header];
@@ -513,5 +535,21 @@ class BunnyCdnAdapter implements AdapterInterface
         }
 
         return null;
+    }
+
+    private function garbage(string $path): void
+    {
+        if (!$this->useGarbage || !$this->has($path)) {
+            return;
+        }
+
+        $garbagePath = 'garbage/' . date('Ymd') . '/' . $path;
+
+        /* There could be a file on this day */
+        if ($this->has($garbagePath)) {
+            $garbagePath .= str_replace('.', '', (string) microtime(true));
+        }
+
+        $this->copy($path, $garbagePath);
     }
 }

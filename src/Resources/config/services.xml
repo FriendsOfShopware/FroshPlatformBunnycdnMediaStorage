@@ -9,7 +9,6 @@
     </parameters>
 
     <services>
-
         <service class="Frosh\BunnycdnMediaStorage\Adapter\BunnyCdnFactory"
                  id="Shopware\Core\Framework\Adapter\Filesystem\FilesystemFactory.bunnycdn">
             <tag name="shopware.filesystem.factory"/>
@@ -24,6 +23,20 @@
         <service id="Frosh\BunnycdnMediaStorage\Storefront\Subscriber\SitemapPageSubscriber">
             <argument type="string">%shopware.cdn.url%</argument>
             <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="Frosh\BunnycdnMediaStorage\Subscriber\ConfigSubscriber">
+            <argument type="service" id="Frosh\BunnycdnMediaStorage\Service\ConfigUpdater"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="Frosh\BunnycdnMediaStorage\Service\ConfigUpdater">
+            <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
+            <argument type="string">%frosh_bunnycdn_media_storage.config_path%</argument>
+        </service>
+
+        <service id="Frosh\BunnycdnMediaStorage\Controller\Api\ApiTestController" public="true">
+            <argument type="service" id="Frosh\BunnycdnMediaStorage\Adapter\Cache"/>
         </service>
 
     </services>

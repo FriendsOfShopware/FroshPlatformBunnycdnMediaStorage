@@ -1,3 +1,11 @@
+# 2.0.0
+
+* Create filesystem configuration automatically based on plugin configuration.
+* Added option to use a recycle bin in bunnyCDN
+* Added option to prevent files from being deleted
+* Added option to replicate files locally
+* ATTENTION: You have to remove any existing configuration for previous versions of this plugin in the file `config/packages/shopware.yml` and the plugin configuration has to be filled.
+
 # 1.0.11
 
 * Fix error while reading files named with foreign characters
