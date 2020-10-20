@@ -524,7 +524,7 @@ class BunnyCdnAdapter implements AdapterInterface
         return $result;
     }
 
-    private function getBunnyCdnHeader(array $headers, string $header): ?array
+    private function getBunnyCdnHeader(array $headers, string $header): ?string
     {
         if (isset($headers[$header])) {
             return $headers[$header];
