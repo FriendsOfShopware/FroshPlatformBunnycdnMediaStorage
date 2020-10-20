@@ -2,6 +2,7 @@
 
 namespace Frosh\BunnycdnMediaStorage\Service;
 
+use Shopware\Core\Framework\Adapter\Cache\CacheClearer;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
 use Symfony\Component\Yaml\Yaml;
 
@@ -17,10 +18,16 @@ class ConfigUpdater
      */
     private $configPath;
 
-    public function __construct(SystemConfigService $systemConfigService, string $configPath)
+    /**
+     * @var CacheClearer
+     */
+    private $cacheClearer;
+
+    public function __construct(SystemConfigService $systemConfigService, CacheClearer $cacheClearer, string $configPath)
     {
         $this->systemConfigService = $systemConfigService;
         $this->configPath = $configPath;
+        $this->cacheClearer = $cacheClearer;
     }
 
     public function update(array $config): void
@@ -34,6 +41,7 @@ class ConfigUpdater
             && empty($pluginConfig['FilesystemAsset'])) {
             if (file_exists($this->configPath)) {
                 unlink($this->configPath);
+                $this->cacheClearer->clearContainerCache();
             }
 
             return;
@@ -42,11 +50,10 @@ class ConfigUpdater
         if (!isset($pluginConfig['CdnUrl'],
             $pluginConfig['CdnHostname'],
             $pluginConfig['StorageName'],
-            $pluginConfig['ApiKey'],
-            $pluginConfig['useGarbage'],
-            $pluginConfig['neverDelete'])) {
+            $pluginConfig['ApiKey'])) {
             if (file_exists($this->configPath)) {
                 unlink($this->configPath);
+                $this->cacheClearer->clearContainerCache();
             }
 
             return;
@@ -62,8 +69,8 @@ class ConfigUpdater
             'config' => [
                 'apiUrl' => rtrim($pluginConfig['CdnHostname'], '/') . '/' . $pluginConfig['StorageName'] . '/' . $pluginConfig['CdnSubFolder'],
                 'apiKey' => $pluginConfig['ApiKey'],
-                'useGarbage' => $pluginConfig['useGarbage'],
-                'neverDelete' => $pluginConfig['neverDelete'],
+                'useGarbage' => $pluginConfig['useGarbage'] ?? false,
+                'neverDelete' => $pluginConfig['neverDelete'] ?? false,
             ],
         ];
 
@@ -105,6 +112,8 @@ class ConfigUpdater
         ];
 
         file_put_contents($this->configPath, Yaml::dump($data));
+
+        $this->cacheClearer->clearContainerCache();
     }
 
     private function endsWith(
