@@ -9,7 +9,7 @@
         "storage"
     ],
     "description": "This plugins allows you to use BunnyCdn as adapter for media",
-    "version": "2.0.0-beta.1",
+    "version": "2.0.0",
     "type": "shopware-platform-plugin",
     "license": "mit",
     "authors": [
@@ -24,8 +24,8 @@
     "extra": {
         "shopware-plugin-class": "Frosh\\BunnycdnMediaStorage\\FroshPlatformBunnycdnMediaStorage",
         "label": {
-            "de-DE": "BunnyCdn Media Storage Plugin",
-            "en-GB": "BunnyCdn Media Storage Plugin"
+            "de-DE": "BunnyCdn Media Storage Plugin v2",
+            "en-GB": "BunnyCdn Media Storage Plugin v2"
         },
         "description": {
             "de-DE": "Transferiere Deine Dateien nach BunnyCDN. Beschleunige dadurch die Auslieferung der Bilder! Mach Speicherplatz frei! Profitiere von kleineren Backups!",
