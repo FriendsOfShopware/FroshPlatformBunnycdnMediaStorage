@@ -39,7 +39,12 @@ class ConfigUpdater
             return;
         }
 
-        if (!isset($pluginConfig['CdnHostname'], $pluginConfig['StorageName'])) {
+        if (!isset($pluginConfig['CdnUrl'],
+            $pluginConfig['CdnHostname'],
+            $pluginConfig['StorageName'],
+            $pluginConfig['ApiKey'],
+            $pluginConfig['useGarbage'],
+            $pluginConfig['neverDelete'])) {
             if (file_exists($this->configPath)) {
                 unlink($this->configPath);
             }
