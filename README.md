@@ -13,7 +13,6 @@ Download the plugin from the release page and enable it in shopware.
 - Upload your existing media-folder using ftp to [BunnyCDN](https://support.bunnycdn.com/hc/en-us/articles/115003780169-How-to-upload-and-access-files-from-your-Storage-Zone).
 - Remove any existing configuration for previous versions in `config/packages/shopware.yml`
 - Set up plugin config
-- after each change on plugin-configuration you have to run command `bin/console cache:clear`
 
 ## Usage for older plugin version
 [see old Readme](README.1.0.11.md)
