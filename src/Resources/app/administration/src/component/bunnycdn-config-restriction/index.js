@@ -13,7 +13,7 @@ Component.register('bunnycdn-config-restriction', {
 
     methods: {
         checkAndHideSetting() {
-            const fields = document.querySelectorAll('input[name^="FroshPlatformBunnycdnMediaStorage.config"]');
+            const fields = document.querySelectorAll('input[name^="FroshPlatformBunnycdnMediaStorage.config"],.sw-plugin-config__save-action');
 
             if (this.$parent.$parent.$parent.currentSalesChannelId) {
                 fields.forEach(el => {
