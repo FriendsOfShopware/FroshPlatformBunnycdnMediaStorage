@@ -1,3 +1,7 @@
+# 2.0.1
+
+* Behebe Fehler beim Holen der Header von BunnyCDN
+
 # 2.0.0
 
 * Erstelle Filesystem-Konfiguration automatisch anhand Plugin-Konfiguration.

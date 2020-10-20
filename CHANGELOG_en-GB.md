@@ -1,3 +1,7 @@
+# 2.0.1
+
+* Fix error while requesting headers from bunnyCDN
+
 # 2.0.0
 
 * Create filesystem configuration automatically based on plugin configuration.
