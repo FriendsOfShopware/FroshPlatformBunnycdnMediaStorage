@@ -11,6 +11,14 @@ Component.register('bunnycdn-api-test-button', {
         Mixin.getByName('notification')
     ],
 
+    created() {
+        this.checkAndHideSetting();
+    },
+
+    updated() {
+        this.checkAndHideSetting();
+    },
+
     data() {
         return {
             isLoading: false,
@@ -25,6 +33,20 @@ Component.register('bunnycdn-api-test-button', {
     },
 
     methods: {
+        checkAndHideSetting() {
+            const fields = document.querySelectorAll('input[name^="FroshPlatformBunnycdnMediaStorage.config"]');
+
+            if (this.$parent.$parent.$parent.currentSalesChannelId) {
+                fields.forEach(el => {
+                    el.setAttribute('disabled', 'disabled');
+                });
+            } else {
+                fields.forEach(el => {
+                    el.removeAttribute('disabled');
+                });
+            }
+        },
+
         saveFinish() {
             this.isSaveSuccessful = false;
         },
