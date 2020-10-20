@@ -1,4 +1,4 @@
-const { Component, Mixin } = Shopware;
+const {Component, Mixin} = Shopware;
 import template from './bunnycdn-api-test-button.html.twig';
 
 Component.register('bunnycdn-api-test-button', {
@@ -10,14 +10,6 @@ Component.register('bunnycdn-api-test-button', {
     mixins: [
         Mixin.getByName('notification')
     ],
-
-    created() {
-        this.checkAndHideSetting();
-    },
-
-    updated() {
-        this.checkAndHideSetting();
-    },
 
     data() {
         return {
@@ -33,20 +25,6 @@ Component.register('bunnycdn-api-test-button', {
     },
 
     methods: {
-        checkAndHideSetting() {
-            const fields = document.querySelectorAll('input[name^="FroshPlatformBunnycdnMediaStorage.config"]');
-
-            if (this.$parent.$parent.$parent.currentSalesChannelId) {
-                fields.forEach(el => {
-                    el.setAttribute('disabled', 'disabled');
-                });
-            } else {
-                fields.forEach(el => {
-                    el.removeAttribute('disabled');
-                });
-            }
-        },
-
         saveFinish() {
             this.isSaveSuccessful = false;
         },
@@ -67,7 +45,9 @@ Component.register('bunnycdn-api-test-button', {
                     });
                 }
 
-                setTimeout(() => {this.isLoading = false;},2500);
+                setTimeout(() => {
+                    this.isLoading = false;
+                }, 2500);
             });
         }
     }

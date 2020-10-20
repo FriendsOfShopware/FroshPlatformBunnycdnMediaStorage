@@ -114,6 +114,10 @@
             <name>apiTest</name>
             <label>Test API</label>
         </component>
+
+        <component name="bunnycdn-config-restriction">
+            <name>configRestriction</name>
+        </component>
     </card>
 
     <card>
