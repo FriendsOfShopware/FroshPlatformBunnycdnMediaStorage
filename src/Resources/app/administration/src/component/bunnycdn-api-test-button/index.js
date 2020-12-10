@@ -4,7 +4,7 @@ import template from './bunnycdn-api-test-button.html.twig';
 Component.register('bunnycdn-api-test-button', {
     template,
 
-    props: ['label'],
+    props: ['btnLabel'],
     inject: ['bunnycdnApiTest'],
 
     mixins: [
@@ -20,7 +20,13 @@ Component.register('bunnycdn-api-test-button', {
 
     computed: {
         pluginConfig() {
-            return this.$parent.$parent.$parent.actualConfigData.null;
+            let config = this.$parent.$parent.$parent.actualConfigData;
+            if (config) {
+                return config.null;
+            }
+
+            // in SW6.3.4 it's one step above
+            return this.$parent.$parent.$parent.$parent.actualConfigData.null;
         }
     },
 

@@ -112,7 +112,7 @@
 
         <component name="bunnycdn-api-test-button">
             <name>apiTest</name>
-            <label>Test API</label>
+            <btnLabel>Test API</btnLabel>
         </component>
 
         <component name="bunnycdn-config-restriction">
