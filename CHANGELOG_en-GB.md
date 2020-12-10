@@ -1,3 +1,7 @@
+# 2.0.2
+
+* Fix error for API-Test button for shopware 6.3.4
+
 # 2.0.1
 
 * Fix error while requesting headers from bunnyCDN
