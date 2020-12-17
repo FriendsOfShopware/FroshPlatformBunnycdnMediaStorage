@@ -1,3 +1,7 @@
+# 2.0.3
+
+* Behebe doppelte Url in Sitemap
+
 # 2.0.2
 
 * Behebe Fehler beim Button für den API-Test für Shopware 6.3.4

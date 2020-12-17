@@ -1,3 +1,7 @@
+# 2.0.3
+
+* fix duplicated url in sitemap
+
 # 2.0.2
 
 * Fix error for API-Test button for shopware 6.3.4

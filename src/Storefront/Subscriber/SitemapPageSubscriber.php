@@ -35,6 +35,11 @@ class SitemapPageSubscriber implements EventSubscriberInterface
                 continue;
             }
 
+            if (mb_strpos($sitemap->getFileName(), 'https://') === 0
+                || mb_strpos($sitemap->getFileName(), 'http://') === 0) {
+                continue;
+            }
+
             $sitemap->setFileName($this->cdnUrl . '/' . $sitemap->getFileName());
         }
     }
