@@ -15,7 +15,7 @@ Component.register('bunnycdn-config-restriction', {
         checkAndHideSetting() {
             const fields = document.querySelectorAll('input[name^="FroshPlatformBunnycdnMediaStorage.config"],.sw-plugin-config__save-action');
 
-            if (this.$parent.$parent.$parent.currentSalesChannelId) {
+            if (this.pluginConfigData().currentSalesChannelId) {
                 fields.forEach(el => {
                     el.setAttribute('disabled', 'disabled');
                 });
@@ -25,5 +25,15 @@ Component.register('bunnycdn-config-restriction', {
                 });
             }
         },
+    },
+
+    pluginConfigData() {
+        let config = this.$parent.$parent.$parent.actualConfigData;
+        if (config) {
+            return this.$parent.$parent.$parent;
+        }
+
+        // in SW6.3.4 it's one step above
+        return this.$parent.$parent.$parent;
     }
 })
