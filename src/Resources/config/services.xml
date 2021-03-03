@@ -40,5 +40,13 @@
             <argument type="service" id="Frosh\BunnycdnMediaStorage\Adapter\Cache"/>
         </service>
 
+        <service id="Frosh\BunnycdnMediaStorage\Listener\ResponseListener">
+            <argument>%shopware.filesystem.public.url%</argument>
+            <argument>%shopware.filesystem.sitemap.url%</argument>
+            <argument>%shopware.filesystem.theme.url%</argument>
+            <argument>%shopware.filesystem.asset.url%</argument>
+            <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse" />
+        </service>
+
     </services>
 </container>
