@@ -2,25 +2,19 @@
 
 namespace Frosh\BunnycdnMediaStorage\Adapter;
 
+use Aws\S3\S3Client;
 use Doctrine\Common\Cache\Cache;
+use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
+use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use League\Flysystem\Config;
 use League\Flysystem\Util;
 
 class BunnyCdnAdapter implements AdapterInterface
 {
-    /** @var string */
-    private $apiKey;
-
-    /** @var string */
-    private $apiUrl;
-
     /** @var Cache */
     private $cache;
-
-    /** @var string */
-    private $userAgent;
 
     /** @var bool */
     private $useGarbage;
@@ -31,14 +25,49 @@ class BunnyCdnAdapter implements AdapterInterface
     /** @var AdapterInterface|null */
     private $replication;
 
+    /** @var AbstractAdapter */
+    private $s3adapter;
+
+    /** @var string */
+    private $subfolder = '';
+
     public function __construct(array $config, Cache $cache, string $version)
     {
-        $this->apiUrl = $config['apiUrl'];
-        $this->apiKey = $config['apiKey'];
+        if (isset($config['subfolder'])) {
+            $this->subfolder = $config['subfolder']. '/';
+        }
+
         $this->cache = $cache;
-        $this->userAgent = 'Shopware ' . $version;
         $this->useGarbage = !empty($config['useGarbage']);
         $this->neverDelete = !empty($config['neverDelete']);
+
+        //backward compatibility
+        if (isset($config['apiUrl']) && !isset($config['endpoint'])) {
+            $urlParse = parse_url($config['apiUrl']);
+
+            $config['endpoint'] = $urlParse['scheme'] . '://' . $urlParse['host'];
+            $parts = explode('/', $urlParse['path']);
+            $parts = array_filter($parts);
+            $config['storageName'] = $parts[1];
+
+            if (count($parts) > 1) {
+                $this->subfolder = implode('/', array_slice($parts, 1)) . '/';
+            }
+        }
+
+        $s3client = new S3Client([
+            'version' => 'latest',
+            'region'  => '',
+            'endpoint' => $config['endpoint'] . '/',
+            'signature_version' => 'v4',
+            'mup_threshold' => 99999999,
+            'credentials' => [
+                'key'    => $config['storageName'],
+                'secret' => $config['apiKey'],
+            ],
+        ]);
+
+        $this->s3adapter = new AwsS3Adapter($s3client, '');
 
         if (!empty($config['replicationRoot'])) {
             $this->replication = new Local($config['replicationRoot']);
@@ -56,6 +85,8 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     public function write($path, $contents, Config $config)
     {
+        $path = $this->subfolder . $path;
+
         $stream = tmpfile();
         fwrite($stream, $contents);
         rewind($stream);
@@ -81,39 +112,14 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     public function writeStream($path, $resource, Config $config)
     {
+        $path = $this->subfolder . $path;
         $this->garbage($path);
 
         $filesize = (int) fstat($resource)['size'];
-        $curl = curl_init();
-        curl_setopt_array(
-            $curl,
-            [
-                CURLOPT_USERAGENT => $this->userAgent,
-                CURLOPT_CUSTOMREQUEST => 'PUT',
-                CURLOPT_URL => $this->apiUrl . $this->urlencodePath($path),
-                CURLOPT_RETURNTRANSFER => 1,
-                CURLOPT_TIMEOUT => 60000,
-                CURLOPT_FOLLOWLOCATION => 0,
-                CURLOPT_FAILONERROR => 0,
-                CURLOPT_INFILE => $resource,
-                CURLOPT_INFILESIZE => $filesize,
-                CURLOPT_POST => 1,
-                CURLOPT_UPLOAD => 1,
-                CURLOPT_HTTPHEADER => [
-                    'AccessKey: ' . $this->apiKey,
-                ],
-            ]
-        );
 
-        // Send the request
         $currentTime = time();
-        curl_exec($curl);
-        $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        curl_close($curl);
 
-        if ((int) $http_code !== 201) {
-            return false;
-        }
+        $this->s3adapter->writeStream($path, $resource, $config);
 
         $result = $this->getCached($path);
 
@@ -147,6 +153,7 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     public function update($path, $contents, Config $config)
     {
+        $path = $this->subfolder . $path;
         $this->delete($path);
 
         return $this->write($path, $contents, $config);
@@ -163,6 +170,7 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     public function updateStream($path, $resource, Config $config)
     {
+        $path = $this->subfolder . $path;
         $this->delete($path);
 
         return $this->writeStream($path, $resource, $config);
@@ -176,8 +184,11 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     public function rename($path, $newPath): bool
     {
+        $path = $this->subfolder . $path;
+        $newPath = $this->subfolder . $newPath;
+
         if ($content = $this->read($path)) {
-            $this->write($newPath, $content['contents'], new Config()); //TODO: check config
+            $this->write($newPath, $content['contents'], new Config());
             $this->delete($path);
 
             return true;
@@ -194,6 +205,9 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     public function copy($path, $newPath): bool
     {
+        $path = $this->subfolder . $path;
+        $newPath = $this->subfolder . $newPath;
+
         if ($content = $this->read($path)) {
             $this->write($newPath, $content['contents'], new Config()); //TODO: check config
             return true;
@@ -213,31 +227,13 @@ class BunnyCdnAdapter implements AdapterInterface
             return true;
         }
 
+        $path = $this->subfolder . $path;
+
         $this->garbage($path);
 
-        $curl = curl_init();
+        $result = $this->s3adapter->delete($path);
 
-        curl_setopt_array(
-            $curl,
-            [
-                CURLOPT_USERAGENT => $this->userAgent,
-                CURLOPT_CUSTOMREQUEST => 'DELETE',
-                CURLOPT_URL => $this->apiUrl . $path,
-                CURLOPT_RETURNTRANSFER => 1,
-                CURLOPT_TIMEOUT => 30,
-                CURLOPT_FOLLOWLOCATION => 1,
-                CURLOPT_HTTPHEADER => [
-                    'Content-Type:application/json',
-                    'AccessKey:' . $this->apiKey,
-                ],
-            ]
-        );
-
-        $result = curl_exec($curl);
-        $http_code = (int) curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        curl_close($curl);
-
-        if ($result === false || $http_code !== 200) {
+        if ($result === false) {
             return false;
         }
 
@@ -257,6 +253,7 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     public function deleteDir($dirname): bool
     {
+        $dirname = $this->subfolder . $dirname;
         return $this->delete($dirname);
     }
 
@@ -292,6 +289,8 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     public function has($path): bool
     {
+        $path = $this->subfolder . $path;
+
         /*
          * If path contains '?', it's variable thumbnail. So always correct.
          */
@@ -323,6 +322,8 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     public function read($path)
     {
+        $path = $this->subfolder . $path;
+
         if (!$object = $this->readStream($path)) {
             return false;
         }
@@ -342,11 +343,8 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     public function readStream($path)
     {
-        return [
-            'type' => 'file',
-            'path' => $path,
-            'stream' => fopen($this->apiUrl . $this->urlencodePath($path) . '?AccessKey=' . $this->apiKey, 'rb'),
-        ];
+        $path = $this->subfolder . $path;
+        return $this->s3adapter->readStream($path);
     }
 
     /**
@@ -357,7 +355,8 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     public function listContents($directory = '', $recursive = false): array
     {
-        return $this->getDirContent($directory, $recursive);
+        $directory = $this->subfolder . $directory;
+        return $this->s3adapter->listContents($directory, $recursive);
     }
 
     /**
@@ -369,29 +368,8 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     public function getMetadata($path)
     {
-        if (version_compare(PHP_VERSION, '8.0.0', '>=')) {
-            $headers = get_headers($this->apiUrl . $this->urlencodePath($path) . '?AccessKey=' . $this->apiKey, true);
-        } else {
-            $headers = get_headers($this->apiUrl . $this->urlencodePath($path) . '?AccessKey=' . $this->apiKey, 1);
-        }
-        if (mb_strpos($headers[0], '200') === false) {
-            return false;
-        }
-
-        $size = (int) $this->getBunnyCdnHeader($headers, 'Content-Length');
-
-        if (!$size) {
-            return false;
-        }
-
-        return [
-            'type' => 'file',
-            'path' => $path,
-            'timestamp' => (int) strtotime($this->getBunnyCdnHeader($headers, 'Last-Modified')),
-            'size' => $size,
-            'visibility' => AdapterInterface::VISIBILITY_PUBLIC,
-            'mimetype' => $this->getBunnyCdnHeader($headers, 'Content-Type'),
-        ];
+        $path = $this->subfolder . $path;
+        return $this->s3adapter->getMetadata($path);
     }
 
     /**
@@ -403,7 +381,8 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     public function getSize($path)
     {
-        return $this->getMetadata($path);
+        $path = $this->subfolder . $path;
+        return $this->s3adapter->getSize($path);
     }
 
     /**
@@ -415,7 +394,8 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     public function getMimetype($path)
     {
-        return $this->getMetadata($path);
+        $path = $this->subfolder . $path;
+        return $this->s3adapter->getMimetype($path);
     }
 
     /**
@@ -427,7 +407,8 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     public function getTimestamp($path)
     {
-        return $this->getMetadata($path);
+        $path = $this->subfolder . $path;
+        return $this->s3adapter->getTimestamp($path);
     }
 
     /**
@@ -439,25 +420,16 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     public function getVisibility($path)
     {
+        $path = $this->subfolder . $path;
         return [
             'path' => $path,
             'visibility' => AdapterInterface::VISIBILITY_PUBLIC,
         ];
     }
 
-    private function urlencodePath(string $path): string
-    {
-        $parts = explode('/', $path);
-        foreach ($parts as &$value) {
-            $value = rawurlencode($value);
-        }
-        unset($value);
-
-        return implode('/', $parts);
-    }
-
     private function removeFromCache(string $path): void
     {
+        $path = $this->subfolder . $path;
         $result = $this->getCached($path);
 
         if (isset($result[$path])) {
@@ -482,66 +454,6 @@ class BunnyCdnAdapter implements AdapterInterface
         }
 
         return [];
-    }
-
-    private function getDirContent(string $directory, bool $recursive): array
-    {
-        $curl = curl_init();
-        curl_setopt_array(
-            $curl,
-            [
-                CURLOPT_USERAGENT => $this->userAgent,
-                CURLOPT_CUSTOMREQUEST => 'GET',
-                CURLOPT_URL => $this->apiUrl . $directory . '/',
-                CURLOPT_RETURNTRANSFER => 1,
-                CURLOPT_TIMEOUT => 60000,
-                CURLOPT_FOLLOWLOCATION => 0,
-                CURLOPT_FAILONERROR => 0,
-                CURLOPT_SSL_VERIFYPEER => 1,
-                CURLOPT_VERBOSE => 0,
-                CURLOPT_HTTPHEADER => [
-                    'AccessKey: ' . $this->apiKey,
-                ],
-            ]
-        );
-        // Send the request
-        $response = (string) curl_exec($curl);
-        curl_close($curl);
-        $result = [];
-
-        foreach (json_decode($response, false) as $content) {
-            $result[] = [
-                'basename' => $content->ObjectName,
-                'path' => $directory . '/' . $content->ObjectName,
-                'type' => ($content->IsDirectory ? 'dir' : 'file'),
-                'timestamp' => (new \DateTime($content->LastChanged))->getTimestamp(),
-            ];
-
-            if ($recursive && $content->IsDirectory) {
-                $subContents = $this->getDirContent($directory . '/' . $content->ObjectName, true);
-                foreach ($subContents as $subContent) {
-                    $result[] = $subContent;
-                }
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * @return mixed|null
-     */
-    private function getBunnyCdnHeader(array $headers, string $header)
-    {
-        if (isset($headers[$header])) {
-            return $headers[$header];
-        }
-
-        if (isset($headers[mb_strtolower($header)])) {
-            return $headers[mb_strtolower($header)];
-        }
-
-        return null;
     }
 
     private function garbage(string $path): void

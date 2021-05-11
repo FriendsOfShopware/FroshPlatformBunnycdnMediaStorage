@@ -65,9 +65,11 @@ class ConfigUpdater
 
         $filesystemBunnyCdnConfig = [
             'type' => 'bunnycdn',
-            'url' => rtrim($pluginConfig['CdnUrl'], '/') . '/' . $pluginConfig['CdnSubFolder'],
+            'url' => rtrim((string) $pluginConfig['CdnUrl'], '/') . '/' . $pluginConfig['CdnSubFolder'],
             'config' => [
-                'apiUrl' => rtrim($pluginConfig['CdnHostname'], '/') . '/' . $pluginConfig['StorageName'] . '/' . $pluginConfig['CdnSubFolder'],
+                'endpoint' => rtrim((string) $pluginConfig['CdnHostname'], '/'),
+                'storageName' => $pluginConfig['StorageName'],
+                'subfolder' => rtrim((string) $pluginConfig['CdnSubFolder'], '/'),
                 'apiKey' => $pluginConfig['ApiKey'],
                 'useGarbage' => $pluginConfig['useGarbage'] ?? false,
                 'neverDelete' => $pluginConfig['neverDelete'] ?? false,
@@ -129,8 +131,6 @@ class ConfigUpdater
             $pluginConfig['CdnSubFolder'] = '';
         } elseif (rtrim($pluginConfig['CdnSubFolder'], '/') === '') {
             $pluginConfig['CdnSubFolder'] = '';
-        } elseif (!$this->endsWith($pluginConfig['CdnSubFolder'], '/')) {
-            $pluginConfig['CdnSubFolder'] .= '/';
         }
 
         return $pluginConfig;
