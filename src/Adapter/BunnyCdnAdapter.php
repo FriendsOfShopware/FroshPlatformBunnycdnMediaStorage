@@ -369,7 +369,11 @@ class BunnyCdnAdapter implements AdapterInterface
      */
     public function getMetadata($path)
     {
-        $headers = get_headers($this->apiUrl . $this->urlencodePath($path) . '?AccessKey=' . $this->apiKey, true);
+        if (version_compare(PHP_VERSION, '8.0.0', '>=')) {
+            $headers = get_headers($this->apiUrl . $this->urlencodePath($path) . '?AccessKey=' . $this->apiKey, true);
+        } else {
+            $headers = get_headers($this->apiUrl . $this->urlencodePath($path) . '?AccessKey=' . $this->apiKey, 1);
+        }
         if (mb_strpos($headers[0], '200') === false) {
             return false;
         }
