@@ -1,3 +1,8 @@
+# 2.0.4
+
+* Feature: Support für PHP 8
+* Feature: Setze Header für Preconnect zu den CDN-Adressen
+
 # 2.0.3
 
 * Behebe doppelte Url in Sitemap

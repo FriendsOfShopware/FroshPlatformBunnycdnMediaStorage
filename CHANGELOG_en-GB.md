@@ -1,3 +1,8 @@
+# 2.0.4
+
+* Feature: Support for PHP 8
+* Feature: Set Header to Preconnect to CDN URLs
+
 # 2.0.3
 
 * fix duplicated url in sitemap
