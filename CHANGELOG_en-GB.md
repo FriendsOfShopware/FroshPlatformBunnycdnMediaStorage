@@ -1,3 +1,7 @@
+# 2.0.5
+
+* Fix: Adjust test route for shopware 6.4
+
 # 2.0.4
 
 * Feature: Support for PHP 8

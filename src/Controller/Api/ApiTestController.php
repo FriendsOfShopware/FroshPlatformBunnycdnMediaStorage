@@ -28,6 +28,7 @@ class ApiTestController
 
     /**
      * @Route(path="/api/v{version}/_action/bunnycdn-api-test/check")
+     * @Route(path="/api/_action/bunnycdn-api-test/check")
      */
     public function check(RequestDataBag $dataBag): JsonResponse
     {
