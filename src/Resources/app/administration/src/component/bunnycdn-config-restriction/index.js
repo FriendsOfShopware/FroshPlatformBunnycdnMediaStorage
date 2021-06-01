@@ -25,15 +25,16 @@ Component.register('bunnycdn-config-restriction', {
                 });
             }
         },
+
+        pluginConfigData() {
+            let config = this.$parent.$parent.$parent.actualConfigData;
+            if (config) {
+                return this.$parent.$parent.$parent;
+            }
+
+            // in SW6.3.4 it's one step above
+            return this.$parent.$parent.$parent.$parent;
+        }
     },
 
-    pluginConfigData() {
-        let config = this.$parent.$parent.$parent.actualConfigData;
-        if (config) {
-            return this.$parent.$parent.$parent;
-        }
-
-        // in SW6.3.4 it's one step above
-        return this.$parent.$parent.$parent.$parent;
-    }
 })
