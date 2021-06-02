@@ -1,3 +1,7 @@
+# 2.0.6
+
+* Fix: Plugin configuration hasn't been disabled proper when switched saleschannel
+
 # 2.0.5
 
 * Fix: Adjust test route for shopware 6.4
