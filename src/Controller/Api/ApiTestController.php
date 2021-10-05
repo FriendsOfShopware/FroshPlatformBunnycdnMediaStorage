@@ -17,16 +17,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class ApiTestController
 {
     /**
-     * @var Cache
-     */
-    private $cache;
-
-    public function __construct(Cache $cache)
-    {
-        $this->cache = $cache;
-    }
-
-    /**
      * @Route(path="/api/v{version}/_action/bunnycdn-api-test/check")
      * @Route(path="/api/_action/bunnycdn-api-test/check")
      */
@@ -46,7 +36,7 @@ class ApiTestController
         $filename = Random::getAlphanumericString(20) . '.jpg';
 
         try {
-            $adapter = new BunnyCdnAdapter($config, $this->cache, 'test api');
+            $adapter = new BunnyCdnAdapter($config);
             if ($adapter->write($filename, $filename, new Config())) {
                 $success = true;
                 $adapter->delete($filename);

@@ -3,8 +3,6 @@
 namespace Frosh\BunnycdnMediaStorage\Adapter;
 
 use Aws\S3\S3Client;
-use Doctrine\Common\Cache\Cache;
-use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
@@ -12,9 +10,6 @@ use League\Flysystem\Config;
 
 class BunnyCdnAdapter extends AwsS3Adapter
 {
-    /** @var Cache */
-    private $cache;
-
     /** @var bool */
     private $useGarbage;
 
@@ -24,14 +19,13 @@ class BunnyCdnAdapter extends AwsS3Adapter
     /** @var AdapterInterface|null */
     private $replication;
 
-    public function __construct(array $config, Cache $cache)
+    public function __construct(array $config)
     {
         $subfolder = '';
         if (isset($config['subfolder'])) {
             $subfolder = $config['subfolder']. '/';
         }
 
-        $this->cache = $cache;
         $this->useGarbage = !empty($config['useGarbage']);
         $this->neverDelete = !empty($config['neverDelete']);
 
@@ -108,13 +102,6 @@ class BunnyCdnAdapter extends AwsS3Adapter
 
         $result = parent::writeStream($path, $resource, $config);
 
-        $cacheResult = $this->getCached($path);
-
-        if (!isset($cacheResult[$path])) {
-            $cacheResult[$path] = true;
-            $this->cache->save($this->getCacheKey($path), $cacheResult);
-        }
-
         if ($this->replication) {
             $this->replication->writeStream($path, $resource, $config);
         }
@@ -158,12 +145,12 @@ class BunnyCdnAdapter extends AwsS3Adapter
      * Rename a file.
      *
      * @param string $path
-     * @param string $newPath
+     * @param string $newpath
      */
-    public function rename($path, $newPath): bool
+    public function rename($path, $newpath): bool
     {
         if ($content = $this->read($path)) {
-            $this->write($newPath, $content['contents'], new Config());
+            $this->write($newpath, $content['contents'], new Config());
             $this->delete($path);
 
             return true;
@@ -176,12 +163,12 @@ class BunnyCdnAdapter extends AwsS3Adapter
      * Copy a file.
      *
      * @param string $path
-     * @param string $newPath
+     * @param string $newpath
      */
-    public function copy($path, $newPath): bool
+    public function copy($path, $newpath): bool
     {
         if ($content = $this->read($path)) {
-            $this->write($newPath, $content['contents'], new Config());
+            $this->write($newpath, $content['contents'], new Config());
             return true;
         }
 
@@ -207,8 +194,6 @@ class BunnyCdnAdapter extends AwsS3Adapter
             return false;
         }
 
-        $this->removeFromCache($path);
-
         if ($this->replication && $this->replication->has($path)) {
             $this->replication->delete($path);
         }
@@ -231,7 +216,7 @@ class BunnyCdnAdapter extends AwsS3Adapter
      *
      * @param string $dirname directory name
      *
-     * @return array|false
+     * @return array
      */
     public function createDir($dirname, Config $config)
     {
@@ -244,7 +229,7 @@ class BunnyCdnAdapter extends AwsS3Adapter
      * @param string $path
      * @param string $visibility
      *
-     * @return array|false file meta data
+     * @return array file meta data
      */
     public function setVisibility($path, $visibility)
     {
@@ -265,19 +250,7 @@ class BunnyCdnAdapter extends AwsS3Adapter
             return true;
         }
 
-        $result = $this->getCached($path);
-
-        if (isset($result[$path]) && $result[$path]) {
-            return true;
-        }
-
-        if ($result[$path] = (bool) $this->getSize($path)) {
-            $this->cache->save($this->getCacheKey($path), $result);
-
-            return true;
-        }
-
-        return false;
+        return (bool) $this->getSize($path);
     }
 
     /**
@@ -304,7 +277,7 @@ class BunnyCdnAdapter extends AwsS3Adapter
      *
      * @param string $path
      *
-     * @return array|false
+     * @return array
      */
     public function getVisibility($path)
     {
@@ -312,34 +285,6 @@ class BunnyCdnAdapter extends AwsS3Adapter
             'path' => $path,
             'visibility' => AdapterInterface::VISIBILITY_PUBLIC,
         ];
-    }
-
-    private function removeFromCache(string $path): void
-    {
-        $result = $this->getCached($path);
-
-        if (isset($result[$path])) {
-            unset($result[$path]);
-            $this->cache->save($this->getCacheKey($path), $result);
-        }
-    }
-
-    private function getCacheKey(string $path): string
-    {
-        return md5($path)[0];
-    }
-
-    private function getCached(string $path): array
-    {
-        $cacheId = $this->getCacheKey($path);
-
-        $result = $this->cache->fetch($cacheId);
-
-        if ($result) {
-            return $result;
-        }
-
-        return [];
     }
 
     private function garbage(string $path): void

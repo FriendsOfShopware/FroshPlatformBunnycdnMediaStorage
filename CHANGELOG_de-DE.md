@@ -1,3 +1,8 @@
+# 2.1.0
+
+* Feature: Verwende S3 für die Verbindung mit bunnyCDN
+* Feature: Enferne Verwendung von Doctrine Cache
+
 # 2.0.6
 
 * Fix: Plugin-Konfiguration wurde nicht korrekt beim Saleschannel-Wechsel gesperrt
