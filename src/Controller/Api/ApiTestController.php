@@ -33,6 +33,12 @@ class ApiTestController
             'neverDelete' => false,
         ];
 
+        $subfolder = rtrim($dataBag->get('FroshPlatformBunnycdnMediaStorage.config.CdnSubFolder', ''), '/');
+
+        if ($subfolder !== '') {
+            $config['apiUrl'] .= $subfolder . '/';
+        }
+
         $filename = Random::getAlphanumericString(20) . '.jpg';
 
         try {
