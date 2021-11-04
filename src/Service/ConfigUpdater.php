@@ -118,13 +118,6 @@ class ConfigUpdater
         $this->cacheClearer->clearContainerCache();
     }
 
-    private function endsWith(
-        string $haystack,
-        string $needle
-    ): bool {
-        return substr_compare($haystack, $needle, -mb_strlen($needle)) === 0;
-    }
-
     private function convertCdnSubFolder(array $pluginConfig): array
     {
         if (!isset($pluginConfig['CdnSubFolder'])) {
