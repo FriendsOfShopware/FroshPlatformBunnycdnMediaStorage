@@ -47,6 +47,7 @@ class BunnyCdnAdapter extends AwsS3Adapter
             'version' => 'latest',
             'region'  => '',
             'endpoint' => $config['endpoint'] . '/',
+            'use_path_style_endpoint' => true,
             'signature_version' => 'v4',
             'mup_threshold' => 99999999,
             'credentials' => [
@@ -55,7 +56,7 @@ class BunnyCdnAdapter extends AwsS3Adapter
             ],
         ]);
 
-        parent::__construct($s3client, '', $config['storageName'] . '/' . $subfolder);
+        parent::__construct($s3client, $config['storageName'], $subfolder);
 
         if (!empty($config['replicationRoot'])) {
             $this->replication = new Local($config['replicationRoot']);
