@@ -1,3 +1,7 @@
+# 2.1.1
+
+* Fix: Support 6.4.6
+
 # 2.1.0
 
 * Feature: use S3 for connection with bunnyCDN
