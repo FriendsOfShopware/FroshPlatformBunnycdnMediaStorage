@@ -1,3 +1,7 @@
+# 2.1.2
+
+* Fix: Support uploads bigger than 16MB
+
 # 2.1.1
 
 * Fix: Support 6.4.6
