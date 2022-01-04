@@ -2,7 +2,6 @@
 
 namespace Frosh\BunnycdnMediaStorage\Adapter;
 
-use Aws\S3\S3Client;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
@@ -49,7 +48,6 @@ class BunnyCdnAdapter extends AwsS3Adapter
             'endpoint' => $config['endpoint'] . '/',
             'use_path_style_endpoint' => true,
             'signature_version' => 'v4',
-            'mup_threshold' => 99999999,
             'credentials' => [
                 'key'    => $config['storageName'],
                 'secret' => $config['apiKey'],
