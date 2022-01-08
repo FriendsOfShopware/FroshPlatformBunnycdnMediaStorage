@@ -2,12 +2,15 @@
 
 namespace Frosh\BunnycdnMediaStorage\Adapter;
 
+use Frosh\BunnycdnMediaStorage\FroshPlatformBunnycdnMediaStorage;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
-use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use League\Flysystem\Config;
+use Tinect\Flysystem\BunnyCDN\BunnyCDNAdapter;
 
-class BunnyCdnAdapter extends AwsS3Adapter
+FroshPlatformBunnycdnMediaStorage::classLoader();
+
+class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
 {
     /** @var bool */
     private $useGarbage;
@@ -42,19 +45,7 @@ class BunnyCdnAdapter extends AwsS3Adapter
             }
         }
 
-        $s3client = new S3Client([
-            'version' => 'latest',
-            'region'  => '',
-            'endpoint' => $config['endpoint'] . '/',
-            'use_path_style_endpoint' => true,
-            'signature_version' => 'v4',
-            'credentials' => [
-                'key'    => $config['storageName'],
-                'secret' => $config['apiKey'],
-            ],
-        ]);
-
-        parent::__construct($s3client, $config['storageName'], $subfolder);
+        parent::__construct($config['storageName'], $config['apiKey'], $config['endpoint'], $subfolder);
 
         if (!empty($config['replicationRoot'])) {
             $this->replication = new Local($config['replicationRoot']);
@@ -72,16 +63,13 @@ class BunnyCdnAdapter extends AwsS3Adapter
      */
     public function write($path, $contents, Config $config)
     {
-        $stream = tmpfile();
-        fwrite($stream, $contents);
-        rewind($stream);
-        $result = $this->writeStream($path, $stream, $config);
+        $this->garbage($path);
 
-        if ($result === false) {
-            return false;
+        $result = parent::write($path, $contents, $config);
+
+        if ($result !== false && $this->replication) {
+            $this->replication->write($path, $contents, $config);
         }
-
-        $result['contents'] = $contents;
 
         return $result;
     }
@@ -141,40 +129,6 @@ class BunnyCdnAdapter extends AwsS3Adapter
     }
 
     /**
-     * Rename a file.
-     *
-     * @param string $path
-     * @param string $newpath
-     */
-    public function rename($path, $newpath): bool
-    {
-        if ($content = $this->read($path)) {
-            $this->write($newpath, $content['contents'], new Config());
-            $this->delete($path);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Copy a file.
-     *
-     * @param string $path
-     * @param string $newpath
-     */
-    public function copy($path, $newpath): bool
-    {
-        if ($content = $this->read($path)) {
-            $this->write($newpath, $content['contents'], new Config());
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Delete a file.
      *
      * @param string $path
@@ -211,31 +165,6 @@ class BunnyCdnAdapter extends AwsS3Adapter
     }
 
     /**
-     * Create a directory.
-     *
-     * @param string $dirname directory name
-     *
-     * @return array
-     */
-    public function createDir($dirname, Config $config)
-    {
-        return [];
-    }
-
-    /**
-     * Set the visibility for a file.
-     *
-     * @param string $path
-     * @param string $visibility
-     *
-     * @return array file meta data
-     */
-    public function setVisibility($path, $visibility)
-    {
-        return [];
-    }
-
-    /**
      * Check whether a file exists.
      *
      * @param string $path
@@ -250,40 +179,6 @@ class BunnyCdnAdapter extends AwsS3Adapter
         }
 
         return (bool) $this->getSize($path);
-    }
-
-    /**
-     * Read a file.
-     *
-     * @param string $path
-     *
-     * @return array|false
-     */
-    public function read($path)
-    {
-        if (!$object = $this->readStream($path)) {
-            return false;
-        }
-        $object['contents'] = stream_get_contents($object['stream']);
-        fclose($object['stream']);
-        unset($object['stream']);
-
-        return $object;
-    }
-
-    /**
-     * Get the visibility of a file.
-     *
-     * @param string $path
-     *
-     * @return array
-     */
-    public function getVisibility($path)
-    {
-        return [
-            'path' => $path,
-            'visibility' => AdapterInterface::VISIBILITY_PUBLIC,
-        ];
     }
 
     private function garbage(string $path): void

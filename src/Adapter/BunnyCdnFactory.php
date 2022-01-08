@@ -9,7 +9,7 @@ class BunnyCdnFactory implements AdapterFactoryInterface
 {
     public function create(array $config): AdapterInterface
     {
-        return new BunnyCdnAdapter($config);
+        return new Shopware6BunnyCdnAdapter($config);
     }
 
     public function getType(): string
