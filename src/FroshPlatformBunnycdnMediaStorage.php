@@ -2,6 +2,7 @@
 
 namespace Frosh\BunnycdnMediaStorage;
 
+use Composer\Autoload\ClassLoader;
 use Shopware\Core\Framework\Plugin;
 use Shopware\Core\Framework\Plugin\Context\UninstallContext;
 use Symfony\Component\Config\FileLocator;
@@ -46,5 +47,23 @@ class FroshPlatformBunnycdnMediaStorage extends Plugin
         }
 
         return $container->getParameter('kernel.project_dir') . '/var/bunnycdn_config.yml';
+    }
+
+    public static function classLoader(): void
+    {
+        $file = __DIR__ . '/../vendor/autoload.php';
+        if (!is_file($file)) {
+            return;
+        }
+
+        /** @noinspection UsingInclusionOnceReturnValueInspection */
+        $classLoader = require_once $file;
+
+        if (!$classLoader instanceof ClassLoader) {
+            return;
+        }
+
+        $classLoader->unregister();
+        $classLoader->register(false);
     }
 }

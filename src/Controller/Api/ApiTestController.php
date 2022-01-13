@@ -2,8 +2,7 @@
 
 namespace Frosh\BunnycdnMediaStorage\Controller\Api;
 
-use Doctrine\Common\Cache\Cache;
-use Frosh\BunnycdnMediaStorage\Adapter\BunnyCdnAdapter;
+use Frosh\BunnycdnMediaStorage\Adapter\Shopware6BunnyCdnAdapter;
 use League\Flysystem\Config;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\Framework\Util\Random;
@@ -42,7 +41,7 @@ class ApiTestController
         $filename = Random::getAlphanumericString(20) . '.jpg';
 
         try {
-            $adapter = new BunnyCdnAdapter($config);
+            $adapter = new Shopware6BunnyCdnAdapter($config);
             if ($adapter->write($filename, $filename, new Config())) {
                 $success = true;
                 $adapter->delete($filename);
