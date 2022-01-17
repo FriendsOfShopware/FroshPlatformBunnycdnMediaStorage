@@ -1,3 +1,7 @@
+# 2.2.0
+
+* Feat: Verwendung des abstrakten Adapters für bunnyCDN
+
 # 2.1.2
 
 * Fix: Support Uploads, die größer als 16MB sind
