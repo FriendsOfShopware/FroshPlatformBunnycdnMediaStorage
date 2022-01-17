@@ -19,7 +19,7 @@
         }
     ],
     "require": {
-        "shopware/core": "^6.4.0",
+        "shopware/core": "^6.4.3",
         "tinect/bunnycdn-s3-flysystem-adapter": "^1.0.2"
     },
     "extra": {
