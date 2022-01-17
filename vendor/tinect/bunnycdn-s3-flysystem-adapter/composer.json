@@ -1,0 +1,24 @@
+{
+    "name": "tinect/bunnycdn-s3-flysystem-adapter",
+    "description": "Flysystem adapter for BunnyCDN",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "tinect"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "league/flysystem": "~1.0",
+        "ext-json": "*",
+        "league/flysystem-aws-s3-v3": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tinect\\Flysystem\\BunnyCDN\\": "src/"
+        }
+    }
+}
