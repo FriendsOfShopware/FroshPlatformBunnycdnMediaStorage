@@ -1,0 +1,347 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "7ca6602e3be19a8f4a5510cfbaeb3c39",
+    "packages": [
+        {
+            "name": "async-aws/core",
+            "version": "1.15.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/async-aws/core.git",
+                "reference": "40348e9c42405aa5aef0a9c275336af0e3087cf5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/async-aws/core/zipball/40348e9c42405aa5aef0a9c275336af0e3087cf5",
+                "reference": "40348e9c42405aa5aef0a9c275336af0e3087cf5",
+                "shasum": ""
+            },
+            "require": {
+                "ext-hash": "*",
+                "ext-json": "*",
+                "ext-simplexml": "*",
+                "php": "^7.2.5 || ^8.0",
+                "psr/cache": "^1.0 || ^2.0 || ^3.0",
+                "psr/log": "^1.0 || ^2.0 || ^3.0",
+                "symfony/deprecation-contracts": "^2.1 || ^3.0",
+                "symfony/http-client": "^4.4.16 || ^5.1.7,!=5.2.0 || ^6.0",
+                "symfony/http-client-contracts": "^1.1.8 || ^2.0 || ^3.0",
+                "symfony/service-contracts": "^1.0 || ^2.0 || ^3.0"
+            },
+            "conflict": {
+                "async-aws/s3": "<1.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.15-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "AsyncAws\\Core\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Core package to integrate with AWS. This is a lightweight AWS SDK provider by AsyncAws.",
+            "keywords": [
+                "amazon",
+                "async-aws",
+                "aws",
+                "sdk",
+                "sts"
+            ],
+            "support": {
+                "source": "https://github.com/async-aws/core/tree/1.15.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/jderusse",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nyholm",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-05-27T23:40:14+00:00"
+        },
+        {
+            "name": "async-aws/flysystem-s3",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/async-aws/flysystem-s3.git",
+                "reference": "6114a47ebba5283d57ee394b929c8187c2a60145"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/async-aws/flysystem-s3/zipball/6114a47ebba5283d57ee394b929c8187c2a60145",
+                "reference": "6114a47ebba5283d57ee394b929c8187c2a60145",
+                "shasum": ""
+            },
+            "require": {
+                "async-aws/s3": "^1.5",
+                "league/flysystem": "^1.0.65",
+                "league/mime-type-detection": "^1.0",
+                "php": "^7.2.5 || ^8.0"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "^5.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "AsyncAws\\Flysystem\\S3\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tobias Nyholm",
+                    "email": "tobias.nyholm@gmail.com"
+                }
+            ],
+            "description": "Flysystem S3 adapter from AsyncAws.",
+            "keywords": [
+                "Flysystem",
+                "amazon",
+                "async-aws",
+                "aws",
+                "filesystem",
+                "s3",
+                "sdk"
+            ],
+            "support": {
+                "source": "https://github.com/async-aws/flysystem-s3/tree/1.0.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/jderusse",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nyholm",
+                    "type": "github"
+                }
+            ],
+            "time": "2021-10-02T11:41:51+00:00"
+        },
+        {
+            "name": "async-aws/s3",
+            "version": "1.12.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/async-aws/s3.git",
+                "reference": "0e353d87ac3d6dc15becfce22ccad4ffa7842c5f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/async-aws/s3/zipball/0e353d87ac3d6dc15becfce22ccad4ffa7842c5f",
+                "reference": "0e353d87ac3d6dc15becfce22ccad4ffa7842c5f",
+                "shasum": ""
+            },
+            "require": {
+                "async-aws/core": "^1.9",
+                "ext-dom": "*",
+                "ext-filter": "*",
+                "ext-hash": "*",
+                "ext-simplexml": "*",
+                "php": "^7.2.5 || ^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.12-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "AsyncAws\\S3\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "S3 client, part of the AWS SDK provided by AsyncAws.",
+            "keywords": [
+                "amazon",
+                "async-aws",
+                "aws",
+                "s3",
+                "sdk"
+            ],
+            "support": {
+                "source": "https://github.com/async-aws/s3/tree/1.12.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/jderusse",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nyholm",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-05-27T23:40:14+00:00"
+        },
+        {
+            "name": "symfony/http-client",
+            "version": "v5.4.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/http-client.git",
+                "reference": "dc0b15e42b762c040761c1eb9ce86a55d47cf672"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/http-client/zipball/dc0b15e42b762c040761c1eb9ce86a55d47cf672",
+                "reference": "dc0b15e42b762c040761c1eb9ce86a55d47cf672",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "psr/log": "^1|^2|^3",
+                "symfony/deprecation-contracts": "^2.1|^3",
+                "symfony/http-client-contracts": "^2.4",
+                "symfony/polyfill-php73": "^1.11",
+                "symfony/polyfill-php80": "^1.16",
+                "symfony/service-contracts": "^1.0|^2|^3"
+            },
+            "provide": {
+                "php-http/async-client-implementation": "*",
+                "php-http/client-implementation": "*",
+                "psr/http-client-implementation": "1.0",
+                "symfony/http-client-implementation": "2.4"
+            },
+            "require-dev": {
+                "amphp/amp": "^2.5",
+                "amphp/http-client": "^4.2.1",
+                "amphp/http-tunnel": "^1.0",
+                "amphp/socket": "^1.1",
+                "guzzlehttp/promises": "^1.4",
+                "nyholm/psr7": "^1.0",
+                "php-http/httplug": "^1.0|^2.0",
+                "psr/http-client": "^1.0",
+                "symfony/dependency-injection": "^4.4|^5.0|^6.0",
+                "symfony/http-kernel": "^4.4.13|^5.1.5|^6.0",
+                "symfony/process": "^4.4|^5.0|^6.0",
+                "symfony/stopwatch": "^4.4|^5.0|^6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\HttpClient\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Provides powerful methods to fetch HTTP resources synchronously or asynchronously",
+            "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/http-client/tree/v5.4.9"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-05-21T08:57:05+00:00"
+        },
+        {
+            "name": "tinect/bunnycdn-s3-flysystem-adapter",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tinect/bunnycdn-s3-flysystem-adapter.git",
+                "reference": "a2751657d64897ff24eeb206d2c4a2917612f224"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tinect/bunnycdn-s3-flysystem-adapter/zipball/a2751657d64897ff24eeb206d2c4a2917612f224",
+                "reference": "a2751657d64897ff24eeb206d2c4a2917612f224",
+                "shasum": ""
+            },
+            "require": {
+                "async-aws/flysystem-s3": "^1.0",
+                "ext-json": "*",
+                "league/flysystem": "~1.0",
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.0 | ^9.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Tinect\\Flysystem\\BunnyCDN\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "tinect"
+                }
+            ],
+            "description": "Flysystem adapter for BunnyCDN",
+            "support": {
+                "issues": "https://github.com/tinect/bunnycdn-s3-flysystem-adapter/issues",
+                "source": "https://github.com/tinect/bunnycdn-s3-flysystem-adapter/tree/1.0.2"
+            },
+            "time": "2022-01-13T07:11:43+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
+}
