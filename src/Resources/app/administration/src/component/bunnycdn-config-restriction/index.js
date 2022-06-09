@@ -32,8 +32,12 @@ Component.register('bunnycdn-config-restriction', {
                 return this.$parent.$parent.$parent;
             }
 
-            // in SW6.3.4 it's one step above
-            return this.$parent.$parent.$parent.$parent;
+            config = this.$parent.$parent.$parent.$parent.actualConfigData;
+            if (config) {
+                return this.$parent.$parent.$parent.$parent;
+            }
+
+            return this.$parent.$parent.$parent.$parent.$parent;
         }
     },
 

@@ -1,3 +1,7 @@
+# 2.2.1
+
+* Feat: update config-restriction
+
 # 2.2.0
 
 * Feat: Verwendung des abstrakten Adapters für bunnyCDN
