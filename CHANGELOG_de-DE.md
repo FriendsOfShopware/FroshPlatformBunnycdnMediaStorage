@@ -1,3 +1,7 @@
+# 2.2.3
+
+* Fix: ignore error thrown by SFTP when its setting visibility
+
 # 2.2.2
 
 * Fix: use SFTP while bunnyCDN killed S3 for the moment
