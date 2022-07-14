@@ -1,3 +1,7 @@
+# 2.2.4
+
+* Fix: do not connect when constructing class
+
 # 2.2.3
 
 * Fix: ignore error thrown by SFTP when its setting visibility

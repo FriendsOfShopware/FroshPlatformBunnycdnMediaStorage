@@ -9,7 +9,7 @@
         "storage"
     ],
     "description": "This plugins allows you to use BunnyCdn as adapter for media",
-    "version": "2.2.3",
+    "version": "2.2.4",
     "type": "shopware-platform-plugin",
     "license": "mit",
     "authors": [
@@ -20,7 +20,7 @@
     ],
     "require": {
         "shopware/core": "^6.4.3",
-        "tinect/bunnycdn-sftp-flysystem-adapter": "^1.0.1"
+        "tinect/bunnycdn-sftp-flysystem-adapter": "^1.0.2"
     },
     "extra": {
         "shopware-plugin-class": "Frosh\\BunnycdnMediaStorage\\FroshPlatformBunnycdnMediaStorage",
