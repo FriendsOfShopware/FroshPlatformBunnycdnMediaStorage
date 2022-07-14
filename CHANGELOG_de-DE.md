@@ -1,3 +1,7 @@
+# 2.2.2
+
+* Fix: use SFTP while bunnyCDN killed S3 for the moment
+
 # 2.2.1
 
 * Feat: update config-restriction
