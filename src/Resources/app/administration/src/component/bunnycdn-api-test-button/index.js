@@ -19,14 +19,17 @@ Component.register('bunnycdn-api-test-button', {
     },
 
     computed: {
-        pluginConfig() {
-            let config = this.$parent.$parent.$parent.actualConfigData;
-            if (config) {
-                return config.null;
+        pluginConfigData() {
+            let configData = this.$parent;
+            for (let i = 0; i < 20; i++) {
+                if (configData.actualConfigData) {
+                    return configData.actualConfigData.null;
+                }
+
+                configData = configData.$parent;
             }
 
-            // in SW6.3.4 it's one step above
-            return this.$parent.$parent.$parent.$parent.actualConfigData.null;
+            throw "Can not get pluginConfigData";
         }
     },
 
@@ -37,7 +40,7 @@ Component.register('bunnycdn-api-test-button', {
 
         check() {
             this.isLoading = true;
-            this.bunnycdnApiTest.check(this.pluginConfig).then((res) => {
+            this.bunnycdnApiTest.check(this.pluginConfigData).then((res) => {
                 if (res.success) {
                     this.isSaveSuccessful = true;
                     this.createNotificationSuccess({

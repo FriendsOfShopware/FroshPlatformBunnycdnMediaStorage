@@ -42,8 +42,11 @@ class ApiTestController
 
         try {
             $adapter = new Shopware6BunnyCdnAdapter($config);
-            if ($adapter->write($filename, $filename, new Config())) {
-                $success = true;
+
+            $adapter->write($filename, $filename, new Config());
+            $success = $adapter->has($filename);
+
+            if ($success) {
                 $adapter->delete($filename);
             }
         } catch (\Exception $e) {

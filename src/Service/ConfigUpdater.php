@@ -8,20 +8,11 @@ use Symfony\Component\Yaml\Yaml;
 
 class ConfigUpdater
 {
-    /**
-     * @var SystemConfigService
-     */
-    private $systemConfigService;
+    private SystemConfigService $systemConfigService;
 
-    /**
-     * @var string
-     */
-    private $configPath;
+    private string $configPath;
 
-    /**
-     * @var CacheClearer
-     */
-    private $cacheClearer;
+    private CacheClearer $cacheClearer;
 
     public function __construct(SystemConfigService $systemConfigService, CacheClearer $cacheClearer, string $configPath)
     {
@@ -60,6 +51,10 @@ class ConfigUpdater
         }
 
         $defaultUrl = getenv('APP_URL');
+
+        if ($pluginConfig['CdnUrl'] === '') {
+            $pluginConfig['CdnUrl'] = $defaultUrl;
+        }
 
         $pluginConfig = $this->convertCdnSubFolder($pluginConfig);
 
@@ -109,7 +104,7 @@ class ConfigUpdater
         unset($filesystem);
 
         $data['shopware'] = [
-            'cdn' => ['url' => $this->systemConfigService->get('FroshPlatformBunnycdnMediaStorage.config.CdnUrl')],
+            'cdn' => ['url' => $pluginConfig['CdnUrl']],
             'filesystem' => $filesystemData,
         ];
 

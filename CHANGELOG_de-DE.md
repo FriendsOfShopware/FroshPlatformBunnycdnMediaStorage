@@ -1,3 +1,7 @@
+# 2.2.5
+
+* Fix: correct button Test API for newer shopware versions
+
 # 2.2.4
 
 * Fix: do not connect when constructing class
