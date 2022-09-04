@@ -38,7 +38,7 @@ class ApiTestController
             $config['apiUrl'] .= $subfolder . '/';
         }
 
-        $filename = Random::getAlphanumericString(20) . '.jpg';
+        $filename = 'testfile_' . Random::getAlphanumericString(20) . '.jpg';
 
         try {
             $adapter = new Shopware6BunnyCdnAdapter($config);
