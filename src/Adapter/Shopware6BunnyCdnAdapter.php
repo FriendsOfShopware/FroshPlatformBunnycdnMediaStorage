@@ -6,7 +6,9 @@ use Frosh\BunnycdnMediaStorage\FroshPlatformBunnycdnMediaStorage;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Config;
-use Tinect\Flysystem\BunnyCDN\BunnyCDNAdapter;
+use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNAdapter;
+use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNClient;
+use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNRegion;
 
 FroshPlatformBunnycdnMediaStorage::classLoader();
 
@@ -23,10 +25,7 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
 
     public function __construct(array $config)
     {
-        $subfolder = '';
-        if (isset($config['subfolder'])) {
-            $subfolder = $config['subfolder']. '/';
-        }
+        $subfolder = $config['subfolder'] ?? '';
 
         $this->useGarbage = !empty($config['useGarbage']);
         $this->neverDelete = !empty($config['neverDelete']);
@@ -41,11 +40,23 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
             $config['storageName'] = $parts[1] ?? '';
 
             if (count($parts) > 1) {
-                $subfolder = implode('/', array_slice($parts, 1)) . '/';
+                $subfolder = implode('/', array_slice($parts, 1));
             }
         }
 
-        parent::__construct($config['storageName'], $config['apiKey'], $config['endpoint'], $subfolder);
+        $region = BunnyCDNRegion::FALKENSTEIN;
+        preg_match('/http(s):\/\/(.*).storage.bunnycdn.com/', $config['endpoint'], $matches);
+        if (count($matches) === 3) {
+            $region = $matches[2];
+        }
+
+        $client = new BunnyCDNClient(
+            $config['storageName'],
+            $config['apiKey'],
+            $region,
+        );
+
+        parent::__construct($client, '', \rtrim($subfolder, '/'));
 
         if (!empty($config['replicationRoot'])) {
             $this->replication = new Local($config['replicationRoot']);
@@ -61,7 +72,7 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
      *
      * @return array|false false on failure file meta data on success
      */
-    public function write($path, $contents, Config $config)
+    public function write($path, $contents, Config $config): bool
     {
         $this->garbage($path);
 
@@ -105,7 +116,7 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
      *
      * @return array|false false on failure file meta data on success
      */
-    public function update($path, $contents, Config $config)
+    public function update($path, $contents, Config $config): bool
     {
         $this->delete($path);
 
@@ -178,7 +189,7 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
             return true;
         }
 
-        return (bool) $this->getSize($path);
+        return parent::has($path);
     }
 
     private function garbage(string $path): void
