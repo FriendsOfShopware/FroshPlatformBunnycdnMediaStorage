@@ -1,3 +1,7 @@
+# 2.3.0
+
+* Performance: use http-based client
+
 # 2.2.5
 
 * Fix: correct button Test API for newer shopware versions
