@@ -1,3 +1,7 @@
+# 2.3.1
+
+* Fix: update client to fix sitemaps
+
 # 2.3.0
 
 * Performance: use http-based client
