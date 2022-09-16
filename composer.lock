@@ -1,0 +1,71 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "f0b672d6866b4c3bf42a86133402ff80",
+    "packages": [
+        {
+            "name": "tinect/flysystem-bunnycdn",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tinect/flysystem-bunnycdn.git",
+                "reference": "0be0a0acdab1256cc7acdda6567a492d80f56802"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tinect/flysystem-bunnycdn/zipball/0be0a0acdab1256cc7acdda6567a492d80f56802",
+                "reference": "0be0a0acdab1256cc7acdda6567a492d80f56802",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "guzzlehttp/guzzle": "^7.2",
+                "league/flysystem": "^1.0"
+            },
+            "require-dev": {
+                "fzaninotto/faker": "^1.5",
+                "league/flysystem-memory": "^1.0",
+                "mockery/mockery": "^1.3",
+                "phpunit/phpunit": "^8.5.23 | ^9.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PlatformCommunity\\Flysystem\\BunnyCDN\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alex Sinnott",
+                    "email": "alex@platformapp.io"
+                }
+            ],
+            "description": "Flysystem adapter for BunnyCDN. This is a temporarily productive fork of platformcommunity/flysystem-bunnycdn",
+            "support": {
+                "source": "https://github.com/tinect/flysystem-bunnycdn/tree/1.0.2"
+            },
+            "time": "2022-09-16T15:21:47+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
+}
