@@ -1,3 +1,7 @@
+# 2.3.2
+
+* Fix: update client to fix prefixPaths
+
 # 2.3.1
 
 * Fix: update client to fix sitemaps
