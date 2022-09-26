@@ -1,3 +1,7 @@
+# 2.3.3
+
+* Fix: update client to fix json-uploads
+
 # 2.3.2
 
 * Fix: update client to fix prefixPaths
