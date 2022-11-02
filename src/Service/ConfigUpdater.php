@@ -5,6 +5,7 @@ namespace Frosh\BunnycdnMediaStorage\Service;
 use Shopware\Core\Framework\Adapter\Cache\CacheClearer;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
 use Symfony\Component\Yaml\Yaml;
+use Shopware\Core\DevOps\Environment\EnvironmentHelper;
 
 class ConfigUpdater
 {
@@ -50,7 +51,7 @@ class ConfigUpdater
             return;
         }
 
-        $defaultUrl = getenv('APP_URL');
+        $defaultUrl = EnvironmentHelper::getVariable('APP_URL');
 
         if ($pluginConfig['CdnUrl'] === '') {
             $pluginConfig['CdnUrl'] = $defaultUrl;
