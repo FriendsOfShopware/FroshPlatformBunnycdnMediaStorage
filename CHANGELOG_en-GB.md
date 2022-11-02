@@ -1,3 +1,7 @@
+# 2.3.4
+
+* Fix: change usage of getenv to EnvironmentHelper to have better support for environment variables
+
 # 2.3.3
 
 * Fix: update client to fix json-uploads
