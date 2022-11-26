@@ -39,10 +39,6 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
 
         //TODO: FIX URL!
         parent::__construct($client, '');
-
-        if (!empty($config['replicationRoot'])) {
-            $this->replication = new LocalFilesystemAdapter($config['replicationRoot']);
-        }
     }
 
     /**
@@ -51,8 +47,6 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
     public function copy($source, $destination, Config $config): void
     {
         parent::write($destination, $this->read($source), $config);
-
-        $this->replicate(__FUNCTION__, \func_get_args());
     }
 
     /**
@@ -63,8 +57,6 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
         $this->garbage($path);
 
         parent::write($path, $contents, $config);
-
-        $this->replicate(__FUNCTION__, \func_get_args());
     }
 
     /**
@@ -75,8 +67,6 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
         $this->garbage($path);
 
         parent::write($path, $contents, $config);
-
-        $this->replicate(__FUNCTION__, \func_get_args());
     }
 
     /**
@@ -91,8 +81,6 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
         $this->garbage($path);
 
         parent::delete($path);
-
-        $this->replicate(__FUNCTION__, \func_get_args());
     }
 
     /**
@@ -111,8 +99,6 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
         $this->garbage($path);
 
         parent::createDirectory($path, $config);
-
-        $this->replicate(__FUNCTION__, \func_get_args());
     }
 
     /**
@@ -123,8 +109,6 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
         $this->garbage($source);
 
         parent::move($source, $destination, $config);
-
-        $this->replicate(__FUNCTION__, \func_get_args());
     }
 
     /**
@@ -140,15 +124,6 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
         }
 
         return parent::fileExists($path);
-    }
-
-    private function replicate(string $function, array $args): void
-    {
-        if (!$this->replication) {
-            return;
-        }
-
-        call_user_func_array(array($this->replication, $function), $args);
     }
 
     private function garbage(string $path): void

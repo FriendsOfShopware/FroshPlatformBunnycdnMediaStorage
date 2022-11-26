@@ -2,7 +2,10 @@
 
 namespace Frosh\BunnycdnMediaStorage\Adapter;
 
+use Ajgl\Flysystem\Replicate\ReplicateFilesystemAdapter;
 use League\Flysystem\FilesystemAdapter;
+use League\Flysystem\Local\LocalFilesystemAdapter;
+use League\Flysystem\PathPrefixing\PathPrefixedAdapter;
 use Shopware\Core\Framework\Adapter\Filesystem\Adapter\AdapterFactoryInterface;
 
 class BunnyCdnFactory implements AdapterFactoryInterface
@@ -27,11 +30,22 @@ class BunnyCdnFactory implements AdapterFactoryInterface
 
         $config['subfolder'] = \rtrim($config['subfolder'], '/');
 
+        $adapter = new Shopware6BunnyCdnAdapter($config);
+
         if (!empty($config['subfolder'])) {
-            //TODO: boot prefixAdapter
+            $adapter = new PathPrefixedAdapter($adapter, $config['subfolder']);
         }
 
-        return new Shopware6BunnyCdnAdapter($config);
+        if (!empty($config['subfolder'])) {
+            $adapter = new PathPrefixedAdapter($adapter, $config['subfolder']);
+        }
+
+        if (!empty($config['replicationRoot'])) {
+            $adapter = new ReplicateFilesystemAdapter($adapter, new LocalFilesystemAdapter($config['replicationRoot']));
+        }
+
+
+        return $adapter;
     }
 
     public function getType(): string
