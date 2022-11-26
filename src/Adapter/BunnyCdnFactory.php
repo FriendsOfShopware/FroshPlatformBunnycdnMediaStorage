@@ -2,12 +2,12 @@
 
 namespace Frosh\BunnycdnMediaStorage\Adapter;
 
-use League\Flysystem\AdapterInterface;
+use League\Flysystem\FilesystemAdapter;
 use Shopware\Core\Framework\Adapter\Filesystem\Adapter\AdapterFactoryInterface;
 
 class BunnyCdnFactory implements AdapterFactoryInterface
 {
-    public function create(array $config): AdapterInterface
+    public function create(array $config): FilesystemAdapter
     {
         return new Shopware6BunnyCdnAdapter($config);
     }

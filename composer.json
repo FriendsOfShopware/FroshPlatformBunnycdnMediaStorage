@@ -19,8 +19,8 @@
         }
     ],
     "require": {
-        "shopware/core": "^6.4.3",
-        "tinect/flysystem-bunnycdn": "^1.0.4"
+        "shopware/core": "~6.5.0",
+        "platformcommunity/flysystem-bunnycdn": "~3.3.1"
     },
     "extra": {
         "shopware-plugin-class": "Frosh\\BunnycdnMediaStorage\\FroshPlatformBunnycdnMediaStorage",

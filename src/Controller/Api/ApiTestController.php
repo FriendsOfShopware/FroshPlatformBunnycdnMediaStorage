@@ -4,14 +4,13 @@ namespace Frosh\BunnycdnMediaStorage\Controller\Api;
 
 use Frosh\BunnycdnMediaStorage\Adapter\Shopware6BunnyCdnAdapter;
 use League\Flysystem\Config;
-use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Shopware\Core\Framework\Util\Random;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @RouteScope(scopes={"administration"})
+ * @Route(defaults={"_routeScope"={"administration"}})
  */
 class ApiTestController
 {
@@ -41,7 +40,7 @@ class ApiTestController
             if ($success) {
                 $adapter->delete($filename);
             }
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $success = false;
         }
 

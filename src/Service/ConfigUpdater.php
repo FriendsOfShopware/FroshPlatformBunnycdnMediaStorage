@@ -9,21 +9,16 @@ use Shopware\Core\DevOps\Environment\EnvironmentHelper;
 
 class ConfigUpdater
 {
-    private SystemConfigService $systemConfigService;
-
-    private string $configPath;
-
-    private CacheClearer $cacheClearer;
-
-    public function __construct(SystemConfigService $systemConfigService, CacheClearer $cacheClearer, string $configPath)
-    {
-        $this->systemConfigService = $systemConfigService;
-        $this->configPath = $configPath;
-        $this->cacheClearer = $cacheClearer;
+    public function __construct(
+        private readonly SystemConfigService $systemConfigService,
+        private readonly CacheClearer $cacheClearer,
+        private readonly string $configPath
+    ) {
     }
 
     public function update(array $config): void
     {
+        $data = [];
         $pluginConfig = $this->systemConfigService->get('FroshPlatformBunnycdnMediaStorage.config');
         $pluginConfig = array_merge($pluginConfig, $config);
 
