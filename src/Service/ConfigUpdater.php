@@ -2,10 +2,10 @@
 
 namespace Frosh\BunnycdnMediaStorage\Service;
 
+use Shopware\Core\DevOps\Environment\EnvironmentHelper;
 use Shopware\Core\Framework\Adapter\Cache\CacheClearer;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
 use Symfony\Component\Yaml\Yaml;
-use Shopware\Core\DevOps\Environment\EnvironmentHelper;
 
 class ConfigUpdater
 {

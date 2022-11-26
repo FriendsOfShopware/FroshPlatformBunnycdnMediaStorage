@@ -27,7 +27,7 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
 
         $region = BunnyCDNRegion::FALKENSTEIN;
         preg_match('/http(s):\/\/(.*).storage.bunnycdn.com/', $config['endpoint'], $matches);
-        if (count($matches) === 3) {
+        if (\count($matches) === 3) {
             $region = $matches[2];
         }
 
@@ -100,7 +100,7 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
      */
     public function deleteDirectory(string $path): void
     {
-        $this->delete(rtrim($path, '/').'/');
+        $this->delete(rtrim($path, '/') . '/');
     }
 
     /**
@@ -148,7 +148,7 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
             return;
         }
 
-        call_user_func_array([$this->replication, $function], $args);
+        \call_user_func_array([$this->replication, $function], $args);
     }
 
     private function garbage(string $path): void

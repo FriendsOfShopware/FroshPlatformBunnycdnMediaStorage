@@ -40,15 +40,6 @@ class FroshPlatformBunnycdnMediaStorage extends Plugin
         parent::uninstall($uninstallContext);
     }
 
-    private function getConfigPath($container = null): string
-    {
-        if (!$container && $this->container) {
-            $container = $this->container;
-        }
-
-        return $container->getParameter('kernel.project_dir') . '/var/bunnycdn_config.yml';
-    }
-
     public static function classLoader(): void
     {
         $file = __DIR__ . '/../vendor/autoload.php';
@@ -65,5 +56,14 @@ class FroshPlatformBunnycdnMediaStorage extends Plugin
 
         $classLoader->unregister();
         $classLoader->register(false);
+    }
+
+    private function getConfigPath($container = null): string
+    {
+        if (!$container && $this->container) {
+            $container = $this->container;
+        }
+
+        return $container->getParameter('kernel.project_dir') . '/var/bunnycdn_config.yml';
     }
 }

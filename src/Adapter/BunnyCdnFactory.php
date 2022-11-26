@@ -21,8 +21,8 @@ class BunnyCdnFactory implements AdapterFactoryInterface
             $parts = array_filter($parts);
             $config['storageName'] = $parts[1] ?? '';
 
-            if (count($parts) > 1) {
-                $config['subfolder'] = implode('/', array_slice($parts, 1));
+            if (\count($parts) > 1) {
+                $config['subfolder'] = implode('/', \array_slice($parts, 1));
             }
         }
 

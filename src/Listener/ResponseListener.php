@@ -35,9 +35,6 @@ class ResponseListener
         $this->urls = array_unique(array_filter($this->urls));
     }
 
-    /**
-     * @param ResponseEvent $event
-     */
     public function onKernelResponse(ResponseEvent $event): void
     {
         if (!$event->isMainRequest()) {
@@ -46,8 +43,8 @@ class ResponseListener
 
         $response = $event->getResponse();
 
-        if ($response instanceof BinaryFileResponse ||
-            $response instanceof StreamedResponse) {
+        if ($response instanceof BinaryFileResponse
+            || $response instanceof StreamedResponse) {
             return;
         }
 
