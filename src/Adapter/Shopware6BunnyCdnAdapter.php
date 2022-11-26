@@ -74,7 +74,7 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
     {
         $this->garbage($path);
 
-        parent::write($path, $contents, $config);
+        parent::writeStream($path, $contents, $config);
 
         $this->replicate(__FUNCTION__, \func_get_args());
     }
@@ -148,7 +148,7 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
             return;
         }
 
-        call_user_func_array(array($this->replication, $function), $args);
+        call_user_func_array([$this->replication, $function], $args);
     }
 
     private function garbage(string $path): void
