@@ -37,8 +37,8 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
             $region,
         );
 
-        //TODO: FIX URL!
-        parent::__construct($client, '');
+        //url is managed by shop using public_url at filesystem
+        parent::__construct($client);
 
         if (!empty($config['replicationRoot'])) {
             $this->replication = new LocalFilesystemAdapter($config['replicationRoot']);

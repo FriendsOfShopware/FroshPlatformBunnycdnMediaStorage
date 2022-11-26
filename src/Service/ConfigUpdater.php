@@ -56,7 +56,7 @@ class ConfigUpdater
 
         $filesystemBunnyCdnConfig = [
             'type' => 'bunnycdn',
-            'url' => rtrim((string) $pluginConfig['CdnUrl'], '/') . '/' . $pluginConfig['CdnSubFolder'],
+            'url' => rtrim((string) $pluginConfig['CdnUrl'], '/') . '/' . trim((string) $pluginConfig['CdnSubFolder'], '/'),
             'config' => [
                 'endpoint' => rtrim((string) $pluginConfig['CdnHostname'], '/'),
                 'storageName' => $pluginConfig['StorageName'],
