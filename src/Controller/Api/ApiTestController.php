@@ -21,22 +21,14 @@ class ApiTestController
      */
     public function check(RequestDataBag $dataBag): JsonResponse
     {
-        $success = false;
-
         $config = [
-            'apiUrl' => rtrim($dataBag->get('FroshPlatformBunnycdnMediaStorage.config.CdnHostname', ''), '/')
-                . '/'
-                . $dataBag->get('FroshPlatformBunnycdnMediaStorage.config.StorageName', '') . '/',
+            'endpoint' => rtrim((string) $dataBag->get('FroshPlatformBunnycdnMediaStorage.config.CdnHostname', ''), '/'),
+            'storageName' => $dataBag->get('FroshPlatformBunnycdnMediaStorage.config.StorageName', ''),
+            'subfolder' => rtrim($dataBag->get('FroshPlatformBunnycdnMediaStorage.config.CdnSubFolder', ''), '/'),
             'apiKey' => $dataBag->get('FroshPlatformBunnycdnMediaStorage.config.ApiKey', ''),
             'useGarbage' => false,
             'neverDelete' => false,
         ];
-
-        $subfolder = rtrim($dataBag->get('FroshPlatformBunnycdnMediaStorage.config.CdnSubFolder', ''), '/');
-
-        if ($subfolder !== '') {
-            $config['apiUrl'] .= $subfolder . '/';
-        }
 
         $filename = 'testfile_' . Random::getAlphanumericString(20) . '.jpg';
 
@@ -44,7 +36,7 @@ class ApiTestController
             $adapter = new Shopware6BunnyCdnAdapter($config);
 
             $adapter->write($filename, $filename, new Config());
-            $success = $adapter->has($filename);
+            $success = $adapter->fileExists($filename);
 
             if ($success) {
                 $adapter->delete($filename);
