@@ -12,7 +12,7 @@ class BunnyCdnFactory implements AdapterFactoryInterface
 {
     public function create(array $config): FilesystemAdapter
     {
-        $config['subfolder'] = $config['subfolder'] ?? '';
+        $config['subfolder'] ??= '';
 
         //backward compatibility
         if (isset($config['apiUrl']) && !isset($config['endpoint'])) {

@@ -9,15 +9,11 @@ use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route(defaults={"_routeScope"={"administration"}})
- */
+#[Route(defaults: ['_routeScope' => ['administration']])]
 class ApiTestController
 {
-    /**
-     * @Route(path="/api/v{version}/_action/bunnycdn-api-test/check")
-     * @Route(path="/api/_action/bunnycdn-api-test/check")
-     */
+    #[Route(path: '/api/v{version}/_action/bunnycdn-api-test/check')]
+    #[Route(path: '/api/_action/bunnycdn-api-test/check')]
     public function check(RequestDataBag $dataBag): JsonResponse
     {
         $config = [
