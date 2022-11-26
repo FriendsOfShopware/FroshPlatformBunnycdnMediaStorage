@@ -3,9 +3,9 @@
 namespace Frosh\BunnycdnMediaStorage\Adapter;
 
 use Frosh\BunnycdnMediaStorage\FroshPlatformBunnycdnMediaStorage;
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\AdapterInterface;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\Config;
+use League\Flysystem\FilesystemAdapter;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNAdapter;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNClient;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNRegion;
@@ -14,35 +14,16 @@ FroshPlatformBunnycdnMediaStorage::classLoader();
 
 class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
 {
-    /** @var bool */
-    private $useGarbage;
+    private readonly bool $useGarbage;
 
-    /** @var bool */
-    private $neverDelete;
+    private readonly bool $neverDelete;
 
-    /** @var AdapterInterface|null */
-    private $replication;
+    private ?FilesystemAdapter $replication = null;
 
     public function __construct(array $config)
     {
-        $subfolder = $config['subfolder'] ?? '';
-
         $this->useGarbage = !empty($config['useGarbage']);
         $this->neverDelete = !empty($config['neverDelete']);
-
-        //backward compatibility
-        if (isset($config['apiUrl']) && !isset($config['endpoint'])) {
-            $urlParse = parse_url($config['apiUrl']);
-
-            $config['endpoint'] = ($urlParse['scheme'] ?? 'https') . '://' . ($urlParse['host'] ?? '');
-            $parts = explode('/', ($urlParse['path'] ?? ''));
-            $parts = array_filter($parts);
-            $config['storageName'] = $parts[1] ?? '';
-
-            if (count($parts) > 1) {
-                $subfolder = implode('/', array_slice($parts, 1));
-            }
-        }
 
         $region = BunnyCDNRegion::FALKENSTEIN;
         preg_match('/http(s):\/\/(.*).storage.bunnycdn.com/', $config['endpoint'], $matches);
@@ -56,155 +37,137 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
             $region,
         );
 
-        parent::__construct($client, '', \rtrim($subfolder, '/'));
+        //TODO: FIX URL!
+        parent::__construct($client, '');
 
         if (!empty($config['replicationRoot'])) {
-            $this->replication = new Local($config['replicationRoot']);
+            $this->replication = new LocalFilesystemAdapter($config['replicationRoot']);
         }
     }
 
     /**
-     * Write a new file.
-     *
-     * @param string $path
-     * @param string $contents
-     * @param Config $config   Config object
-     *
-     * @return array|false false on failure file meta data on success
+     * @inheritDoc
      */
-    public function write($path, $contents, Config $config): bool
+    public function copy($source, $destination, Config $config): void
+    {
+        parent::write($destination, $this->read($source), $config);
+
+        $this->replicate(__FUNCTION__, \func_get_args());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function write($path, $contents, Config $config): void
     {
         $this->garbage($path);
 
-        $result = parent::write($path, $contents, $config);
+        parent::write($path, $contents, $config);
 
-        if ($result !== false && $this->replication) {
-            $this->replication->write($path, $contents, $config);
-        }
-
-        return $result;
+        $this->replicate(__FUNCTION__, \func_get_args());
     }
 
     /**
-     * Write a new file using a stream.
-     *
-     * @param string   $path
-     * @param resource $resource
-     * @param Config   $config   Config object
-     *
-     * @return array|false false on failure file meta data on success
+     * @inheritDoc
      */
-    public function writeStream($path, $resource, Config $config)
+    public function writeStream($path, $contents, Config $config): void
     {
         $this->garbage($path);
 
-        $result = parent::writeStream($path, $resource, $config);
+        parent::write($path, $contents, $config);
 
-        if ($this->replication) {
-            $this->replication->writeStream($path, $resource, $config);
-        }
-
-        return $result;
+        $this->replicate(__FUNCTION__, \func_get_args());
     }
 
     /**
-     * Update a file.
-     *
-     * @param string $path
-     * @param string $contents
-     * @param Config $config   Config object
-     *
-     * @return array|false false on failure file meta data on success
+     * @inheritDoc
      */
-    public function update($path, $contents, Config $config): bool
-    {
-        $this->delete($path);
-
-        return $this->write($path, $contents, $config);
-    }
-
-    /**
-     * Update a file using a stream.
-     *
-     * @param string   $path
-     * @param resource $resource
-     * @param Config   $config   Config object
-     *
-     * @return array|false false on failure file meta data on success
-     */
-    public function updateStream($path, $resource, Config $config)
-    {
-        $this->delete($path);
-
-        return $this->writeStream($path, $resource, $config);
-    }
-
-    /**
-     * Delete a file.
-     *
-     * @param string $path
-     */
-    public function delete($path): bool
+    public function delete($path): void
     {
         if ($this->neverDelete) {
-            return true;
+            return;
         }
 
         $this->garbage($path);
 
-        $result = parent::delete($path);
+        parent::delete($path);
 
-        if ($result === false) {
-            return false;
-        }
-
-        if ($this->replication && $this->replication->has($path)) {
-            $this->replication->delete($path);
-        }
-
-        return true;
+        $this->replicate(__FUNCTION__, \func_get_args());
     }
 
     /**
-     * Delete a directory.
-     *
-     * @param string $dirname
+     * @inheritDoc
      */
-    public function deleteDir($dirname): bool
+    public function deleteDirectory(string $path): void
     {
-        return $this->delete($dirname);
+        $this->delete(rtrim($path, '/').'/');
     }
 
     /**
-     * Check whether a file exists.
-     *
-     * @param string $path
+     * @inheritDoc
      */
-    public function has($path): bool
+    public function createDirectory(string $path, Config $config): void
+    {
+        $this->garbage($path);
+
+        parent::createDirectory($path, $config);
+
+        $this->replicate(__FUNCTION__, \func_get_args());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function move(string $source, string $destination, Config $config): void
+    {
+        $this->garbage($source);
+
+        parent::move($source, $destination, $config);
+
+        $this->replicate(__FUNCTION__, \func_get_args());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function fileExists(string $path): bool
     {
         /*
          * If path contains '?', it's variable thumbnail. So always correct.
          */
-        if (mb_strpos($path, '?') !== false) {
+        if (str_contains($path, '?')) {
             return true;
         }
 
-        return parent::has($path);
+        return parent::fileExists($path);
+    }
+
+    private function replicate(string $function, array $args): void
+    {
+        if (!$this->replication) {
+            return;
+        }
+
+        call_user_func_array(array($this->replication, $function), $args);
     }
 
     private function garbage(string $path): void
     {
-        if (!$this->useGarbage || !$this->has($path)) {
+        if (!$this->useGarbage) {
+            return;
+        }
+
+        if (!$this->fileExists($path)) {
             return;
         }
 
         $garbagePath = 'garbage/' . date('Ymd') . '/' . $path;
 
         /* There could be a file on this day */
-        if ($this->has($garbagePath)) {
+        if ($this->fileExists($garbagePath)) {
             $garbagePath .= str_replace('.', '', (string) microtime(true));
         }
 
-        $this->copy($path, $garbagePath);
+        $this->copy($path, $garbagePath, new Config());
     }
 }
