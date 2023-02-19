@@ -1,6 +1,10 @@
+# 3.0.0
+
+* Feat: Support Shopware 6.5
+
 # 2.3.5
 
-* Feat: add informations about best configurations
+* Feat: add information about best configurations
 
 # 2.3.4
 
