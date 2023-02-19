@@ -101,7 +101,7 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
         $result = parent::writeStream($path, $resource, $config);
 
         if ($this->replication) {
-            rewind($resource);
+            $this->ensureSeekable($resource, $path);
             $this->replication->writeStream($path, $resource, $config);
         }
 
@@ -207,5 +207,14 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
         }
 
         $this->copy($path, $garbagePath);
+    }
+
+    private function ensureSeekable($resource, string $path)
+    {
+        if (stream_get_meta_data($resource)['seekable'] && rewind($resource)) {
+            return $resource;
+        }
+
+        return $this->readStream($path);
     }
 }
