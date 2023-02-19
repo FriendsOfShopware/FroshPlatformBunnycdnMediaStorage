@@ -5,30 +5,36 @@
         <title>Configuration</title>
         <title lang="de-DE">Konfiguration</title>
 
+        <component name="bunnycdn-alert">
+            <name>alertconfiguration</name>
+            <variant>info</variant>
+            <message>We suggest utilizing a storage zone with SSDs as they are significantly faster than standard option (means HDDs), with up to 80x faster upload speeds in our tests.</message>
+        </component>
+
         <input-field type="url">
             <name>CdnUrl</name>
-            <label>CdnUrl</label>
+            <label>CDN-URL</label>
             <placeholder>https://cdn.url.com</placeholder>
             <required>true</required>
         </input-field>
 
         <input-field type="text">
             <name>StorageName</name>
-            <label>StorageName</label>
+            <label>Storage-Name</label>
             <defaultValue>mycdnstorage</defaultValue>
             <required>true</required>
         </input-field>
 
         <input-field type="url">
             <name>CdnHostname</name>
-            <label>CdnHostname</label>
+            <label>CDN-Hostname</label>
             <defaultValue>https://storage.bunnycdn.com</defaultValue>
             <required>true</required>
         </input-field>
 
         <input-field type="password">
             <name>ApiKey</name>
-            <label>ApiKey</label>
+            <label>API Key</label>
             <helpText>is equal to FTP password</helpText>
             <helpText lang="de-DE">entspricht dem FTP-Passwort</helpText>
             <required>true</required>
@@ -42,6 +48,10 @@
             <helpText>Specify a subfolder path to be used on your bunnycdn storage</helpText>
             <helpText lang="de-DE">Geben Sie einen Unterordnerpfad an, der in Ihrem bunnycdn-Speicher verwendet werden soll</helpText>
         </input-field>
+    </card>
+
+    <card>
+        <title>Public Filesystem</title>
 
         <input-field type="bool">
             <name>FilesystemPublic</name>
@@ -50,6 +60,16 @@
             <defaultValue>true</defaultValue>
         </input-field>
 
+        <input-field type="url">
+            <name>FilesystemPublicUrl</name>
+            <label>Alternative CdnUrl for filesystem public</label>
+            <label lang="de-DE">Alternative CdnUrl für das Public-Filesystem</label>
+        </input-field>
+    </card>
+
+    <card>
+        <title>Sitemap Filesystem</title>
+
         <input-field type="bool">
             <name>FilesystemSitemap</name>
             <label>Transfer Sitemap filesystem into CDN</label>
@@ -57,34 +77,29 @@
             <defaultValue>true</defaultValue>
         </input-field>
 
+        <input-field type="url">
+            <name>FilesystemSitemapUrl</name>
+            <label>Alternative CdnUrl for filesystem sitemap</label>
+            <label lang="de-DE">Alternative CdnUrl für das Sitemap-Filesystem</label>
+        </input-field>
+    </card>
+
+    <card>
+        <title>Theme Filesystem</title>
+
+        <component name="bunnycdn-alert">
+            <name>alertthemefilesystem</name>
+            <variant>warning</variant>
+            <message>Storing assets and/or themes within the bunny.net storage can help increase the speed of theme compilation and asset installation.
+                Utilizing a pull-zone for both themes and assets, in conjunction with an alternative CDN URL, can optimize performance.
+                It is recommended to use the storage tier SSD for best results.</message>
+        </component>
+
         <input-field type="bool">
             <name>FilesystemTheme</name>
             <label>Transfer Theme filesystem into CDN</label>
             <label lang="de-DE">Transferiere das Theme-Filesystem ins CDN</label>
             <defaultValue>false</defaultValue>
-            <helpText>Activating will reduce speed of theme compiling</helpText>
-            <helpText lang="de-DE">Durch Aktivieren wird die Geschwindigkeit der Themenerstellung verringert</helpText>
-        </input-field>
-
-        <input-field type="bool">
-            <name>FilesystemAsset</name>
-            <label>Transfer Asset filesystem into CDN</label>
-            <label lang="de-DE">Transferiere das Asset-Filesystem ins CDN</label>
-            <defaultValue>false</defaultValue>
-            <helpText>Activating will reduce speed of theme compiling</helpText>
-            <helpText lang="de-DE">Durch Aktivieren wird die Geschwindigkeit der Themenerstellung verringert</helpText>
-        </input-field>
-
-        <input-field type="url">
-            <name>FilesystemPublicUrl</name>
-            <label>Alternative CdnUrl for filesystem public</label>
-            <label lang="de-DE">Alternative CdnUrl für das Public-Filesystem</label>
-        </input-field>
-
-        <input-field type="url">
-            <name>FilesystemSitemapUrl</name>
-            <label>Alternative CdnUrl for filesystem sitemap</label>
-            <label lang="de-DE">Alternative CdnUrl für das Sitemap-Filesystem</label>
         </input-field>
 
         <input-field type="url">
@@ -92,12 +107,45 @@
             <label>Alternative CdnUrl for filesystem theme</label>
             <label lang="de-DE">Alternative CdnUrl für das Theme-Filesystem</label>
         </input-field>
+    </card>
+
+    <card>
+        <title>Asset Filesystem</title>
+
+        <component name="bunnycdn-alert">
+            <name>alertassetfilesystem</name>
+            <variant>warning</variant>
+            <message>Storing assets and/or themes within the bunny.net storage can help increase the speed of theme compilation and asset installation.
+                Utilizing a pull-zone for both themes and assets, in conjunction with an alternative CDN URL, can optimize performance.
+                It is recommended to use the storage tier SSD for best results.</message>
+        </component>
+
+        <input-field type="bool">
+            <name>FilesystemAsset</name>
+            <label>Transfer Asset filesystem into CDN</label>
+            <label lang="de-DE">Transferiere das Asset-Filesystem ins CDN</label>
+            <defaultValue>false</defaultValue>
+        </input-field>
 
         <input-field type="url">
             <name>FilesystemAssetUrl</name>
             <label>Alternative CdnUrl for filesystem asset</label>
             <label lang="de-DE">Alternative CdnUrl für das Asset-Filesystem</label>
         </input-field>
+    </card>
+
+    <card>
+        <title>Particular</title>
+        <title lang="de-DE">Besonderes</title>
+
+        <component name="bunnycdn-config-restriction">
+            <name>configRestriction</name>
+        </component>
+
+        <component name="bunnycdn-api-test-button">
+            <name>apiTest</name>
+            <btnLabel>Test API</btnLabel>
+        </component>
 
         <input-field type="bool">
             <name>useGarbage</name>
@@ -109,20 +157,6 @@
             <helpText lang="de-DE">Beim Löschen, Umbenennen und Überschreiben von Dateien werden diese in einem Ordner mit dem Namen "garbage/aktuellesDatum/" gesichert.
                 Dies gilt nur für Filesysteme, die bunnycdn verwenden</helpText>
         </input-field>
-
-        <component name="bunnycdn-api-test-button">
-            <name>apiTest</name>
-            <btnLabel>Test API</btnLabel>
-        </component>
-
-        <component name="bunnycdn-config-restriction">
-            <name>configRestriction</name>
-        </component>
-    </card>
-
-    <card>
-        <title>Particular</title>
-        <title lang="de-DE">Besonderes</title>
 
         <input-field type="bool">
             <name>neverDelete</name>

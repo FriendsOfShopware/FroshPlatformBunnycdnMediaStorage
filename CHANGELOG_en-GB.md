@@ -1,3 +1,7 @@
+# 2.3.5
+
+* Feat: add informations about best configurations
+
 # 2.3.4
 
 * Fix: change usage of getenv to EnvironmentHelper to have better support for environment variables
