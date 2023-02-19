@@ -4,7 +4,6 @@ namespace Frosh\BunnycdnMediaStorage\Adapter;
 
 use Frosh\BunnycdnMediaStorage\FroshPlatformBunnycdnMediaStorage;
 use League\Flysystem\Config;
-use League\Flysystem\FilesystemAdapter;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNAdapter;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNClient;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNRegion;
@@ -16,8 +15,6 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
     private readonly bool $useGarbage;
 
     private readonly bool $neverDelete;
-
-    private ?FilesystemAdapter $replication = null;
 
     public function __construct(array $config)
     {
