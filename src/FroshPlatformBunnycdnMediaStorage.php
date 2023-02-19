@@ -11,6 +11,11 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class FroshPlatformBunnycdnMediaStorage extends Plugin
 {
+    public function executeComposerCommands(): bool
+    {
+        return true;
+    }
+
     public function build(ContainerBuilder $container): void
     {
         $configPath = $this->getConfigPath($container);
