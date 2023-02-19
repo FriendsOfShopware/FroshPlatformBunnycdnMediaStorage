@@ -5,7 +5,6 @@ namespace Frosh\BunnycdnMediaStorage\Adapter;
 use Frosh\BunnycdnMediaStorage\FroshPlatformBunnycdnMediaStorage;
 use League\Flysystem\Config;
 use League\Flysystem\FilesystemAdapter;
-use League\Flysystem\Local\LocalFilesystemAdapter;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNAdapter;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNClient;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNRegion;
@@ -40,8 +39,8 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
         //url is managed by shop using public_url at filesystem
         parent::__construct($client);
 
-        if (!empty($config['replicationRoot'])) {
-            $this->replication = new LocalFilesystemAdapter($config['replicationRoot']);
+        if ($config['replication'] instanceof FilesystemAdapter) {
+            $this->replication = $config['replication'];
         }
     }
 
