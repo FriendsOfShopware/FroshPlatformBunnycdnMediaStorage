@@ -12,7 +12,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(defaults: ['_routeScope' => ['administration']])]
 class ApiTestController
 {
-    #[Route(path: '/api/v{version}/_action/bunnycdn-api-test/check')]
     #[Route(path: '/api/_action/bunnycdn-api-test/check')]
     public function check(RequestDataBag $dataBag): JsonResponse
     {
@@ -31,7 +30,7 @@ class ApiTestController
             $adapter = new Shopware6BunnyCdnAdapter($config);
 
             $adapter->write($filename, $filename, new Config());
-            $success = $adapter->has($filename);
+            $success = $adapter->fileExists($filename);
 
             if ($success) {
                 $adapter->delete($filename);
