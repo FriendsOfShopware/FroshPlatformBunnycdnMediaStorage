@@ -148,6 +148,16 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
             return;
         }
 
+        if (\strtolower($function) === 'writestream') {
+            foreach ($args as &$arg) {
+                if (!\is_resource($arg)) {
+                    continue;
+                }
+
+                rewind($arg);
+            }
+        }
+
         \call_user_func_array([$this->replication, $function], $args);
     }
 
