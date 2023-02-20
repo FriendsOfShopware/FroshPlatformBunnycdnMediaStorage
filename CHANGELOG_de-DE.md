@@ -2,6 +2,10 @@
 
 * Feat: Support Shopware 6.5
 
+# 2.3.6
+
+* Fix: correct replication onto local system
+
 # 2.3.5
 
 * Feat: add information about best configurations
