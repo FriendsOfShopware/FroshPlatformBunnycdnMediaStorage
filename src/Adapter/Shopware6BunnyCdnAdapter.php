@@ -101,7 +101,7 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
         $result = parent::writeStream($path, $resource, $config);
 
         if ($this->replication) {
-            $this->ensureSeekable($resource, $path);
+            $resource = $this->ensureSeekable($resource, $path);
             $this->replication->writeStream($path, $resource, $config);
         }
 
