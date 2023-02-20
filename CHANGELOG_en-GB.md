@@ -1,3 +1,7 @@
+# 2.3.6
+
+* Fix: correct replication onto local system
+
 # 2.3.5
 
 * Feat: add informations about best configurations
