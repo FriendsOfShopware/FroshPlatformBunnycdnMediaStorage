@@ -53,7 +53,7 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
     public function writeStream($path, $contents, Config $config): void
     {
         $this->garbage($path);
-        
+
         parent::writeStream($path, $contents, $config);
     }
 
