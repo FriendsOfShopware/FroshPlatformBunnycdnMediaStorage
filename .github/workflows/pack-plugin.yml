@@ -6,9 +6,10 @@ on:
 
 jobs:
     build:
-        uses: FriendsOfShopware/actions/.github/workflows/store-shopware-cli.yml@main
+        uses: FriendsOfShopware/actions/.github/workflows/store.yml@main
         with:
             extensionName: FroshPlatformBunnycdnMediaStorage
+            shopwareVersion: '6.4.0'
             cliVersion: '0.1.50'
         secrets:
             accountUser: ${{ secrets.ACCOUNT_USER }}
