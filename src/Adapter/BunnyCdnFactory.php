@@ -15,7 +15,7 @@ class BunnyCdnFactory implements AdapterFactoryInterface
         $config['subfolder'] ??= '';
         $this->convertOldConfig($config);
 
-        $config['subfolder'] = \rtrim($config['subfolder'], '/');
+        $config['subfolder'] = \rtrim((string) $config['subfolder'], '/');
 
         $adapter = new Shopware6BunnyCdnAdapter($config);
 
@@ -41,7 +41,7 @@ class BunnyCdnFactory implements AdapterFactoryInterface
             return;
         }
 
-        $urlParse = parse_url($config['apiUrl']);
+        $urlParse = parse_url((string) $config['apiUrl']);
 
         $config['endpoint'] = ($urlParse['scheme'] ?? 'https') . '://' . ($urlParse['host'] ?? '');
         $parts = explode('/', ($urlParse['path'] ?? ''));

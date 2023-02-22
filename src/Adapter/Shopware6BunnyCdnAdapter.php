@@ -22,7 +22,7 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
         $this->neverDelete = !empty($config['neverDelete']);
 
         $region = BunnyCDNRegion::FALKENSTEIN;
-        preg_match('/http(s):\/\/(.*).storage.bunnycdn.com/', $config['endpoint'], $matches);
+        preg_match('/http(s):\/\/(.*).storage.bunnycdn.com/', (string) $config['endpoint'], $matches);
         if (\count($matches) === 3) {
             $region = $matches[2];
         }
@@ -132,14 +132,5 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
         }
 
         $this->copy($path, $garbagePath, new Config());
-    }
-
-    private function ensureSeekable($resource, string $path)
-    {
-        if (stream_get_meta_data($resource)['seekable'] && rewind($resource)) {
-            return $resource;
-        }
-
-        return $this->readStream($path);
     }
 }

@@ -25,12 +25,12 @@ class SitemapPageSubscriber implements EventSubscriberInterface
         }
 
         foreach ($event->getPage()->getSitemaps() as $sitemap) {
-            if (str_contains($sitemap->getFileName(), $this->cdnUrl)) {
+            if (str_contains((string) $sitemap->getFileName(), $this->cdnUrl)) {
                 continue;
             }
 
-            if (str_starts_with($sitemap->getFileName(), 'https://')
-                || str_starts_with($sitemap->getFileName(), 'http://')) {
+            if (str_starts_with((string) $sitemap->getFileName(), 'https://')
+                || str_starts_with((string) $sitemap->getFileName(), 'http://')) {
                 continue;
             }
 

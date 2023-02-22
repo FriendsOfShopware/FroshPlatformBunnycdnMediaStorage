@@ -26,12 +26,12 @@ class ConfigSubscriber implements EventSubscriberInterface
         $newConfig = [];
 
         foreach ($event->getPayloads() as $payload) {
-            if (str_starts_with($payload['configurationKey'], $froshConfigKey)) {
-                $newConfig[str_replace($froshConfigKey, '', $payload['configurationKey'])] = $payload['configurationValue'];
+            if (str_starts_with((string) $payload['configurationKey'], $froshConfigKey)) {
+                $newConfig[str_replace($froshConfigKey, '', (string) $payload['configurationKey'])] = $payload['configurationValue'];
             }
         }
 
-        if (!empty($newConfig)) {
+        if ($newConfig !== []) {
             $this->configUpdater->update($newConfig);
         }
     }

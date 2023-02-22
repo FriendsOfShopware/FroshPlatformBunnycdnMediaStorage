@@ -18,7 +18,7 @@ class ApiTestController
         $config = [
             'endpoint' => rtrim((string) $dataBag->get('FroshPlatformBunnycdnMediaStorage.config.CdnHostname', ''), '/'),
             'storageName' => $dataBag->get('FroshPlatformBunnycdnMediaStorage.config.StorageName', ''),
-            'subfolder' => rtrim($dataBag->get('FroshPlatformBunnycdnMediaStorage.config.CdnSubFolder', ''), '/'),
+            'subfolder' => rtrim((string) $dataBag->get('FroshPlatformBunnycdnMediaStorage.config.CdnSubFolder', ''), '/'),
             'apiKey' => $dataBag->get('FroshPlatformBunnycdnMediaStorage.config.ApiKey', ''),
             'useGarbage' => false,
             'neverDelete' => false,
