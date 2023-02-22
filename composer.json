@@ -47,5 +47,11 @@
         "psr-4": {
             "Frosh\\BunnycdnMediaStorage\\": "src/"
         }
+    },
+    "minimum-stability": "RC",
+    "config": {
+        "allow-plugins": {
+            "symfony/runtime": true
+        }
     }
 }
