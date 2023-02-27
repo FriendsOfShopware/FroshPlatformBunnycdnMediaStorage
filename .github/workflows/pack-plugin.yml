@@ -10,7 +10,6 @@ jobs:
         with:
             extensionName: FroshPlatformBunnycdnMediaStorage
             shopwareVersion: '6.4.0'
-            cliVersion: '0.1.50'
         secrets:
             accountUser: ${{ secrets.ACCOUNT_USER }}
             accountPassword: ${{ secrets.ACCOUNT_PASSWORD }}
