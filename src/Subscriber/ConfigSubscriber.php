@@ -8,14 +8,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ConfigSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var ConfigUpdater
-     */
-    private $configUpdater;
-
-    public function __construct(ConfigUpdater $configUpdater)
+    public function __construct(private readonly ConfigUpdater $configUpdater)
     {
-        $this->configUpdater = $configUpdater;
     }
 
     public static function getSubscribedEvents(): array
@@ -32,12 +26,12 @@ class ConfigSubscriber implements EventSubscriberInterface
         $newConfig = [];
 
         foreach ($event->getPayloads() as $payload) {
-            if (mb_strpos($payload['configurationKey'], $froshConfigKey) === 0) {
-                $newConfig[str_replace($froshConfigKey, '', $payload['configurationKey'])] = $payload['configurationValue'];
+            if (str_starts_with((string) $payload['configurationKey'], $froshConfigKey)) {
+                $newConfig[str_replace($froshConfigKey, '', (string) $payload['configurationKey'])] = $payload['configurationValue'];
             }
         }
 
-        if (!empty($newConfig)) {
+        if ($newConfig !== []) {
             $this->configUpdater->update($newConfig);
         }
     }

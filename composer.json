@@ -9,7 +9,7 @@
         "storage"
     ],
     "description": "This plugins allows you to use BunnyCdn as adapter for media",
-    "version": "2.3.6",
+    "version": "3.0.0",
     "type": "shopware-platform-plugin",
     "license": "mit",
     "authors": [
@@ -19,8 +19,10 @@
         }
     ],
     "require": {
-        "shopware/core": "^6.4.3",
-        "tinect/flysystem-bunnycdn": "^1.0.4"
+        "shopware/core": "~6.5.0",
+        "platformcommunity/flysystem-bunnycdn": "~3.3.1",
+        "league/flysystem-path-prefixing": "~3.10.3",
+        "ajgl/flysystem-replicate": "^2.2"
     },
     "extra": {
         "shopware-plugin-class": "Frosh\\BunnycdnMediaStorage\\FroshPlatformBunnycdnMediaStorage",
@@ -44,6 +46,12 @@
     "autoload": {
         "psr-4": {
             "Frosh\\BunnycdnMediaStorage\\": "src/"
+        }
+    },
+    "minimum-stability": "RC",
+    "config": {
+        "allow-plugins": {
+            "symfony/runtime": true
         }
     }
 }

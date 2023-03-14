@@ -8,8 +8,7 @@ use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 class ResponseListener
 {
-    /** @var array */
-    private $urls = [];
+    private array $urls = [];
 
     public function __construct(
         ?string $publicUrl,
@@ -36,23 +35,20 @@ class ResponseListener
         $this->urls = array_unique(array_filter($this->urls));
     }
 
-    /**
-     * @param ResponseEvent $event
-     */
     public function onKernelResponse(ResponseEvent $event): void
     {
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 
         $response = $event->getResponse();
 
-        if ($response instanceof BinaryFileResponse ||
-            $response instanceof StreamedResponse) {
+        if ($response instanceof BinaryFileResponse
+            || $response instanceof StreamedResponse) {
             return;
         }
 
-        if (strpos($response->headers->get('Content-Type', ''), 'text/html') === false) {
+        if (!str_contains($response->headers->get('Content-Type', ''), 'text/html')) {
             return;
         }
 

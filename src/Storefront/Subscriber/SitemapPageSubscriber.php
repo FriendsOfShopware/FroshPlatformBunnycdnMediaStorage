@@ -7,14 +7,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class SitemapPageSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var string|null
-     */
-    private $cdnUrl;
-
-    public function __construct(?string $cdnUrl)
+    public function __construct(private readonly ?string $cdnUrl)
     {
-        $this->cdnUrl = $cdnUrl;
     }
 
     public static function getSubscribedEvents(): array
@@ -31,12 +25,12 @@ class SitemapPageSubscriber implements EventSubscriberInterface
         }
 
         foreach ($event->getPage()->getSitemaps() as $sitemap) {
-            if (mb_strpos($sitemap->getFileName(), $this->cdnUrl) !== false) {
+            if (str_contains((string) $sitemap->getFileName(), $this->cdnUrl)) {
                 continue;
             }
 
-            if (mb_strpos($sitemap->getFileName(), 'https://') === 0
-                || mb_strpos($sitemap->getFileName(), 'http://') === 0) {
+            if (str_starts_with((string) $sitemap->getFileName(), 'https://')
+                || str_starts_with((string) $sitemap->getFileName(), 'http://')) {
                 continue;
             }
 

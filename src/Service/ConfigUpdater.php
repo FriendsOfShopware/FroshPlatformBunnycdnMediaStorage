@@ -2,28 +2,23 @@
 
 namespace Frosh\BunnycdnMediaStorage\Service;
 
+use Shopware\Core\DevOps\Environment\EnvironmentHelper;
 use Shopware\Core\Framework\Adapter\Cache\CacheClearer;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
 use Symfony\Component\Yaml\Yaml;
-use Shopware\Core\DevOps\Environment\EnvironmentHelper;
 
 class ConfigUpdater
 {
-    private SystemConfigService $systemConfigService;
-
-    private string $configPath;
-
-    private CacheClearer $cacheClearer;
-
-    public function __construct(SystemConfigService $systemConfigService, CacheClearer $cacheClearer, string $configPath)
-    {
-        $this->systemConfigService = $systemConfigService;
-        $this->configPath = $configPath;
-        $this->cacheClearer = $cacheClearer;
+    public function __construct(
+        private readonly SystemConfigService $systemConfigService,
+        private readonly CacheClearer $cacheClearer,
+        private readonly string $configPath
+    ) {
     }
 
     public function update(array $config): void
     {
+        $data = [];
         $pluginConfig = $this->systemConfigService->get('FroshPlatformBunnycdnMediaStorage.config');
         $pluginConfig = array_merge($pluginConfig, $config);
 
@@ -61,7 +56,7 @@ class ConfigUpdater
 
         $filesystemBunnyCdnConfig = [
             'type' => 'bunnycdn',
-            'url' => rtrim((string) $pluginConfig['CdnUrl'], '/') . '/' . $pluginConfig['CdnSubFolder'],
+            'url' => rtrim((string) $pluginConfig['CdnUrl'], '/') . '/' . trim((string) $pluginConfig['CdnSubFolder'], '/'),
             'config' => [
                 'endpoint' => rtrim((string) $pluginConfig['CdnHostname'], '/'),
                 'storageName' => $pluginConfig['StorageName'],
