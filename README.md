@@ -13,7 +13,11 @@ Download the plugin from the release page and enable it in shopware.
 - Upload existing media (optional)
   - by SCP from shell:
     - log via SSH into you webspace and go into your shopware folder
-    - run `scp -r ./public/media STORAGEZONENAME@storage.bunnycdn.com:/` (Replace STORAGEZONENAME) and confirm with the FTP-Passwort of your storage-zone
+    - run following commands (Replace STORAGEZONENAME) and confirm with the FTP-Password of your storage-zone
+      ```
+      scp -r ./public/media STORAGEZONENAME@storage.bunnycdn.com:/
+      scp -r ./public/thumbnail STORAGEZONENAME@storage.bunnycdn.com:/
+      ```
   - Manual by FTP-Client: [see docs at BunnyCDN](https://support.bunnycdn.com/hc/en-us/articles/115003780169-How-to-upload-and-access-files-from-your-Storage-Zone).
 - Remove any existing configuration for previous versions in `config/packages/shopware.yml`
 - Set up plugin config
