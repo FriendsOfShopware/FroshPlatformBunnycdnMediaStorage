@@ -25,8 +25,8 @@ Download the plugin from the release page and enable it in shopware.
 ## Usage for older plugin version
 [see old Readme](README.1.0.11.md)
 
-## Notes
-The plugin configuration will be stored inside `var/bunnycdn_config.yml`. You must ensure that this file will be stay in that location after deployment.
+## Notes on Automatic Deployments
+The plugin configuration is stored in `var/bunnycdn_config.yml`. You must ensure that this file is shared and available in this location after deployment after you configured the pugin once.
 
 ## Suggestions
 
