@@ -9,7 +9,7 @@ The BunnyCDN adapter allows you to manage your media files in shopware on a bunn
 
 Download the plugin from the release page and enable it in shopware.
 
-## Usage since plugin version 2.0.0
+## Usage
 - Upload existing media (optional)
   - by SCP from shell:
     - log via SSH into you webspace and go into your shopware folder
@@ -19,13 +19,10 @@ Download the plugin from the release page and enable it in shopware.
       scp -r ./public/thumbnail STORAGEZONENAME@storage.bunnycdn.com:/
       ```
   - Manual by FTP-Client: [see docs at BunnyCDN](https://support.bunnycdn.com/hc/en-us/articles/115003780169-How-to-upload-and-access-files-from-your-Storage-Zone).
-- Remove any existing configuration for previous versions in `config/packages/shopware.yml`
+- Remove any existing configuration regarding filesystem in `config/packages/shopware.yml`
 - Set up plugin config
 
-## Usage for older plugin version
-[see old Readme](README.1.0.11.md)
-
-## Notes on Automatic Deployments
+### Notes on Automatic Deployments
 The plugin configuration is stored in `var/bunnycdn_config.yml`. You must ensure that this file is shared and available in this location after deployment after you configured the pugin once.
 
 ## Suggestions
