@@ -1,3 +1,7 @@
+# 3.0.1
+
+* Feat: Support config saving in Shopware 6.5.1
+
 # 3.0.0
 
 * Feat: Support Shopware 6.5

@@ -2,13 +2,10 @@
 
 namespace Frosh\BunnycdnMediaStorage\Adapter;
 
-use Frosh\BunnycdnMediaStorage\FroshPlatformBunnycdnMediaStorage;
 use League\Flysystem\Config;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNAdapter;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNClient;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNRegion;
-
-FroshPlatformBunnycdnMediaStorage::classLoader();
 
 class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
 {

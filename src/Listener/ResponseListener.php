@@ -8,6 +8,9 @@ use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 class ResponseListener
 {
+    /**
+     * @var array<string>
+     */
     private array $urls = [];
 
     public function __construct(
@@ -48,7 +51,9 @@ class ResponseListener
             return;
         }
 
-        if (!str_contains($response->headers->get('Content-Type', ''), 'text/html')) {
+        $contentType = $response->headers->get('Content-Type', '');
+
+        if (\is_string($contentType) && !str_contains($contentType, 'text/html')) {
             return;
         }
 

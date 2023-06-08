@@ -3,6 +3,7 @@
 namespace Frosh\BunnycdnMediaStorage\Controller\Api;
 
 use Frosh\BunnycdnMediaStorage\Adapter\Shopware6BunnyCdnAdapter;
+use Frosh\BunnycdnMediaStorage\FroshPlatformBunnycdnMediaStorage;
 use League\Flysystem\Config;
 use Shopware\Core\Framework\Util\Random;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
@@ -15,11 +16,13 @@ class ApiTestController
     #[Route(path: '/api/_action/bunnycdn-api-test/check')]
     public function check(RequestDataBag $dataBag): JsonResponse
     {
+        $configKey = FroshPlatformBunnycdnMediaStorage::CONFIG_KEY;
+
         $config = [
-            'endpoint' => rtrim((string) $dataBag->get('FroshPlatformBunnycdnMediaStorage.config.CdnHostname', ''), '/'),
-            'storageName' => $dataBag->get('FroshPlatformBunnycdnMediaStorage.config.StorageName', ''),
-            'subfolder' => rtrim((string) $dataBag->get('FroshPlatformBunnycdnMediaStorage.config.CdnSubFolder', ''), '/'),
-            'apiKey' => $dataBag->get('FroshPlatformBunnycdnMediaStorage.config.ApiKey', ''),
+            'endpoint' => rtrim($dataBag->getString($configKey . '.CdnHostname', ''), '/'),
+            'storageName' => $dataBag->getString($configKey . '.StorageName', ''),
+            'subfolder' => rtrim($dataBag->getString($configKey . '.CdnSubFolder', ''), '/'),
+            'apiKey' => $dataBag->getString($configKey . '.ApiKey', ''),
             'useGarbage' => false,
             'neverDelete' => false,
         ];

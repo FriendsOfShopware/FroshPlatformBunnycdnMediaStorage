@@ -2,6 +2,7 @@
 
 namespace Frosh\BunnycdnMediaStorage\Service;
 
+use Frosh\BunnycdnMediaStorage\FroshPlatformBunnycdnMediaStorage;
 use Shopware\Core\DevOps\Environment\EnvironmentHelper;
 use Shopware\Core\Framework\Adapter\Cache\CacheClearer;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
@@ -16,10 +17,10 @@ class ConfigUpdater
     ) {
     }
 
-    public function update(array $config): void
+    public function update(array $config = []): void
     {
         $data = [];
-        $pluginConfig = $this->systemConfigService->get('FroshPlatformBunnycdnMediaStorage.config');
+        $pluginConfig = $this->systemConfigService->get(FroshPlatformBunnycdnMediaStorage::CONFIG_KEY);
         $pluginConfig = array_merge($pluginConfig, $config);
 
         if (empty($pluginConfig['FilesystemPublic'])

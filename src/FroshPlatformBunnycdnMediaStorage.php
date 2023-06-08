@@ -2,7 +2,6 @@
 
 namespace Frosh\BunnycdnMediaStorage;
 
-use Composer\Autoload\ClassLoader;
 use Shopware\Core\Framework\Plugin;
 use Shopware\Core\Framework\Plugin\Context\UninstallContext;
 use Symfony\Component\Config\FileLocator;
@@ -11,6 +10,8 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class FroshPlatformBunnycdnMediaStorage extends Plugin
 {
+    public const CONFIG_KEY = 'FroshPlatformBunnycdnMediaStorage.config';
+
     public function executeComposerCommands(): bool
     {
         return true;
@@ -21,11 +22,7 @@ class FroshPlatformBunnycdnMediaStorage extends Plugin
         $configPath = $this->getConfigPath($container);
         $container->setParameter('frosh_bunnycdn_media_storage.config_path', $configPath);
 
-        if (file_exists($configPath)) {
-            $pathInfo = pathinfo($configPath);
-            $loader = new YamlFileLoader($container, new FileLocator($pathInfo['dirname']));
-            $loader->load($pathInfo['basename']);
-        }
+        $this->loadConfig($configPath, $container);
 
         parent::build($container);
     }
@@ -45,30 +42,30 @@ class FroshPlatformBunnycdnMediaStorage extends Plugin
         parent::uninstall($uninstallContext);
     }
 
-    public static function classLoader(): void
+    private function getConfigPath(?ContainerBuilder $container = null): string
     {
-        $file = __DIR__ . '/../vendor/autoload.php';
-        if (!is_file($file)) {
-            return;
-        }
-
-        /** @noinspection UsingInclusionOnceReturnValueInspection */
-        $classLoader = require_once $file;
-
-        if (!$classLoader instanceof ClassLoader) {
-            return;
-        }
-
-        $classLoader->unregister();
-        $classLoader->register(false);
-    }
-
-    private function getConfigPath($container = null): string
-    {
-        if (!$container && $this->container) {
+        if ($container === null) {
             $container = $this->container;
         }
 
-        return $container->getParameter('kernel.project_dir') . '/var/bunnycdn_config.yml';
+        $projectDir = (string) $container->getParameter('kernel.project_dir');
+
+        return $projectDir . '/var/bunnycdn_config.yml';
+    }
+
+    private function loadConfig(string $configPath, ContainerBuilder $container): void
+    {
+        if (!\is_file($configPath)) {
+            return;
+        }
+
+        $pathInfo = pathinfo($configPath);
+
+        if (empty($pathInfo['dirname']) || empty($pathInfo['basename'])) {
+            return;
+        }
+
+        $loader = new YamlFileLoader($container, new FileLocator($pathInfo['dirname']));
+        $loader->load($pathInfo['basename']);
     }
 }
