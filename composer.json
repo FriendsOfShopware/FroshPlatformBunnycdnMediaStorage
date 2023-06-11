@@ -27,8 +27,8 @@
     "extra": {
         "shopware-plugin-class": "Frosh\\BunnycdnMediaStorage\\FroshPlatformBunnycdnMediaStorage",
         "label": {
-            "de-DE": "BunnyCdn Media Storage Plugin v2",
-            "en-GB": "BunnyCdn Media Storage Plugin v2"
+            "de-DE": "BunnyCdn Media Storage Plugin v3",
+            "en-GB": "BunnyCdn Media Storage Plugin v3"
         },
         "description": {
             "de-DE": "Transferiere Deine Dateien nach BunnyCDN. Beschleunige dadurch die Auslieferung der Bilder! Mach Speicherplatz frei! Profitiere von kleineren Backups!",
