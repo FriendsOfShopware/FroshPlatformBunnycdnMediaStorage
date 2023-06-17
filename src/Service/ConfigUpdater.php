@@ -3,6 +3,7 @@
 namespace Frosh\BunnycdnMediaStorage\Service;
 
 use Frosh\BunnycdnMediaStorage\FroshPlatformBunnycdnMediaStorage;
+use Frosh\BunnycdnMediaStorage\Struct\PluginConfig;
 use Shopware\Core\DevOps\Environment\EnvironmentHelper;
 use Shopware\Core\Framework\Adapter\Cache\CacheClearer;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
@@ -21,7 +22,12 @@ class ConfigUpdater
     {
         $data = [];
         $pluginConfig = $this->systemConfigService->get(FroshPlatformBunnycdnMediaStorage::CONFIG_KEY);
-        $pluginConfig = array_merge($pluginConfig, $config);
+
+        if (\is_array($pluginConfig)) {
+            $pluginConfig = array_merge($pluginConfig, $config);
+        } else {
+            $pluginConfig = $config;
+        }
 
         if (empty($pluginConfig['FilesystemPublic'])
             && empty($pluginConfig['FilesystemSitemap'])
@@ -53,7 +59,7 @@ class ConfigUpdater
             $pluginConfig['CdnUrl'] = $defaultUrl;
         }
 
-        $pluginConfig = $this->convertCdnSubFolder($pluginConfig);
+        $pluginConfig['CdnSubFolder'] = $this->cleanupCdnSubFolder($pluginConfig['CdnSubFolder'] ?? '');
 
         $filesystemBunnyCdnConfig = [
             'type' => 'bunnycdn',
@@ -110,14 +116,12 @@ class ConfigUpdater
         $this->cacheClearer->clearContainerCache();
     }
 
-    private function convertCdnSubFolder(array $pluginConfig): array
+    private function cleanupCdnSubFolder(string $cdnSubfolder): string
     {
-        if (!isset($pluginConfig['CdnSubFolder'])) {
-            $pluginConfig['CdnSubFolder'] = '';
-        } elseif (rtrim($pluginConfig['CdnSubFolder'], '/') === '') {
-            $pluginConfig['CdnSubFolder'] = '';
+        if (rtrim($cdnSubfolder, '/') !== '') {
+            return $cdnSubfolder;
         }
 
-        return $pluginConfig;
+        return '';
     }
 }

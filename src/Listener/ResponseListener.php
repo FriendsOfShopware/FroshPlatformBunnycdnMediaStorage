@@ -66,7 +66,11 @@ class ResponseListener
     {
         $urlParse = parse_url($url);
 
-        if (isset($urlParse['scheme'])) {
+        if (!isset($urlParse['host'])) {
+            return '';
+        }
+
+        if (!isset($urlParse['scheme'])) {
             $urlParse['scheme'] = 'https';
         }
 

@@ -41,9 +41,15 @@ class ConfigSubscriber implements EventSubscriberInterface
 
     public function onAdminConfigSaved(SystemConfigChangedHook $event): void
     {
-        $changes = $event->getWebhookPayload()['changes'] ?? [];
+        $payload = $event->getWebhookPayload();
 
-        if (empty($changes)) {
+        if (!\array_key_exists('changes', $payload)) {
+            return;
+        }
+
+        $changes = $payload['changes'];
+
+        if (empty($changes) || !\is_array($changes)) {
             return;
         }
 
