@@ -1,3 +1,7 @@
+# 3.0.2
+
+* Fix: Correct test button for Shopware lower than 6.5.4
+
 # 3.0.1
 
 * Feat: Support config saving in Shopware 6.5.1
