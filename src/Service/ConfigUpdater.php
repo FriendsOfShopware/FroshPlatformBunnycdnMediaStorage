@@ -4,7 +4,6 @@ namespace Frosh\BunnycdnMediaStorage\Service;
 
 use Frosh\BunnycdnMediaStorage\FroshPlatformBunnycdnMediaStorage;
 use Shopware\Core\DevOps\Environment\EnvironmentHelper;
-use Shopware\Core\Framework\Adapter\Cache\CacheClearer;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
 use Symfony\Component\Yaml\Yaml;
 
@@ -12,7 +11,6 @@ class ConfigUpdater
 {
     public function __construct(
         private readonly SystemConfigService $systemConfigService,
-        private readonly CacheClearer $cacheClearer,
         private readonly string $configPath
     ) {
     }
@@ -37,7 +35,6 @@ class ConfigUpdater
             && empty($pluginConfig['FilesystemAsset'])) {
             if (file_exists($this->configPath)) {
                 unlink($this->configPath);
-                $this->cacheClearer->clearContainerCache();
             }
 
             return;
@@ -49,7 +46,6 @@ class ConfigUpdater
             $pluginConfig['ApiKey'])) {
             if (file_exists($this->configPath)) {
                 unlink($this->configPath);
-                $this->cacheClearer->clearContainerCache();
             }
 
             return;
@@ -114,8 +110,6 @@ class ConfigUpdater
         ];
 
         file_put_contents($this->configPath, Yaml::dump($data));
-
-        $this->cacheClearer->clearContainerCache();
     }
 
     private function cleanupCdnSubFolder(string $cdnSubfolder): string
