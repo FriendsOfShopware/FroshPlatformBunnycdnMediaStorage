@@ -26,5 +26,6 @@ jobs:
           mysql -V
           php -v
           cp -r "./" "/plugins/FroshPlatformBunnycdnMediaStorage"
+          composer require frosh/platform-bunnycdn-media-storage --no-scripts
           cd /plugins/FroshPlatformBunnycdnMediaStorage
           /opt/shopware/vendor/bin/phpstan analyse -c phpstan.neon
