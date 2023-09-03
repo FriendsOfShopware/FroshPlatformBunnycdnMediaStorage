@@ -48,7 +48,15 @@ class FroshPlatformBunnycdnMediaStorage extends Plugin
             $container = $this->container;
         }
 
-        $projectDir = (string) $container->getParameter('kernel.project_dir');
+        if ($container === null) {
+            throw new \RuntimeException('Container not found');
+        }
+
+        $projectDir = $container->getParameter('kernel.project_dir');
+
+        if (!\is_string($projectDir)) {
+            throw new \RuntimeException('Parameter kernel.project_dir not found');
+        }
 
         return $projectDir . '/var/bunnycdn_config.yml';
     }

@@ -3,7 +3,6 @@
 namespace Frosh\BunnycdnMediaStorage\Service;
 
 use Frosh\BunnycdnMediaStorage\FroshPlatformBunnycdnMediaStorage;
-use Frosh\BunnycdnMediaStorage\Struct\PluginConfig;
 use Shopware\Core\DevOps\Environment\EnvironmentHelper;
 use Shopware\Core\Framework\Adapter\Cache\CacheClearer;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
@@ -18,6 +17,9 @@ class ConfigUpdater
     ) {
     }
 
+    /**
+     * @param array<string, string|bool|int> $config
+     */
     public function update(array $config = []): void
     {
         $data = [];
@@ -55,19 +57,19 @@ class ConfigUpdater
 
         $defaultUrl = EnvironmentHelper::getVariable('APP_URL');
 
-        if ($pluginConfig['CdnUrl'] === '') {
-            $pluginConfig['CdnUrl'] = $defaultUrl;
+        if (empty($pluginConfig['CdnUrl']) || !\is_string($pluginConfig['CdnUrl'])) {
+            $pluginConfig['CdnUrl'] = (string) $defaultUrl;
         }
 
         $pluginConfig['CdnSubFolder'] = $this->cleanupCdnSubFolder($pluginConfig['CdnSubFolder'] ?? '');
 
         $filesystemBunnyCdnConfig = [
             'type' => 'bunnycdn',
-            'url' => rtrim((string) $pluginConfig['CdnUrl'], '/') . '/' . trim((string) $pluginConfig['CdnSubFolder'], '/'),
+            'url' => rtrim($pluginConfig['CdnUrl'], '/') . '/' . trim($pluginConfig['CdnSubFolder'], '/'),
             'config' => [
                 'endpoint' => rtrim((string) $pluginConfig['CdnHostname'], '/'),
                 'storageName' => $pluginConfig['StorageName'],
-                'subfolder' => rtrim((string) $pluginConfig['CdnSubFolder'], '/'),
+                'subfolder' => rtrim($pluginConfig['CdnSubFolder'], '/'),
                 'apiKey' => $pluginConfig['ApiKey'],
                 'useGarbage' => $pluginConfig['useGarbage'] ?? false,
                 'neverDelete' => $pluginConfig['neverDelete'] ?? false,

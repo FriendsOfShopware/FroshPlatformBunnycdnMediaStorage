@@ -13,13 +13,22 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
 
     private readonly bool $neverDelete;
 
+    /**
+     * @param array{
+     *     endpoint: string,
+     *     storageName: string,
+     *     apiKey: string,
+     *     useGarbage: bool|int,
+     *     neverDelete: bool|int
+     * } $config
+     */
     public function __construct(array $config)
     {
         $this->useGarbage = !empty($config['useGarbage']);
         $this->neverDelete = !empty($config['neverDelete']);
 
         $region = BunnyCDNRegion::FALKENSTEIN;
-        preg_match('/http(s):\/\/(.*).storage.bunnycdn.com/', (string) $config['endpoint'], $matches);
+        preg_match('/http(s):\/\/(.*).storage.bunnycdn.com/', $config['endpoint'], $matches);
         if (\count($matches) === 3) {
             $region = $matches[2];
         }

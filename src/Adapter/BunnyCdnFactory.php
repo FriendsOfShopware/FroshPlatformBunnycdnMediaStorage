@@ -10,10 +10,25 @@ use Shopware\Core\Framework\Adapter\Filesystem\Adapter\AdapterFactoryInterface;
 
 class BunnyCdnFactory implements AdapterFactoryInterface
 {
+    /**
+     * @param array{
+     *     endpoint?: string,
+     *     subfolder?: string,
+     *     replicationRoot?: string,
+     *     apiUrl?: string,
+     *     storageName?: string,
+     *     apiKey: string,
+     *     useGarbage: bool|int,
+     *     neverDelete: bool|int
+     * } $config
+     */
     public function create(array $config): FilesystemAdapter
     {
         $config['subfolder'] ??= '';
-        $this->convertOldConfig($config);
+
+        if (isset($config['apiUrl']) && !isset($config['endpoint'])) {
+            $this->convertOldConfig($config);
+        }
 
         $config['subfolder'] = \rtrim((string) $config['subfolder'], '/');
 
@@ -35,12 +50,11 @@ class BunnyCdnFactory implements AdapterFactoryInterface
         return 'bunnycdn';
     }
 
+    /**
+     * @param array{apiUrl: string} $config
+     */
     private function convertOldConfig(array &$config): void
     {
-        if (!isset($config['apiUrl']) && isset($config['endpoint'])) {
-            return;
-        }
-
         $urlParse = parse_url((string) $config['apiUrl']);
 
         $config['endpoint'] = ($urlParse['scheme'] ?? 'https') . '://' . ($urlParse['host'] ?? '');

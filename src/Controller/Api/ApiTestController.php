@@ -16,13 +16,11 @@ class ApiTestController
     #[Route(path: '/api/_action/bunnycdn-api-test/check')]
     public function check(RequestDataBag $dataBag): JsonResponse
     {
-        $configKey = FroshPlatformBunnycdnMediaStorage::CONFIG_KEY;
-
         $config = [
-            'endpoint' => rtrim($dataBag->getString($configKey . '.CdnHostname', ''), '/'),
-            'storageName' => $dataBag->getString($configKey . '.StorageName', ''),
-            'subfolder' => rtrim($dataBag->getString($configKey . '.CdnSubFolder', ''), '/'),
-            'apiKey' => $dataBag->getString($configKey . '.ApiKey', ''),
+            'endpoint' => rtrim($this->getString($dataBag, 'CdnHostname'), '/'),
+            'storageName' => $this->getString($dataBag, 'StorageName'),
+            'subfolder' => rtrim($this->getString($dataBag, 'CdnSubFolder'), '/'),
+            'apiKey' => $this->getString($dataBag, 'ApiKey'),
             'useGarbage' => false,
             'neverDelete' => false,
         ];
@@ -43,5 +41,16 @@ class ApiTestController
         }
 
         return new JsonResponse(['success' => $success]);
+    }
+
+    private function getString(RequestDataBag $dataBag, string $key): string
+    {
+        $value = $dataBag->get(FroshPlatformBunnycdnMediaStorage::CONFIG_KEY . '.' . $key, '');
+
+        if (!\is_scalar($value) && !$value instanceof \Stringable) {
+            throw new \UnexpectedValueException(sprintf('Parameter value "%s" cannot be converted to "string".', $key));
+        }
+
+        return (string) $value;
     }
 }

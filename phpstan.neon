@@ -2,3 +2,27 @@ parameters:
     level: 9
     paths:
         - src
+
+    ignoreErrors:
+        -
+            message: "#^Out of 43 possible param types, only 88 %% actually have it\\. Add more param types to get over 99 %%$#"
+
+        -
+            message: "#^Method Frosh\\\\BunnycdnMediaStorage\\\\Adapter\\\\Shopware6BunnyCdnAdapter\\:\\:delete\\(\\) has parameter \\$path with no type specified\\.$#"
+            count: 1
+            path: src/Adapter/Shopware6BunnyCdnAdapter.php
+
+        -
+            message: "#^Method Frosh\\\\BunnycdnMediaStorage\\\\Adapter\\\\Shopware6BunnyCdnAdapter\\:\\:write\\(\\) has parameter \\$contents with no type specified\\.$#"
+            count: 1
+            path: src/Adapter/Shopware6BunnyCdnAdapter.php
+
+        -
+            message: "#^Method Frosh\\\\BunnycdnMediaStorage\\\\Adapter\\\\Shopware6BunnyCdnAdapter\\:\\:write\\(\\) has parameter \\$path with no type specified\\.$#"
+            count: 1
+            path: src/Adapter/Shopware6BunnyCdnAdapter.php
+
+        -
+            message: "#^Method Frosh\\\\BunnycdnMediaStorage\\\\Adapter\\\\Shopware6BunnyCdnAdapter\\:\\:writeStream\\(\\) has parameter \\$path with no type specified\\.$#"
+            count: 1
+            path: src/Adapter/Shopware6BunnyCdnAdapter.php
