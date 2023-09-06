@@ -21,7 +21,6 @@
 
         <service id="Frosh\BunnycdnMediaStorage\Service\ConfigUpdater">
             <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
-            <argument type="service" id="Shopware\Core\Framework\Adapter\Cache\CacheClearer"/>
             <argument type="string">%frosh_bunnycdn_media_storage.config_path%</argument>
         </service>
 

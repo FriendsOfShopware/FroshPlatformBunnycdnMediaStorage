@@ -1,3 +1,7 @@
+# 3.0.3
+
+* Fix: Correct save button
+
 # 3.0.2
 
 * Fix: Correct test button for Shopware lower than 6.5.4
