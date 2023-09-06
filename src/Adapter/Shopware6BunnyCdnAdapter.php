@@ -2,14 +2,12 @@
 
 namespace Frosh\BunnycdnMediaStorage\Adapter;
 
-use League\Flysystem\Config;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNAdapter;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNClient;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNRegion;
 
 class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
 {
-    private readonly bool $useGarbage;
 
     private readonly bool $neverDelete;
 
@@ -18,13 +16,11 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
      *     endpoint: string,
      *     storageName: string,
      *     apiKey: string,
-     *     useGarbage: bool|int,
      *     neverDelete: bool|int
      * } $config
      */
     public function __construct(array $config)
     {
-        $this->useGarbage = !empty($config['useGarbage']);
         $this->neverDelete = !empty($config['neverDelete']);
 
         $region = BunnyCDNRegion::FALKENSTEIN;
@@ -46,33 +42,11 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
     /**
      * @inheritDoc
      */
-    public function write($path, $contents, Config $config): void
-    {
-        $this->garbage($path);
-
-        parent::write($path, $contents, $config);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function writeStream($path, $contents, Config $config): void
-    {
-        $this->garbage($path);
-
-        parent::writeStream($path, $contents, $config);
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function delete($path): void
     {
         if ($this->neverDelete) {
             return;
         }
-
-        $this->garbage($path);
 
         parent::delete($path);
     }
@@ -88,26 +62,6 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
     /**
      * @inheritDoc
      */
-    public function createDirectory(string $path, Config $config): void
-    {
-        $this->garbage($path);
-
-        parent::createDirectory($path, $config);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function move(string $source, string $destination, Config $config): void
-    {
-        $this->garbage($source);
-
-        parent::move($source, $destination, $config);
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function fileExists(string $path): bool
     {
         /*
@@ -118,25 +72,5 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
         }
 
         return parent::fileExists($path);
-    }
-
-    private function garbage(string $path): void
-    {
-        if (!$this->useGarbage) {
-            return;
-        }
-
-        if (!$this->fileExists($path)) {
-            return;
-        }
-
-        $garbagePath = 'garbage/' . date('Ymd') . '/' . $path;
-
-        /* There could be a file on this day */
-        if ($this->fileExists($garbagePath)) {
-            $garbagePath .= str_replace('.', '', (string) microtime(true));
-        }
-
-        $this->copy($path, $garbagePath, new Config());
     }
 }
