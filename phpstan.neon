@@ -5,24 +5,10 @@ parameters:
 
     ignoreErrors:
         -
-            message: "#^Out of 42 possible param types, only 88 %% actually have it\\. Add more param types to get over 99 %%$#"
+            message: "#^Out of 30 possible param types, only 96 %% actually have it\\. Add more param types to get over 99 %%$#"
 
         -
             message: "#^Method Frosh\\\\BunnycdnMediaStorage\\\\Adapter\\\\Shopware6BunnyCdnAdapter\\:\\:delete\\(\\) has parameter \\$path with no type specified\\.$#"
             count: 1
             path: src/Adapter/Shopware6BunnyCdnAdapter.php
 
-        -
-            message: "#^Method Frosh\\\\BunnycdnMediaStorage\\\\Adapter\\\\Shopware6BunnyCdnAdapter\\:\\:write\\(\\) has parameter \\$contents with no type specified\\.$#"
-            count: 1
-            path: src/Adapter/Shopware6BunnyCdnAdapter.php
-
-        -
-            message: "#^Method Frosh\\\\BunnycdnMediaStorage\\\\Adapter\\\\Shopware6BunnyCdnAdapter\\:\\:write\\(\\) has parameter \\$path with no type specified\\.$#"
-            count: 1
-            path: src/Adapter/Shopware6BunnyCdnAdapter.php
-
-        -
-            message: "#^Method Frosh\\\\BunnycdnMediaStorage\\\\Adapter\\\\Shopware6BunnyCdnAdapter\\:\\:writeStream\\(\\) has parameter \\$path with no type specified\\.$#"
-            count: 1
-            path: src/Adapter/Shopware6BunnyCdnAdapter.php
