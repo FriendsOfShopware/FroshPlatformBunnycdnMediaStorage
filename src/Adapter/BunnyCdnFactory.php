@@ -7,6 +7,7 @@ use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\PathPrefixing\PathPrefixedAdapter;
 use Shopware\Core\Framework\Adapter\Filesystem\Adapter\AdapterFactoryInterface;
+use Tinect\Flysystem\Garbage\GarbageFilesystemAdapter;
 
 class BunnyCdnFactory implements AdapterFactoryInterface
 {
@@ -33,6 +34,10 @@ class BunnyCdnFactory implements AdapterFactoryInterface
         $config['subfolder'] = \rtrim((string) $config['subfolder'], '/');
 
         $adapter = new Shopware6BunnyCdnAdapter($config);
+
+        if (!empty($config['useGarbage'])) {
+            $adapter = new GarbageFilesystemAdapter($adapter);
+        }
 
         if (!empty($config['subfolder'])) {
             $adapter = new PathPrefixedAdapter($adapter, $config['subfolder']);
