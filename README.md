@@ -1,6 +1,6 @@
 # BunnyCDN Adapter for Shopware 6
 
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md) [![Shopware Store](https://img.shields.io/badge/shopware-store-blue.svg?style=flat-square)](https://store.shopware.com/en/frosh48851065217f/bunnycdn-media-storage-plugin-v3.html)
 
 The BunnyCDN adapter allows you to manage your media files in shopware on a bunnyCDN-Storage.
 
