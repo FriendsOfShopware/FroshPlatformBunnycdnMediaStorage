@@ -90,9 +90,8 @@
         <component name="bunnycdn-alert">
             <name>alertthemefilesystem</name>
             <variant>warning</variant>
-            <message>Storing assets and/or themes within the bunny.net storage can help increase the speed of theme compilation and asset installation.
-                Utilizing a pull-zone for both themes and assets, in conjunction with an alternative CDN URL, can optimize performance.
-                It is recommended to use the storage tier SSD for best results.</message>
+            <message>Storing assets and/or themes within the bunny.net storage will increase the speed of theme compilation and asset installation.
+                Utilizing a pull-zone for both themes and assets, in conjunction with an alternative CDN URL, can optimize performance.</message>
         </component>
 
         <input-field type="bool">
@@ -115,9 +114,8 @@
         <component name="bunnycdn-alert">
             <name>alertassetfilesystem</name>
             <variant>warning</variant>
-            <message>Storing assets and/or themes within the bunny.net storage can help increase the speed of theme compilation and asset installation.
-                Utilizing a pull-zone for both themes and assets, in conjunction with an alternative CDN URL, can optimize performance.
-                It is recommended to use the storage tier SSD for best results.</message>
+            <message>Storing assets and/or themes within the bunny.net storage will increase the speed of theme compilation and asset installation.
+                Utilizing a pull-zone for both themes and assets, in conjunction with an alternative CDN URL, can optimize performance.</message>
         </component>
 
         <input-field type="bool">
