@@ -1,3 +1,8 @@
+# 3.1.0
+
+* Chore: Update config texts and store descriptions
+* Feat: Extracted handling of garbage feature to own package
+
 # 3.0.3
 
 * Fix: Correct save button
