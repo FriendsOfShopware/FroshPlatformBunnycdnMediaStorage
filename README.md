@@ -7,7 +7,13 @@ The BunnyCDN adapter allows you to manage your media files in shopware on a bunn
 
 ## Install
 
-Download the plugin from the release page and enable it in shopware.
+### By composer
+```
+composer require frosh/platform-bunnycdn-media-storage
+```
+### By zip
+download latest release and upload into admin:  
+https://github.com/FriendsOfShopware/FroshPlatformBunnycdnMediaStorage/releases/latest/download/FroshPlatformBunnycdnMediaStorage.zip
 
 ## Usage
 - Upload existing media (optional)
