@@ -2,6 +2,7 @@
 
 namespace Frosh\BunnycdnMediaStorage\Adapter;
 
+use League\Flysystem\UnableToDeleteFile;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNAdapter;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNClient;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNRegion;
@@ -44,6 +45,11 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
      */
     public function delete($path): void
     {
+        // if path is empty or ends with /, it's a directory.
+        if (empty($path) || \str_ends_with($path, '/')) {
+            throw UnableToDeleteFile::atLocation($path, 'Deletion of directories prevented.');
+        }
+
         if ($this->neverDelete) {
             return;
         }
@@ -56,7 +62,11 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
      */
     public function deleteDirectory(string $path): void
     {
-        $this->delete(rtrim($path, '/') . '/');
+        if ($this->neverDelete) {
+            return;
+        }
+
+        parent::deleteDirectory($path);
     }
 
     /**

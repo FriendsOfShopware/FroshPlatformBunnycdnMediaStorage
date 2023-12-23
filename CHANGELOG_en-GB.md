@@ -1,3 +1,7 @@
+# 3.1.1
+
+* Feat: add dedicated check to prevent deletion of all directories, when shopware does send empty path
+
 # 3.1.0
 
 * Chore: Update config texts and store descriptions
