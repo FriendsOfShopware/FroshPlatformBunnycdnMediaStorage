@@ -20,8 +20,8 @@
     ],
     "require": {
         "shopware/core": "~6.5.1",
-        "platformcommunity/flysystem-bunnycdn": "~3.3.1",
-        "league/flysystem-path-prefixing": "~3.10.3",
+        "platformcommunity/flysystem-bunnycdn": "^3.3.1",
+        "league/flysystem-path-prefixing": "^3.10.3",
         "ajgl/flysystem-replicate": "^2.2",
         "tinect/flysystem-garbage": "^1.0"
     },
