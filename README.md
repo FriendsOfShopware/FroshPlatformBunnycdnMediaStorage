@@ -29,7 +29,7 @@ https://github.com/FriendsOfShopware/FroshPlatformBunnycdnMediaStorage/releases/
 - Set up plugin config
 
 ### Notes on Automatic Deployments
-The plugin configuration is stored in `var/bunnycdn_config.yml`. You must ensure that this file is shared and available in this location after deployment after you configured the pugin once.
+The plugin configuration is stored in `var/bunnycdn_config.yml`. You must ensure that this file is shared and available in this location after deployment after you configured the plugin once.
 
 ## Suggestions
 
