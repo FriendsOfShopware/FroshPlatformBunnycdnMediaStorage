@@ -25,6 +25,7 @@ jobs:
           shopware-version: ${{ matrix.version }}
           php-version: 8.2
           php-extensions: pcov
+          install: true
 
       - name: Info
         run: |
@@ -35,8 +36,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          path: ${{ github.workspace }}/custom/plugins/${{ env.PLUGIN_NAME }}
+          path: ${{ github.workspace }}/custom/static-plugins/${{ env.PLUGIN_NAME }}
 
       - name: PHPStan
-        run: |
-          ${{ github.workspace }}/vendor/bin/phpstan analyse -c ${{ github.workspace }}/custom/plugins/${{ env.PLUGIN_NAME }}/phpstan.neon
+        working-directory: ${{ github.workspace }}
+        run:
+          composer require frosh/platform-bunnycdn-media-storage
+          ${{ github.workspace }}/vendor/bin/phpstan analyse -c ${{ github.workspace }}/custom/static-plugins/${{ env.PLUGIN_NAME }}/phpstan.neon
