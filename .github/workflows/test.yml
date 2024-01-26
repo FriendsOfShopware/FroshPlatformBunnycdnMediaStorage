@@ -16,7 +16,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: [ "v6.5.1", "v6.5.2", "v6.5.3", "v6.5.4", "v6.5.5", "v6.5.6", "v6.5.7", "6.5.x", "v6.6.0.0-rc1", "trunk" ]
+        version: [
+          "v6.5.1.0",
+          "v6.5.2.1",
+          "v6.5.3.3",
+          "v6.5.4.1",
+          "v6.5.5.2",
+          "v6.5.6.1",
+          "v6.5.7.4",
+          "v6.5.8.2",
+          "6.5.x",
+          "v6.6.0.0-rc1",
+          "trunk"
+        ]
     runs-on: ubuntu-latest
     steps:
       - name: Setup Shopware
@@ -40,6 +52,6 @@ jobs:
 
       - name: PHPStan
         working-directory: ${{ github.workspace }}
-        run:
+        run: |
           composer require frosh/platform-bunnycdn-media-storage
           ${{ github.workspace }}/vendor/bin/phpstan analyse -c ${{ github.workspace }}/custom/static-plugins/${{ env.PLUGIN_NAME }}/phpstan.neon
