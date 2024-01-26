@@ -1,3 +1,7 @@
+# 3.1.2
+
+* Feat: add support for shopware 6.6
+
 # 3.1.1
 
 * Feat: add dedicated check to prevent deletion of all directories, when shopware does send empty path
