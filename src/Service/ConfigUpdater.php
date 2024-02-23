@@ -78,7 +78,7 @@ class ConfigUpdater
 
         $filesystemDefaultConfig = [
             'type' => 'local',
-            'url' => $defaultUrl,
+            'url' => '',
             'config' => [
                 'root' => '%kernel.project_dir%/public',
             ],
