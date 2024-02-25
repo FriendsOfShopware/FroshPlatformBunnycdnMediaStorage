@@ -2,6 +2,7 @@
 
 namespace Frosh\BunnycdnMediaStorage\Controller\Api;
 
+use Frosh\BunnycdnMediaStorage\Adapter\AdapterConfig;
 use Frosh\BunnycdnMediaStorage\Adapter\Shopware6BunnyCdnAdapter;
 use Frosh\BunnycdnMediaStorage\PluginConfig;
 use League\Flysystem\Config;
@@ -16,19 +17,15 @@ class ApiTestController
     #[Route(path: '/api/_action/bunnycdn-api-test/check')]
     public function check(RequestDataBag $dataBag): JsonResponse
     {
-        $config = [
-            'endpoint' => rtrim($this->getString($dataBag, 'CdnHostname'), '/'),
-            'storageName' => $this->getString($dataBag, 'StorageName'),
-            'subfolder' => rtrim($this->getString($dataBag, 'CdnSubFolder'), '/'),
-            'apiKey' => $this->getString($dataBag, 'ApiKey'),
-            'useGarbage' => false,
-            'neverDelete' => false,
-        ];
+        $adapterConfig = new AdapterConfig();
+        $adapterConfig->setEndpoint($this->getString($dataBag, 'CdnHostname'));
+        $adapterConfig->setStorageName($this->getString($dataBag, 'StorageName'));
+        $adapterConfig->setApiKey($this->getString($dataBag, 'ApiKey'));
 
         $filename = 'testfile_' . Random::getAlphanumericString(20) . '.jpg';
 
         try {
-            $adapter = new Shopware6BunnyCdnAdapter($config);
+            $adapter = new Shopware6BunnyCdnAdapter($adapterConfig);
 
             $adapter->write($filename, $filename, new Config());
             $success = $adapter->fileExists($filename);
