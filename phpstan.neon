@@ -5,6 +5,9 @@ parameters:
 
     ignoreErrors:
         -
+            message: "#^Out of .* possible param types, only .* %% actually have it\\. Add more param types to get over 99 %%$#"
+            reportUnmatched: false
+        -
             message: "#^Method Frosh\\\\BunnycdnMediaStorage\\\\Adapter\\\\Shopware6BunnyCdnAdapter\\:\\:delete\\(\\) has parameter \\$path with no type specified\\.$#"
             count: 1
             path: src/Adapter/Shopware6BunnyCdnAdapter.php
