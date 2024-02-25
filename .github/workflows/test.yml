@@ -48,10 +48,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          path: ${{ github.workspace }}/custom/static-plugins/${{ env.PLUGIN_NAME }}
+          path: ${{ github.workspace }}/custom/plugins/${{ env.PLUGIN_NAME }}
 
       - name: PHPStan
         working-directory: ${{ github.workspace }}
         run: |
           composer require frosh/platform-bunnycdn-media-storage
-          ${{ github.workspace }}/vendor/bin/phpstan analyse -c ${{ github.workspace }}/custom/static-plugins/${{ env.PLUGIN_NAME }}/phpstan.neon
+          ${{ github.workspace }}/vendor/bin/phpstan analyse -c ${{ github.workspace }}/custom/plugins/${{ env.PLUGIN_NAME }}/phpstan.neon
+
+      - name: Run Tests
+        working-directory: ${{ github.workspace }}/custom/plugins/${{ env.PLUGIN_NAME }}
+        run: |
+          php -d pcov.enabled=1 ${{ github.workspace }}/vendor/bin/phpunit --coverage-clover clover.xml --testsuite Unit
+
+      - uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        with:
+          files: ./clover.xml
+          root_dir: ${{ github.workspace }}/custom/plugins/${{ env.PLUGIN_NAME }}
+          working-directory: ${{ github.workspace }}/custom/plugins/${{ env.PLUGIN_NAME }}

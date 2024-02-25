@@ -2,7 +2,7 @@
 
 namespace Frosh\BunnycdnMediaStorage\Subscriber;
 
-use Frosh\BunnycdnMediaStorage\FroshPlatformBunnycdnMediaStorage;
+use Frosh\BunnycdnMediaStorage\PluginConfig;
 use Frosh\BunnycdnMediaStorage\Service\ConfigUpdater;
 use Shopware\Core\Framework\DataAbstractionLayer\Event\EntityWrittenEvent;
 use Shopware\Core\System\SystemConfig\Event\SystemConfigChangedHook;
@@ -24,13 +24,14 @@ class ConfigSubscriber implements EventSubscriberInterface
 
     public function onSystemConfigWritten(EntityWrittenEvent $event): void
     {
-        $configKey = FroshPlatformBunnycdnMediaStorage::CONFIG_KEY;
+        $configKey = PluginConfig::CONFIG_KEY;
 
         $newConfig = [];
 
         foreach ($event->getPayloads() as $payload) {
-            if (str_starts_with((string) $payload['configurationKey'], $configKey)) {
-                $newConfig[str_replace($configKey . '.', '', (string) $payload['configurationKey'])] = $payload['configurationValue'];
+            $payloadConfigKey = (string) $payload['configurationKey'];
+            if (str_starts_with($payloadConfigKey, $configKey)) {
+                $newConfig[$payloadConfigKey] = $payload['configurationValue'];
             }
         }
 
@@ -54,7 +55,7 @@ class ConfigSubscriber implements EventSubscriberInterface
         }
 
         foreach ($changes as $change) {
-            if (!\str_starts_with((string) $change, FroshPlatformBunnycdnMediaStorage::CONFIG_KEY)) {
+            if (!\str_starts_with((string) $change, PluginConfig::CONFIG_KEY)) {
                 continue;
             }
 

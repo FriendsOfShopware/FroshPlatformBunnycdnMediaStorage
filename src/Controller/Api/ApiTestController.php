@@ -3,7 +3,7 @@
 namespace Frosh\BunnycdnMediaStorage\Controller\Api;
 
 use Frosh\BunnycdnMediaStorage\Adapter\Shopware6BunnyCdnAdapter;
-use Frosh\BunnycdnMediaStorage\FroshPlatformBunnycdnMediaStorage;
+use Frosh\BunnycdnMediaStorage\PluginConfig;
 use League\Flysystem\Config;
 use Shopware\Core\Framework\Util\Random;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
@@ -45,7 +45,7 @@ class ApiTestController
 
     private function getString(RequestDataBag $dataBag, string $key): string
     {
-        $value = $dataBag->get(FroshPlatformBunnycdnMediaStorage::CONFIG_KEY . '.' . $key, '');
+        $value = $dataBag->get(PluginConfig::CONFIG_KEY . '.' . $key, '');
 
         if (!\is_scalar($value) && !$value instanceof \Stringable) {
             throw new \UnexpectedValueException(sprintf('Parameter value "%s" cannot be converted to "string".', $key));
