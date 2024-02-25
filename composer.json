@@ -49,8 +49,16 @@
             "Frosh\\BunnycdnMediaStorage\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Frosh\\BunnycdnMediaStorage\\Tests\\Unit\\": "tests/unit"
+        }
+    },
     "minimum-stability": "RC",
     "config": {
+        "platform": {
+            "php": "8.1"
+        },
         "allow-plugins": {
             "symfony/runtime": true
         }
