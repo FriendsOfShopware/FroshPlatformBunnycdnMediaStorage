@@ -1,7 +1,7 @@
 {
   "bunnycdn-api-test-button": {
-    "title": "API Test",
+    "error": "Verbindung konnte nicht hergestellt werden. Bitte prüfe die Konfiguration.",
     "success": "Verbindung wurde erfolgreich getestet",
-    "error": "Verbindung konnte nicht hergestellt werden. Bitte prüfe die Konfiguration."
+    "title": "API-Test"
   }
 }
