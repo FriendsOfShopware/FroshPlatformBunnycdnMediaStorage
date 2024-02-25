@@ -9,7 +9,6 @@ use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNRegion;
 
 class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
 {
-
     private readonly bool $neverDelete;
 
     /**
