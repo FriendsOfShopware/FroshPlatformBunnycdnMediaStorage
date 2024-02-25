@@ -12,39 +12,25 @@ use Tinect\Flysystem\Garbage\GarbageFilesystemAdapter;
 class BunnyCdnFactory implements AdapterFactoryInterface
 {
     /**
-     * @param array{
-     *     endpoint?: string,
-     *     subfolder?: string,
-     *     replicationRoot?: string,
-     *     apiUrl?: string,
-     *     storageName?: string,
-     *     apiKey: string,
-     *     useGarbage: bool|int,
-     *     neverDelete: bool|int
-     * } $config
+     * @param array<string, string|bool|int> $config
      */
     public function create(array $config): FilesystemAdapter
     {
-        $config['subfolder'] ??= '';
+        $adapterConfig = new AdapterConfig();
+        $adapterConfig->assign($config);
 
-        if (isset($config['apiUrl']) && !isset($config['endpoint'])) {
-            $this->convertOldConfig($config);
-        }
+        $adapter = new Shopware6BunnyCdnAdapter($adapterConfig);
 
-        $config['subfolder'] = \rtrim((string) $config['subfolder'], '/');
-
-        $adapter = new Shopware6BunnyCdnAdapter($config);
-
-        if (!empty($config['useGarbage'])) {
+        if (!empty($adapterConfig->isUseGarbage())) {
             $adapter = new GarbageFilesystemAdapter($adapter);
         }
 
-        if (!empty($config['subfolder'])) {
-            $adapter = new PathPrefixedAdapter($adapter, $config['subfolder']);
+        if (!empty($adapterConfig->getSubfolder())) {
+            $adapter = new PathPrefixedAdapter($adapter, $adapterConfig->getSubfolder());
         }
 
-        if (!empty($config['replicationRoot'])) {
-            $adapter = new ReplicateFilesystemAdapter($adapter, new LocalFilesystemAdapter($config['replicationRoot']));
+        if (!empty($adapterConfig->getReplicationRoot())) {
+            $adapter = new ReplicateFilesystemAdapter($adapter, new LocalFilesystemAdapter($adapterConfig->getReplicationRoot()));
         }
 
         return $adapter;
@@ -53,22 +39,5 @@ class BunnyCdnFactory implements AdapterFactoryInterface
     public function getType(): string
     {
         return 'bunnycdn';
-    }
-
-    /**
-     * @param array{apiUrl: string} $config
-     */
-    private function convertOldConfig(array &$config): void
-    {
-        $urlParse = parse_url((string) $config['apiUrl']);
-
-        $config['endpoint'] = ($urlParse['scheme'] ?? 'https') . '://' . ($urlParse['host'] ?? '');
-        $parts = explode('/', ($urlParse['path'] ?? ''));
-        $parts = array_filter($parts);
-        $config['storageName'] = $parts[1] ?? '';
-
-        if (\count($parts) > 1) {
-            $config['subfolder'] = implode('/', \array_slice($parts, 1));
-        }
     }
 }
