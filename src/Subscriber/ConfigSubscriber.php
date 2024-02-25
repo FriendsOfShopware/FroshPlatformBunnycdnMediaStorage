@@ -29,8 +29,9 @@ class ConfigSubscriber implements EventSubscriberInterface
         $newConfig = [];
 
         foreach ($event->getPayloads() as $payload) {
-            if (str_starts_with((string) $payload['configurationKey'], $configKey)) {
-                $newConfig[str_replace($configKey . '.', '', (string) $payload['configurationKey'])] = $payload['configurationValue'];
+            $payloadConfigKey = (string) $payload['configurationKey'];
+            if (str_starts_with($payloadConfigKey, $configKey)) {
+                $newConfig[$payloadConfigKey] = $payload['configurationValue'];
             }
         }
 

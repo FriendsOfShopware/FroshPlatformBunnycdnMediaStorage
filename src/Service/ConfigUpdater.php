@@ -3,6 +3,7 @@
 namespace Frosh\BunnycdnMediaStorage\Service;
 
 use Frosh\BunnycdnMediaStorage\FroshPlatformBunnycdnMediaStorage;
+use Frosh\BunnycdnMediaStorage\PluginConfig;
 use Shopware\Core\Framework\Adapter\Cache\CacheClearer;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
 use Symfony\Component\Yaml\Yaml;
@@ -22,13 +23,8 @@ class ConfigUpdater
      */
     public function update(array $config = []): void
     {
-        $pluginConfig = $this->systemConfigService->getDomain(FroshPlatformBunnycdnMediaStorage::CONFIG_KEY);
-
-        if (empty($pluginConfig)) {
-            $pluginConfig = $config;
-        } else {
-            $pluginConfig = array_merge($pluginConfig, $config);
-        }
+        $configKey = FroshPlatformBunnycdnMediaStorage::CONFIG_KEY;
+        $pluginConfig = $this->getPluginConfig($config, $configKey);
 
         $data = $this->configGenerator->generate($pluginConfig);
 
@@ -44,5 +40,28 @@ class ConfigUpdater
 
         file_put_contents($this->configPath, Yaml::dump($data));
         $this->cacheClearer->clearContainerCache();
+    }
+
+    /**
+     * @param array<string, string|bool|int> $config
+     */
+    private function getPluginConfig(array $config, string $configKey): PluginConfig
+    {
+        $pluginConfig = new PluginConfig();
+
+        $pluginDomainConfig = $this->systemConfigService->getDomain(FroshPlatformBunnycdnMediaStorage::CONFIG_KEY);
+        foreach ($pluginDomainConfig as $key => $value) {
+            $pluginConfig->assign([
+                \str_replace($configKey . '.', '', $key) => $value,
+            ]);
+        }
+
+        foreach ($config as $key => $value) {
+            $pluginConfig->assign([
+                \str_replace($configKey . '.', '', $key) => $value,
+            ]);
+        }
+
+        return $pluginConfig;
     }
 }

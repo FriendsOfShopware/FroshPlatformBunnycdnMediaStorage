@@ -2,50 +2,43 @@
 
 namespace Frosh\BunnycdnMediaStorage\Service;
 
+use Frosh\BunnycdnMediaStorage\PluginConfig;
 use Shopware\Core\DevOps\Environment\EnvironmentHelper;
 
 class ConfigGenerator
 {
-    private const FILESYSTEM_TYPES = [
-        'public',
-        'sitemap',
-        'theme',
-        'asset',
-    ];
-
-    /**
-     * @param array<string, string|bool|int> $pluginConfig
-     */
-    public function generate(array $pluginConfig = []): ?array
+    public function generate(PluginConfig $pluginConfig): ?array
     {
-        $data = [];
-
         if ($this->isValidConfig($pluginConfig) === false) {
             return null;
         }
 
         $defaultUrl = EnvironmentHelper::getVariable('APP_URL');
 
-        if (empty($pluginConfig['CdnUrl']) || !\is_string($pluginConfig['CdnUrl'])) {
-            $pluginConfig['CdnUrl'] = (string) $defaultUrl;
+        if (empty($pluginConfig->CdnUrl)) {
+            $pluginConfig->CdnUrl = (string) $defaultUrl;
         }
 
-        $pluginConfig['CdnSubFolder'] = $this->cleanupCdnSubFolder($pluginConfig['CdnSubFolder'] ?? '');
+        $pluginConfig->CdnSubFolder = $this->cleanupCdnSubFolder($pluginConfig->CdnSubFolder);
 
         $filesystemBunnyCdnConfig = [
             'type' => 'bunnycdn',
-            'url' => rtrim($pluginConfig['CdnUrl'], '/') . '/' . trim($pluginConfig['CdnSubFolder'], '/'),
+            'url' => \sprintf(
+                '%s/%s',
+                rtrim($pluginConfig->CdnUrl, '/'),
+                trim($pluginConfig->CdnSubFolder, '/')
+            ),
             'config' => [
-                'endpoint' => rtrim((string) $pluginConfig['CdnHostname'], '/'),
-                'storageName' => $pluginConfig['StorageName'],
-                'subfolder' => rtrim($pluginConfig['CdnSubFolder'], '/'),
-                'apiKey' => $pluginConfig['ApiKey'],
-                'useGarbage' => $pluginConfig['useGarbage'] ?? false,
-                'neverDelete' => $pluginConfig['neverDelete'] ?? false,
+                'endpoint' => rtrim($pluginConfig->CdnHostname, '/'),
+                'storageName' => $pluginConfig->StorageName,
+                'subfolder' => rtrim($pluginConfig->CdnSubFolder, '/'),
+                'apiKey' => $pluginConfig->ApiKey,
+                'useGarbage' => $pluginConfig->useGarbage,
+                'neverDelete' => $pluginConfig->neverDelete,
             ],
         ];
 
-        if (!empty($pluginConfig['replicateLocal'])) {
+        if (!empty($pluginConfig->replicateLocal)) {
             $filesystemBunnyCdnConfig['config']['replicationRoot'] = '%kernel.project_dir%/public';
         }
 
@@ -59,20 +52,24 @@ class ConfigGenerator
 
         $filesystemData = [];
 
-        foreach (self::FILESYSTEM_TYPES as $type) {
-            if (!empty($pluginConfig['Filesystem' . ucfirst($type)])) {
+        foreach (PluginConfig::SUPPORTED_FILESYSTEM_TYPES as $type) {
+            $fileSystemActive = $pluginConfig->{'Filesystem' . \ucfirst($type)};
+
+            if ($fileSystemActive) {
                 $filesystemData[$type] = $filesystemBunnyCdnConfig;
             } else {
                 $filesystemData[$type] = $filesystemDefaultConfig;
             }
 
-            if (!empty($pluginConfig['Filesystem' . ucfirst($type) . 'Url'])) {
-                $filesystemData[$type]['url'] = $pluginConfig['Filesystem' . ucfirst($type) . 'Url'];
+            $fileSystemUrl = $pluginConfig->{'Filesystem' . \ucfirst($type) . 'Url'};
+            if (!empty($fileSystemUrl)) {
+                $filesystemData[$type]['url'] = $fileSystemUrl;
             }
         }
 
+        $data = [];
         $data['shopware'] = [
-            'cdn' => ['url' => $pluginConfig['CdnUrl']],
+            'cdn' => ['url' => $pluginConfig->CdnUrl],
             'filesystem' => $filesystemData,
         ];
 
@@ -88,25 +85,25 @@ class ConfigGenerator
         return '';
     }
 
-    private function isValidConfig(array $pluginConfig): bool
+    private function isValidConfig(PluginConfig $pluginConfig): bool
     {
-        if (empty($pluginConfig)) {
+        if (empty($pluginConfig->getVars())) {
             return false;
         }
 
-        if (empty($pluginConfig['CdnUrl'])) {
+        if (empty($pluginConfig->CdnUrl)) {
             return false;
         }
 
-        if (empty($pluginConfig['CdnHostname'])) {
+        if (empty($pluginConfig->CdnHostname)) {
             return false;
         }
 
-        if (empty($pluginConfig['StorageName'])) {
+        if (empty($pluginConfig->StorageName)) {
             return false;
         }
 
-        if (empty($pluginConfig['ApiKey'])) {
+        if (empty($pluginConfig->ApiKey)) {
             return false;
         }
 
@@ -117,10 +114,10 @@ class ConfigGenerator
         return true;
     }
 
-    private function shouldTransferAnyFilesystem(array $pluginConfig): bool
+    private function shouldTransferAnyFilesystem(PluginConfig $pluginConfig): bool
     {
-        foreach (self::FILESYSTEM_TYPES as $type) {
-            if (!empty($pluginConfig['Filesystem' . ucfirst($type)])) {
+        foreach (PluginConfig::SUPPORTED_FILESYSTEM_TYPES as $type) {
+            if ($pluginConfig->{'Filesystem' . \ucfirst($type)}) {
                 return true;
             }
         }
