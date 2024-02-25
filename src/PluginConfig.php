@@ -6,6 +6,7 @@ use Shopware\Core\Framework\Struct\Struct;
 
 class PluginConfig extends Struct
 {
+    public const CONFIG_KEY = 'FroshPlatformBunnycdnMediaStorage.config';
     public const SUPPORTED_FILESYSTEM_TYPES = [
         'public',
         'sitemap',

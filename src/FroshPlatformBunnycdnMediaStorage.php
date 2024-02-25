@@ -10,8 +10,6 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class FroshPlatformBunnycdnMediaStorage extends Plugin
 {
-    public const CONFIG_KEY = 'FroshPlatformBunnycdnMediaStorage.config';
-
     public function executeComposerCommands(): bool
     {
         return true;

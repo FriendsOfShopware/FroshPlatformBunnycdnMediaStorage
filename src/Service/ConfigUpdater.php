@@ -2,7 +2,6 @@
 
 namespace Frosh\BunnycdnMediaStorage\Service;
 
-use Frosh\BunnycdnMediaStorage\FroshPlatformBunnycdnMediaStorage;
 use Frosh\BunnycdnMediaStorage\PluginConfig;
 use Shopware\Core\Framework\Adapter\Cache\CacheClearer;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
@@ -46,10 +45,10 @@ class ConfigUpdater
      */
     private function getPluginConfig(array $config): PluginConfig
     {
-        $configKey = FroshPlatformBunnycdnMediaStorage::CONFIG_KEY;
         $pluginConfig = new PluginConfig();
+        $configKey = PluginConfig::CONFIG_KEY;
 
-        $pluginDomainConfig = $this->systemConfigService->getDomain(FroshPlatformBunnycdnMediaStorage::CONFIG_KEY);
+        $pluginDomainConfig = $this->systemConfigService->getDomain($configKey);
         foreach ($pluginDomainConfig as $key => $value) {
             $pluginConfig->assign([
                 \str_replace($configKey . '.', '', $key) => $value,
