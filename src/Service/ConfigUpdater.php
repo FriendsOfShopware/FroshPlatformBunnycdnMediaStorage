@@ -23,8 +23,7 @@ class ConfigUpdater
      */
     public function update(array $config = []): void
     {
-        $configKey = FroshPlatformBunnycdnMediaStorage::CONFIG_KEY;
-        $pluginConfig = $this->getPluginConfig($config, $configKey);
+        $pluginConfig = $this->getPluginConfig($config);
 
         $data = $this->configGenerator->generate($pluginConfig);
 
@@ -45,8 +44,9 @@ class ConfigUpdater
     /**
      * @param array<string, string|bool|int> $config
      */
-    private function getPluginConfig(array $config, string $configKey): PluginConfig
+    private function getPluginConfig(array $config): PluginConfig
     {
+        $configKey = FroshPlatformBunnycdnMediaStorage::CONFIG_KEY;
         $pluginConfig = new PluginConfig();
 
         $pluginDomainConfig = $this->systemConfigService->getDomain(FroshPlatformBunnycdnMediaStorage::CONFIG_KEY);
