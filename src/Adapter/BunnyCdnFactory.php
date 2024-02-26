@@ -25,8 +25,8 @@ class BunnyCdnFactory implements AdapterFactoryInterface
             $adapter = new GarbageFilesystemAdapter($adapter);
         }
 
-        if (!empty($adapterConfig->getSubfolder())) {
-            $adapter = new PathPrefixedAdapter($adapter, $adapterConfig->getSubfolder());
+        if (!empty($adapterConfig->getRoot())) {
+            $adapter = new PathPrefixedAdapter($adapter, $adapterConfig->getRoot());
         }
 
         if (!empty($adapterConfig->getReplicationRoot())) {
