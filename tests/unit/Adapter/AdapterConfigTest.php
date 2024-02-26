@@ -47,6 +47,34 @@ class AdapterConfigTest extends TestCase
         static::assertTrue($adapterConfig->isNeverDelete());
     }
 
+    public function testBoolConversion(): void
+    {
+        $adapterConfig = new AdapterConfig();
+        $adapterConfig->assign([
+            'useGarbage' => 0,
+            'neverDelete' => 1,
+        ]);
+
+        static::assertFalse($adapterConfig->isUseGarbage());
+        static::assertTrue($adapterConfig->isNeverDelete());
+
+        $adapterConfig->assign([
+            'useGarbage' => '1',
+            'neverDelete' => '0',
+        ]);
+
+        static::assertTrue($adapterConfig->isUseGarbage());
+        static::assertFalse($adapterConfig->isNeverDelete());
+
+        $adapterConfig->assign([
+            'useGarbage' => '',
+            'neverDelete' => ' ',
+        ]);
+
+        static::assertFalse($adapterConfig->isUseGarbage());
+        static::assertTrue($adapterConfig->isNeverDelete());
+    }
+
     public function testSubfolderResultsInRootWithoutSlash(): void
     {
         $adapterConfig = new AdapterConfig();
