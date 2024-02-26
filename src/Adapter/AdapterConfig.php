@@ -109,9 +109,9 @@ class AdapterConfig extends Struct
         return $this->useGarbage;
     }
 
-    public function setUseGarbage(bool $useGarbage): void
+    public function setUseGarbage(bool|int|string $useGarbage): void
     {
-        $this->useGarbage = $useGarbage;
+        $this->useGarbage = !empty($useGarbage);
     }
 
     public function isNeverDelete(): bool
@@ -119,9 +119,9 @@ class AdapterConfig extends Struct
         return $this->neverDelete;
     }
 
-    public function setNeverDelete(bool $neverDelete): void
+    public function setNeverDelete(bool|int|string $neverDelete): void
     {
-        $this->neverDelete = $neverDelete;
+        $this->neverDelete = !empty($neverDelete);
     }
 
     public function getRoot(): string
