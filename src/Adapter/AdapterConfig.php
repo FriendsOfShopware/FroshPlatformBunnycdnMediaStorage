@@ -14,14 +14,29 @@ class AdapterConfig extends Struct
 
     protected string $replicationRoot = '';
 
-    protected string $subfolder = '';
+    protected string $root = '';
 
     protected bool $useGarbage = false;
 
     protected bool $neverDelete = false;
 
+    public function assign(array $options): AdapterConfig
+    {
+        parent::assign($options);
+
+        foreach ($options as $key => $value) {
+            $method = 'set' . \ucfirst($key);
+
+            if (method_exists($this, $method)) {
+                $this->$method($value);
+            }
+        }
+
+        return $this;
+    }
+
     /**
-     * This is just a helper to convert old config to new config
+     * This is for backwards compatibility with old plugin versions
      */
     public function setApiUrl(string $apiUrl): void
     {
@@ -37,8 +52,16 @@ class AdapterConfig extends Struct
         $this->setStorageName($parts[1] ?? '');
 
         if (\count($parts) > 1) {
-            $this->setSubfolder(implode('/', \array_slice($parts, 1)));
+            $this->setRoot(implode('/', \array_slice($parts, 1)));
         }
+    }
+
+    /**
+     * This is for backwards compatibility with old plugin versions
+     */
+    public function setSubfolder(string $subfolder): void
+    {
+        $this->setRoot($subfolder);
     }
 
     public function getEndpoint(): string
@@ -101,13 +124,13 @@ class AdapterConfig extends Struct
         $this->neverDelete = $neverDelete;
     }
 
-    public function getSubfolder(): string
+    public function getRoot(): string
     {
-        return $this->subfolder;
+        return $this->root;
     }
 
-    public function setSubfolder(string $subfolder): void
+    public function setRoot(string $root): void
     {
-        $this->subfolder = \rtrim($subfolder, '/');
+        $this->root = \rtrim($root, '/');
     }
 }

@@ -31,7 +31,7 @@ class ConfigGenerator
             'config' => [
                 'endpoint' => rtrim($pluginConfig->CdnHostname, '/'),
                 'storageName' => $pluginConfig->StorageName,
-                'subfolder' => rtrim($pluginConfig->CdnSubFolder, '/'),
+                'root' => rtrim($pluginConfig->CdnSubFolder, '/'),
                 'apiKey' => $pluginConfig->ApiKey,
                 'useGarbage' => $pluginConfig->useGarbage,
                 'neverDelete' => $pluginConfig->neverDelete,
