@@ -62,6 +62,7 @@ jobs:
           php -d pcov.enabled=1 ${{ github.workspace }}/vendor/bin/phpunit --coverage-clover clover.xml --testsuite Unit
 
       - uses: codecov/codecov-action@v3
+        if: matrix.version == 'trunk'
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
