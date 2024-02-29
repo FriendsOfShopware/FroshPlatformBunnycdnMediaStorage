@@ -1,3 +1,8 @@
+# 3.2.0
+
+* Fix: correct handling rename with same destination to not delete the file
+* Feat: add handling of plugin config to objects instead of arrays
+
 # 3.1.2
 
 * Feat: add support for shopware 6.6
