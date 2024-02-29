@@ -2,6 +2,7 @@
 
 namespace Frosh\BunnycdnMediaStorage\Adapter;
 
+use League\Flysystem\Config;
 use League\Flysystem\UnableToDeleteFile;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNAdapter;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNClient;
@@ -73,5 +74,19 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
         }
 
         return parent::fileExists($path);
+    }
+
+    /**
+     * TODO: implement it in external project. see https://github.com/PlatformCommunity/flysystem-bunnycdn/issues/70
+     *
+     * @inheritDoc
+     */
+    public function move(string $source, string $destination, Config $config): void
+    {
+        if ($source === $destination) {
+            return;
+        }
+
+        parent::move($source, $destination, $config);
     }
 }
