@@ -65,7 +65,7 @@ class FroshPlatformBunnycdnMediaStorage extends Plugin
             return;
         }
 
-        @trigger_error(\sprintf('The config file at "%s" is deprecated and loaded will be canceled soon. Please use default filesystem config within your config/packages folder. Check https://github.com/FriendsOfShopware/FroshPlatformBunnycdnMediaStorage#usage', $configPath), \E_USER_DEPRECATED);
+        @trigger_error(\sprintf('The config file at "%s" is deprecated and loading will be canceled soon. Please use default filesystem config within your config/packages folder. Check https://github.com/FriendsOfShopware/FroshPlatformBunnycdnMediaStorage#usage', $configPath), \E_USER_DEPRECATED);
 
         $pathInfo = pathinfo($configPath);
 
