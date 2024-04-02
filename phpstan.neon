@@ -11,8 +11,4 @@ parameters:
             message: "#^Method Frosh\\\\BunnycdnMediaStorage\\\\Adapter\\\\Shopware6BunnyCdnAdapter\\:\\:delete\\(\\) has parameter \\$path with no type specified\\.$#"
             count: 1
             path: src/Adapter/Shopware6BunnyCdnAdapter.php
-        -
-            message: "#^Method Frosh\\\\BunnycdnMediaStorage\\\\Service\\\\ConfigGenerator\\:\\:generate\\(\\) return type has no value type specified in iterable type array\\.$#"
-            count: 1
-            path: src/Service/ConfigGenerator.php
 
