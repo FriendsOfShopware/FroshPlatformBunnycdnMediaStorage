@@ -1,7 +1,0 @@
-{
-  "bunnycdn-api-test-button": {
-    "title": "API Test",
-    "success": "Connection was successfully tested",
-    "error": "Connection could not be established. Please check the config."
-  }
-}

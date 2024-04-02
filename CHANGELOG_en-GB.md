@@ -1,3 +1,7 @@
+# UNRELEASED
+
+* Feat: Remove magic generation of filesystem configurations. Please migrate the file "var/bunnycdn_config.yml" to configurations within "config/packages/"
+
 # 3.2.0
 
 * Fix: correct handling rename with same destination to not delete the file
