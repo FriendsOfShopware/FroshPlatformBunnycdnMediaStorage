@@ -1,3 +1,7 @@
+# 3.3.1
+
+* Feat: Add support for old shopware 6.5.0.0
+
 # 3.3.0
 
 * Feat: Remove magic generation of filesystem configurations. Please migrate the file "var/bunnycdn_config.yml" to configurations within "config/packages/"
