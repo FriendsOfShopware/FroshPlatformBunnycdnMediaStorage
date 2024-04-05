@@ -30,10 +30,10 @@ jobs:
           "v6.6.0.3",
           "trunk"
         ]
-        php: [
-          "8.2",
-          "8.3"
-        ]
+        php: ["8.2"]
+        include:
+          - version: "trunk"
+            php: "8.3"
     runs-on: ubuntu-latest
     steps:
       - name: Setup Shopware
