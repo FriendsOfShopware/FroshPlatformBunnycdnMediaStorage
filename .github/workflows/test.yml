@@ -27,8 +27,12 @@ jobs:
           "v6.5.7.4",
           "v6.5.8.2",
           "6.5.x",
-          "v6.6.0.0-rc1",
+          "v6.6.0.3",
           "trunk"
+        ]
+        php: [
+          "8.2",
+          "8.3"
         ]
     runs-on: ubuntu-latest
     steps:
@@ -36,7 +40,7 @@ jobs:
         uses: shopware/setup-shopware@main
         with:
           shopware-version: ${{ matrix.version }}
-          php-version: 8.2
+          php-version: ${{ matrix.php }}
           php-extensions: pcov
           install: true
 
@@ -63,7 +67,7 @@ jobs:
           php -d pcov.enabled=1 ${{ github.workspace }}/vendor/bin/phpunit --coverage-clover clover.xml --testsuite Unit
 
       - uses: codecov/codecov-action@v3
-        if: matrix.version == 'trunk'
+        if: matrix.version == 'trunk' && matrix.php == '8.3'
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
