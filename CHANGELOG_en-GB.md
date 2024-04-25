@@ -1,3 +1,7 @@
+# UNRELEASED
+
+* Feat: update adapter to fix some issues: prevent deleting file when moving to same destination, ignore NotFoundExceoption when deleting directory, determine the correct type of file or directory on the specific methods
+
 # 3.3.1
 
 * Feat: Add support for old shopware 6.5.0.0
