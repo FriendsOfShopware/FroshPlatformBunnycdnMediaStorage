@@ -1,6 +1,8 @@
-# UNRELEASED
+# 3.3.2
 
-* Feat: update adapter to fix some issues: prevent deleting file when moving to same destination, ignore NotFoundExceoption when deleting directory, determine the correct type of file or directory on the specific methods
+* Fix: prevent deleting file when moving to same destination
+* Fix: ignore NotFoundExceoption when deleting directory
+* Fix: determine the correct type of file or directory on the specific methods
 
 # 3.3.1
 
