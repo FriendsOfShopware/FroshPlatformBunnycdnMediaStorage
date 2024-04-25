@@ -19,7 +19,7 @@
         }
     ],
     "require": {
-        "shopware/core": "~6.5.0||~6.6.0",
+        "shopware/core": "~6.5.3||~6.6.0",
         "platformcommunity/flysystem-bunnycdn": "^3.3.4",
         "league/flysystem-path-prefixing": "^3.10.3",
         "ajgl/flysystem-replicate": "^2.2",
