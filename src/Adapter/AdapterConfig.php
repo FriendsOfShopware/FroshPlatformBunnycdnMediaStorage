@@ -47,7 +47,7 @@ class AdapterConfig extends Struct
         $urlParse = parse_url($apiUrl);
 
         $this->setEndpoint(($urlParse['scheme'] ?? 'https') . '://' . ($urlParse['host'] ?? ''));
-        $parts = explode('/', ($urlParse['path'] ?? ''));
+        $parts = explode('/', $urlParse['path'] ?? '');
         $parts = array_filter($parts);
         $this->setStorageName($parts[1] ?? '');
 

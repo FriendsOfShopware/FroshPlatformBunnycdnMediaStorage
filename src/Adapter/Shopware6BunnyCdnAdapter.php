@@ -2,7 +2,6 @@
 
 namespace Frosh\BunnycdnMediaStorage\Adapter;
 
-use League\Flysystem\Config;
 use League\Flysystem\UnableToDeleteFile;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNAdapter;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNClient;
@@ -28,12 +27,12 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
             $region,
         );
 
-        //url is managed by shop using public_url at filesystem
+        // url is managed by shop using public_url at filesystem
         parent::__construct($client);
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function delete($path): void
     {
@@ -50,7 +49,7 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function deleteDirectory(string $path): void
     {
@@ -62,7 +61,7 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function fileExists(string $path): bool
     {

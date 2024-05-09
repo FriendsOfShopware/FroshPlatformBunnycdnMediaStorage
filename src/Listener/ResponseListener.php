@@ -58,7 +58,7 @@ class ResponseListener
         }
 
         foreach ($this->urls as $url) {
-            $response->headers->add(['Link' => '<' . $url . '>; rel=preconnect']);
+            $response->headers->set('Link', '<' . $url . '>; rel=preconnect', false);
         }
     }
 
@@ -68,10 +68,6 @@ class ResponseListener
 
         if (!isset($urlParse['host'])) {
             return '';
-        }
-
-        if (!isset($urlParse['scheme'])) {
-            $urlParse['scheme'] = 'https';
         }
 
         return $urlParse['scheme'] . '://' . $urlParse['host'];
