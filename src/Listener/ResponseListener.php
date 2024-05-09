@@ -66,7 +66,7 @@ class ResponseListener
     {
         $urlParse = parse_url($url);
 
-        if (!isset($urlParse['host'])) {
+        if (!isset($urlParse['host'], $urlParse['scheme'])) {
             return '';
         }
 
