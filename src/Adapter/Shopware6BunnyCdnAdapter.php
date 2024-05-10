@@ -4,8 +4,6 @@ namespace Frosh\BunnycdnMediaStorage\Adapter;
 
 use League\Flysystem\UnableToDeleteFile;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNAdapter;
-use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNClient;
-use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNRegion;
 
 class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
 {
@@ -15,20 +13,8 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
     {
         $this->neverDelete = $config->isNeverDelete();
 
-        $region = BunnyCDNRegion::FALKENSTEIN;
-        preg_match('/http(s):\/\/(.*).storage.bunnycdn.com/', $config->getEndpoint(), $matches);
-        if (\count($matches) === 3) {
-            $region = $matches[2];
-        }
-
-        $client = new BunnyCDNClient(
-            $config->getStorageName(),
-            $config->getApiKey(),
-            $region,
-        );
-
         // url is managed by shop using public_url at filesystem
-        parent::__construct($client);
+        parent::__construct($config->getClient());
     }
 
     /**

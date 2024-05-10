@@ -122,4 +122,15 @@ class AdapterConfigTest extends TestCase
 
         static::assertEquals('', $adapterConfig->getRoot());
     }
+
+    public function testGetClientWithNonDefaultRefgion(): void
+    {
+        $adapterConfig = new AdapterConfig();
+        $adapterConfig->assign([
+            'endpoint' => 'https://any.storage.bunnycdn.com',
+        ]);
+
+        static::assertEquals('any', $adapterConfig->getRegion());
+
+    }
 }

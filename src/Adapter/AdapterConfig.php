@@ -2,6 +2,8 @@
 
 namespace Frosh\BunnycdnMediaStorage\Adapter;
 
+use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNClient;
+use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNRegion;
 use Shopware\Core\Framework\Struct\Struct;
 
 class AdapterConfig extends Struct
@@ -74,6 +76,16 @@ class AdapterConfig extends Struct
         $this->endpoint = rtrim($endpoint, '/');
     }
 
+    public function getRegion(): string
+    {
+        preg_match('/http(s):\/\/(.*).storage.bunnycdn.com/', $this->endpoint, $matches);
+        if (\count($matches) === 3) {
+            return $matches[2];
+        }
+
+        return BunnyCDNRegion::FALKENSTEIN;
+    }
+
     public function getStorageName(): string
     {
         return $this->storageName;
@@ -132,5 +144,14 @@ class AdapterConfig extends Struct
     public function setRoot(string $root): void
     {
         $this->root = \rtrim($root, '/');
+    }
+
+    public function getClient(): ?BunnyCDNClient
+    {
+        return new BunnyCDNClient(
+            $this->getStorageName(),
+            $this->getApiKey(),
+            $this->getRegion(),
+        );
     }
 }
