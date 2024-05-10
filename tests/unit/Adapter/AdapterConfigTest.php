@@ -131,6 +131,5 @@ class AdapterConfigTest extends TestCase
         ]);
 
         static::assertEquals('any', $adapterConfig->getRegion());
-
     }
 }

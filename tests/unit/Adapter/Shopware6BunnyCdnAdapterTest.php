@@ -15,7 +15,7 @@ class Shopware6BunnyCdnAdapterTest extends TestCase
         $this->expectException(UnableToDeleteFile::class);
 
         $client = $this->createMock(BunnyCDNClient::class);
-        $client->expects($this->never())->method('delete');
+        $client->expects(static::never())->method('delete');
 
         $config = $this->createMock(AdapterConfig::class);
         $config->method('getClient')->willReturn($client);
@@ -28,7 +28,7 @@ class Shopware6BunnyCdnAdapterTest extends TestCase
     public function testDeletionSkippedWhenNeverDeleteIsTrue(): void
     {
         $client = $this->createMock(BunnyCDNClient::class);
-        $client->expects($this->never())->method('delete');
+        $client->expects(static::never())->method('delete');
 
         $config = $this->createMock(AdapterConfig::class);
         $config->method('getClient')->willReturn($client);
@@ -42,7 +42,7 @@ class Shopware6BunnyCdnAdapterTest extends TestCase
     public function testDeletionOfDirectorySkippedWhenNeverDeleteIsTrue(): void
     {
         $client = $this->createMock(BunnyCDNClient::class);
-        $client->expects($this->never())->method('delete');
+        $client->expects(static::never())->method('delete');
 
         $config = $this->createMock(AdapterConfig::class);
         $config->method('getClient')->willReturn($client);
@@ -61,13 +61,13 @@ class Shopware6BunnyCdnAdapterTest extends TestCase
 
         $adapter = new Shopware6BunnyCdnAdapter($config);
 
-        $this->assertTrue($adapter->fileExists('thumbnail?variable'));
+        static::assertTrue($adapter->fileExists('thumbnail?variable'));
     }
 
     public function testDeleteIsCalled(): void
     {
         $client = $this->createMock(BunnyCDNClient::class);
-        $client->expects($this->once())->method('delete');
+        $client->expects(static::once())->method('delete');
 
         $config = $this->createMock(AdapterConfig::class);
         $config->method('getClient')->willReturn($client);
@@ -80,7 +80,7 @@ class Shopware6BunnyCdnAdapterTest extends TestCase
     public function testDeleteDirectoryIsCalled(): void
     {
         $client = $this->createMock(BunnyCDNClient::class);
-        $client->expects($this->once())->method('delete');
+        $client->expects(static::once())->method('delete');
 
         $config = $this->createMock(AdapterConfig::class);
         $config->method('getClient')->willReturn($client);
@@ -93,7 +93,7 @@ class Shopware6BunnyCdnAdapterTest extends TestCase
     public function testFileExistsIsCalled(): void
     {
         $client = $this->createMock(BunnyCDNClient::class);
-        $client->expects($this->once())->method('list');
+        $client->expects(static::once())->method('list');
 
         $config = $this->createMock(AdapterConfig::class);
         $config->method('getClient')->willReturn($client);

@@ -146,7 +146,7 @@ class AdapterConfig extends Struct
         $this->root = \rtrim($root, '/');
     }
 
-    public function getClient(): ?BunnyCDNClient
+    public function getClient(): BunnyCDNClient
     {
         return new BunnyCDNClient(
             $this->getStorageName(),
