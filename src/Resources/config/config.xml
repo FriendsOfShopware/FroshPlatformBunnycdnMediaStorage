@@ -2,15 +2,6 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/shopware/shopware/trunk/src/Core/System/SystemConfig/Schema/config.xsd">
     <card>
-        <title>Configuration</title>
-        <title lang="de-DE">Konfiguration</title>
-
-        <component name="bunnycdn-alert">
-            <name>alertconfiguration</name>
-            <variant>warning</variant>
-            <message><![CDATA[
-                We removed the ability to configure the filesystems within the plugin config. Check https://github.com/FriendsOfShopware/FroshPlatformBunnycdnMediaStorage#usage
-                ]]></message>
-        </component>
+        <title>We removed the ability to configure the filesystems within the plugin config. Check https://github.com/FriendsOfShopware/FroshPlatformBunnycdnMediaStorage#usage</title>
     </card>
 </config>

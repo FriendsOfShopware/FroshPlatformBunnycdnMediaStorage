@@ -1,1 +1,0 @@
-import './component/bunnycdn-alert';
