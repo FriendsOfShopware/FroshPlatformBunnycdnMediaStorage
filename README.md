@@ -39,30 +39,30 @@ https://github.com/FriendsOfShopware/FroshPlatformBunnycdnMediaStorage/releases/
     
     - Example with filesystems `public` and `sitemap` saved into `bunnycdn`:
       ```yaml
-          shopware:
-            cdn:
-                url: "https://my-really-cool-company.b-cdn.net"
-            filesystem:
-              public: &bunnycdn
-                type: "bunnycdn"
-                url: "https://my-really-cool-company.b-cdn.net"
-                config:
-                  endpoint: "https://storage.bunnycdn.com"
-                  apiKey: "secret-ftp-password"
-                  storageName: "my-really-cool-company"
-                  useGarbage: true
-              sitemap:
-                <<: *bunnycdn
-              theme:
-                type: "local"
-                url: ""
-                config:
-                  root: "%kernel.project_dir%/public"
-              asset:
-                type: "local"
-                url: ""
-                config:
-                  root: "%kernel.project_dir%/public"
+      shopware:
+        cdn:
+            url: "https://my-really-cool-company.b-cdn.net"
+        filesystem:
+          public: &bunnycdn
+            type: "bunnycdn"
+            url: "https://my-really-cool-company.b-cdn.net"
+            config:
+              endpoint: "https://storage.bunnycdn.com"
+              apiKey: "secret-ftp-password"
+              storageName: "my-really-cool-company"
+              useGarbage: true
+          sitemap:
+            <<: *bunnycdn
+          theme:
+            type: "local"
+            url: ""
+            config:
+              root: "%kernel.project_dir%/public"
+          asset:
+            type: "local"
+            url: ""
+            config:
+              root: "%kernel.project_dir%/public"
       ```
 
 ## Suggestions
