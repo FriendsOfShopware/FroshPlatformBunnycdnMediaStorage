@@ -1,3 +1,7 @@
+# 3.3.3
+
+* Fix: correct config message for Shopware >6.6.3.0
+
 # 3.3.2
 
 * Fix: prevent deleting file when moving to same destination
