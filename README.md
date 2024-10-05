@@ -67,7 +67,7 @@ https://github.com/FriendsOfShopware/FroshPlatformBunnycdnMediaStorage/releases/
 
 ## Recommendations and warnings
 
-- Don't store theme or asset files on external storage if possible. Due to some improvements in shopware with 6.5 and 6.6 there are created many files. This is the reason why this would slow down theme compilation and asset installation significantly.
+- Before Shopware 6.6.8.0 and plugin version 3.4.0: Don't store theme or asset files on external storage. Due to some improvements in shopware with 6.5 and 6.6 there are created many files. This is the reason why this would slow down theme compilation and asset installation significantly.
 - Utilize storage zones with SSDs as they are significantly faster than standard option (means HDDs), with up to 80x faster upload speeds in our tests.
 
 ## Suggestions

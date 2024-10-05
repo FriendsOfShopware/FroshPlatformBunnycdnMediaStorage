@@ -1,3 +1,8 @@
+# 3.4.0
+
+* Feat: (for Shopware >= 6.6.8.0) Add support for writeBatch.
+  With this you can use storage for theme and asset with more speed. Instead of 2,5 hours it now takes 30 seconds for assets on storage with SSD with demo shop.
+
 # 3.3.3
 
 * Fix: correct config message for Shopware >6.6.3.0
