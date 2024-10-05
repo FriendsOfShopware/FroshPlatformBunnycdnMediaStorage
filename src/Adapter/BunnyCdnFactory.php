@@ -7,6 +7,7 @@ use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\PathPrefixing\PathPrefixedAdapter;
 use Shopware\Core\Framework\Adapter\Filesystem\Adapter\AdapterFactoryInterface;
+use Shopware\Core\Framework\Adapter\Filesystem\Plugin\WriteBatchInterface;
 use Tinect\Flysystem\Garbage\GarbageFilesystemAdapter;
 
 class BunnyCdnFactory implements AdapterFactoryInterface
@@ -19,7 +20,7 @@ class BunnyCdnFactory implements AdapterFactoryInterface
         $adapterConfig = new AdapterConfig();
         $adapterConfig->assign($config);
 
-        $adapter = new Shopware6BunnyCdnAdapter($adapterConfig);
+        $adapter = $this->getBasicAdapter($adapterConfig);
 
         if (!empty($adapterConfig->isUseGarbage())) {
             $adapter = new GarbageFilesystemAdapter($adapter);
@@ -34,6 +35,15 @@ class BunnyCdnFactory implements AdapterFactoryInterface
         }
 
         return $adapter;
+    }
+
+    private function getBasicAdapter(AdapterConfig $adapterConfig): FilesystemAdapter
+    {
+        if (\interface_exists(WriteBatchInterface::class)) {
+            return new Shopware6BunnyCdnWriteBatchAdapter($adapterConfig);
+        }
+
+        return new Shopware6BunnyCdnAdapter($adapterConfig);
     }
 
     public function getType(): string
