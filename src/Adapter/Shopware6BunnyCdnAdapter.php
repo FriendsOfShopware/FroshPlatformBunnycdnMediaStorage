@@ -2,10 +2,14 @@
 
 namespace Frosh\BunnycdnMediaStorage\Adapter;
 
+use League\Flysystem\Config;
 use League\Flysystem\UnableToDeleteFile;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNAdapter;
+use PlatformCommunity\Flysystem\BunnyCDN\WriteBatchFile;
+use Shopware\Core\Framework\Adapter\Filesystem\Plugin\CopyBatchInput;
+use Shopware\Core\Framework\Adapter\Filesystem\Plugin\WriteBatchInterface;
 
-class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
+class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter implements WriteBatchInterface
 {
     private readonly bool $neverDelete;
 
@@ -59,5 +63,57 @@ class Shopware6BunnyCdnAdapter extends BunnyCDNAdapter
         }
 
         return parent::fileExists($path);
+    }
+
+    public function writeBatch(CopyBatchInput|array|Config ...$input): void
+    {
+        $files = [];
+        $config = new Config();
+
+        foreach ($input as $data) {
+            if ($data instanceof CopyBatchInput) {
+                // migrate CopyBatchInput of Shopware to WriteBatchFile
+                foreach ($data->getTargetFiles() as $targetFile) {
+                    if (\is_resource($data->getSourceFile())) {
+                        $sourcePath = stream_get_meta_data($data->getSourceFile())['uri'];
+                        $files[] = new WriteBatchFile($sourcePath, $targetFile);
+
+                        continue;
+                    }
+
+                    $files[] = new WriteBatchFile($data->getSourceFile(), $targetFile);
+                }
+
+                continue;
+            }
+
+            if ($data instanceof Config) {
+                $config = $data;
+
+                continue;
+            }
+
+            if (\is_array($data)) {
+                foreach ($data as $item) {
+                    if ($item instanceof WriteBatchFile) {
+                        $files[] = $item;
+
+                        continue;
+                    }
+
+                    throw new \InvalidArgumentException('Each value of array must be a WriteBatchFile object.');
+                }
+
+                continue;
+            }
+
+            throw new \InvalidArgumentException('Unsupported input type.');
+        }
+
+        if (empty($files)) {
+            return;
+        }
+
+        parent::writeBatch($files, $config);
     }
 }
