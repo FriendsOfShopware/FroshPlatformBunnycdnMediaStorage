@@ -1,3 +1,7 @@
+# 3.4.1
+
+* Fix: all.css was empty after transfering to bunny with writeBatch
+
 # 3.4.0
 
 * Feat: (for Shopware >= 6.6.8.0) Add support for writeBatch.
