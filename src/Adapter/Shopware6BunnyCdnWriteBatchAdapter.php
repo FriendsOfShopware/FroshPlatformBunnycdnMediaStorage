@@ -37,6 +37,23 @@ if (!\interface_exists(WriteBatchInterface::class)) {
 
                         $sourcePath = $metaData['uri'];
 
+                        // we need to save thing like "php://temp" onto disk before continue
+                        if (!\is_file($sourcePath)) {
+                            $tmpFile = tmpfile();
+                            if ($tmpFile === false) {
+                                throw new \RuntimeException('Could not create temporary file');
+                            }
+
+                            $sourcePath = \stream_get_meta_data($tmpFile)['uri'];
+
+                            try {
+                                \stream_copy_to_stream($sourceFile, $tmpFile);
+                            } catch (\Exception $e) {
+                                \fclose($tmpFile);
+                                throw $e;
+                            }
+                        }
+
                         $files[] = new WriteBatchFile($sourcePath, $targetFile);
                     }
 
