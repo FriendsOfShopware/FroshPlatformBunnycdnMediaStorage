@@ -1,5 +1,9 @@
-> ⚠️ **WARNING**  
-> After experiencing increasing problems with bunny.net, we have decided to no longer actively recommend or use this service. It doesn't seem to be reliable or trustworthy.
+# ⚠️ **WARNING**  
+After experiencing increasing problems with bunny.net, we have decided to no longer actively recommend or use this service. It doesn't seem to be reliable or trustworthy.
+
+
+
+
 
 # BunnyCDN Adapter for Shopware 6
 
