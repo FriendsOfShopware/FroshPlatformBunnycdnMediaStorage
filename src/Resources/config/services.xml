@@ -22,5 +22,20 @@
             <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse" />
         </service>
 
+        <service id="Frosh\BunnycdnMediaStorage\Service\CdnHealthCheckService">
+            <argument type="service" id="cache.system"/>
+            <argument type="service" id="monolog.logger.bunnycdn_fallback" on-invalid="null" />
+            <argument>%shopware.filesystem.public.url%</argument>
+            <argument>%shopware.filesystem.public.config.fallbackEnabled%</argument>
+        </service>
+
+        <service id="Frosh\BunnycdnMediaStorage\Core\Content\Media\Infrastructure\Url\FallbackUrlGenerator"
+                 decorates="Shopware\Core\Content\Media\Infrastructure\Url\UrlGenerator"
+                 decoration-priority="-10">
+            <argument type="service" id="Frosh\BunnycdnMediaStorage\Core\Content\Media\Infrastructure\Url\FallbackUrlGenerator.inner"/>
+            <argument type="service" id="Frosh\BunnycdnMediaStorage\Service\CdnHealthCheckService"/>
+            <argument>%env(APP_URL)%</argument>
+        </service>
+
     </services>
 </container>

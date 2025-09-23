@@ -31,7 +31,8 @@ class BunnyCdnFactory implements AdapterFactoryInterface
         }
 
         if (!empty($adapterConfig->getReplicationRoot())) {
-            $adapter = new ReplicateFilesystemAdapter($adapter, new LocalFilesystemAdapter($adapterConfig->getReplicationRoot()));
+            $localAdapter = new LocalFilesystemAdapter($adapterConfig->getReplicationRoot());
+            $adapter = new ReplicateFilesystemAdapter($adapter, $localAdapter);
         }
 
         return $adapter;
