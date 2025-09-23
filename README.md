@@ -1,3 +1,6 @@
+> ⚠️ **WARNING**  
+> After experiencing increasing problems with bunny.net, we have decided to no longer actively recommend or use this service. It doesn't seem to be reliable or trustworthy.
+
 # BunnyCDN Adapter for Shopware 6
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md) [![Shopware Store](https://img.shields.io/badge/shopware-store-blue.svg?style=flat-square)](https://store.shopware.com/en/frosh48851065217f/bunnycdn-media-storage-plugin-v3.html)
